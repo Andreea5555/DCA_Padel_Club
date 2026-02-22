@@ -5,7 +5,7 @@ public class OperationError
     public int errorCode { get; }
     public string errorMessage { get; }
 
-    private OperationError(int errorCode, string errorMessage)
+    public OperationError(int errorCode, string errorMessage)
     {
         this.errorCode = errorCode;
         this.errorMessage = errorMessage;
