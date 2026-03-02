@@ -14,7 +14,7 @@ public class OperationResultUnitTests
         var result = Result<int>.Success(expectedValue);
 
         
-        Assert.False(result.isFailure);
+        Assert.False(result.IsFailure);
         Assert.Equal(expectedValue, result.value);
         Assert.Empty(result.errorMessages);
     }

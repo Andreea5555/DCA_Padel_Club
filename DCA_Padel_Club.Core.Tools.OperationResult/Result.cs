@@ -6,12 +6,12 @@ public class Result<T>
 {
     public T value { get; }
     public IReadOnlyList<OperationError> errorMessages { get; }
-    public bool isFailure { get; } 
+    public bool IsFailure { get; } 
 
     private Result(T value, bool IsFailure, IReadOnlyList<OperationError> errorMessages)
     {
         this.value = value;
-        isFailure = IsFailure;
+        this.IsFailure = IsFailure;
         this.errorMessages = errorMessages;
     }
 

@@ -2,13 +2,17 @@
 
 public class OperationError
 {
-    public int errorCode { get; }
-    public string errorMessage { get; }
+    public string ErrorCode { get; } 
+    public string ErrorMessage { get; }
 
-    public OperationError(int errorCode, string errorMessage)
+    public OperationError(string errorCode, string errorMessage)
     {
-        this.errorCode = errorCode;
-        this.errorMessage = errorMessage;
+        ErrorCode = errorCode;
+        ErrorMessage = errorMessage;
     }
-    
+
+    public static OperationError Create(string code, string message)
+    {
+        return new OperationError(code, message);
+    }
 }

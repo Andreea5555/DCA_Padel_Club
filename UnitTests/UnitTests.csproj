@@ -19,6 +19,7 @@
     </ItemGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\DCA_Padel_Club.Core.Domain\DCA_Padel_Club.Core.Domain.csproj" />
       <ProjectReference Include="..\DCA_Padel_Club.Core.Tools.OperationResult\DCA_Padel_Club.Core.Tools.OperationResult.csproj" />
     </ItemGroup>
 
