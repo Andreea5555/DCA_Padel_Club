@@ -1,8 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Documentation", "Documentation", "{AC323794-5123-4263-B5DC-1A316206391E}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Assignment_1", "Assignment_1\Assignment_1.csproj", "{DD22FC46-68D8-4C19-840E-B18C613C631E}"
+	ProjectSection(SolutionItems) = preProject
+		Assignment_1_Domain_Model.png = Assignment_1_Domain_Model.png
+		Concrete_Domain_Model.drawio.png = Concrete_Domain_Model.drawio.png
+		GroupMembers.md = GroupMembers.md
+	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{66CACA6D-6CFB-4AE6-A596-EB0245C07B1E}"
 EndProject
@@ -18,8 +21,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTests", "UnitTests\Unit
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DCA_Padel_Club.Core.Domain", "DCA_Padel_Club.Core.Domain\DCA_Padel_Club.Core.Domain.csproj", "{C655B56C-B268-4B0A-A861-996BCE21859C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Assignment_2", "Assignment_2\Assignment_2.csproj", "{A5093395-1B69-4CBC-BA37-3AC898681C45}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,10 +34,6 @@ Global
 		{C655B56C-B268-4B0A-A861-996BCE21859C} = {83524940-5FF0-4C14-98BB-C43FAC4A925C}
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{DD22FC46-68D8-4C19-840E-B18C613C631E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{DD22FC46-68D8-4C19-840E-B18C613C631E}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{DD22FC46-68D8-4C19-840E-B18C613C631E}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{DD22FC46-68D8-4C19-840E-B18C613C631E}.Release|Any CPU.Build.0 = Release|Any CPU
 		{C8D5D06A-0F8D-488C-A6B9-B7850A80DA19}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{C8D5D06A-0F8D-488C-A6B9-B7850A80DA19}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C8D5D06A-0F8D-488C-A6B9-B7850A80DA19}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -49,9 +46,5 @@ Global
 		{C655B56C-B268-4B0A-A861-996BCE21859C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C655B56C-B268-4B0A-A861-996BCE21859C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C655B56C-B268-4B0A-A861-996BCE21859C}.Release|Any CPU.Build.0 = Release|Any CPU
-		{A5093395-1B69-4CBC-BA37-3AC898681C45}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{A5093395-1B69-4CBC-BA37-3AC898681C45}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{A5093395-1B69-4CBC-BA37-3AC898681C45}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{A5093395-1B69-4CBC-BA37-3AC898681C45}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
