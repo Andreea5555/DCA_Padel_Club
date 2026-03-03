@@ -18,6 +18,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTests", "UnitTests\Unit
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DCA_Padel_Club.Core.Domain", "DCA_Padel_Club.Core.Domain\DCA_Padel_Club.Core.Domain.csproj", "{C655B56C-B268-4B0A-A861-996BCE21859C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Assignment_2", "Assignment_2\Assignment_2.csproj", "{A5093395-1B69-4CBC-BA37-3AC898681C45}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -47,5 +49,9 @@ Global
 		{C655B56C-B268-4B0A-A861-996BCE21859C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C655B56C-B268-4B0A-A861-996BCE21859C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C655B56C-B268-4B0A-A861-996BCE21859C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A5093395-1B69-4CBC-BA37-3AC898681C45}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A5093395-1B69-4CBC-BA37-3AC898681C45}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A5093395-1B69-4CBC-BA37-3AC898681C45}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A5093395-1B69-4CBC-BA37-3AC898681C45}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
