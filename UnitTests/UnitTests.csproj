@@ -23,4 +23,8 @@
       <ProjectReference Include="..\DCA_Padel_Club.Core.Tools.OperationResult\DCA_Padel_Club.Core.Tools.OperationResult.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="Features\Schedules\Booking\" />
+    </ItemGroup>
+
 </Project>
