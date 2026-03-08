@@ -25,6 +25,7 @@
 
     <ItemGroup>
       <Folder Include="Features\Schedules\Booking\" />
+      <Folder Include="Features\Schedules\PadelCourt\" />
     </ItemGroup>
 
 </Project>
