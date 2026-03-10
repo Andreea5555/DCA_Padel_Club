@@ -6,9 +6,9 @@ public class ManageBusyPadelCourtTests
 {
     private PadelCourt CreatePadelCourt()
     {
-        return new PadelCourt(
-            new CourtId(CourtType.Single)
-        ); 
+        var result = CourtId.CreateCourtId("S");
+
+    return new PadelCourt(result.value);
     }
 
     [Fact]

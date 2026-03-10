@@ -33,4 +33,8 @@ public class PadelCourt
         isVIPEnabled = false;
     }
 
+    public string GetID()
+    {
+        return Number.GetValue();
+    }
 }
