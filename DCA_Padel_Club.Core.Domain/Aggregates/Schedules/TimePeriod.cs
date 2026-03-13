@@ -33,7 +33,21 @@ public class TimePeriod : ValueObject
                 "End time minutes must be :00 or :30"));
 
         if (startTime >= endTime)
+        {
             errors.Add(OperationError.Create("TimePeriod.Range.Invalid", "Start time must be strictly earlier than end time"));
+        }
+        else
+        {
+            var duration = endTime - startTime;
+
+            if (duration < TimeSpan.FromHours(1))
+                errors.Add(OperationError.Create("TimePeriod.Duration.TooShort",
+                    "Booking duration must be at least 1 hour"));
+
+            if (duration > TimeSpan.FromHours(3))
+                errors.Add(OperationError.Create("TimePeriod.Duration.TooLong",
+                    "Booking duration must be at most 3 hours"));
+        }
 
         return errors;
     }

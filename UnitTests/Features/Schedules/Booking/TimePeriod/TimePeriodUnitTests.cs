@@ -114,6 +114,49 @@ public class TimePeriodUnitTests
         Assert.False(result.IsFailure);
     }
 
+    [Theory]
+    [InlineData(30)]
+    public void Create_WhenDurationIsLessThan1Hour_ReturnsFailure(int durationMinutes)
+    {
+        var start = new DateTime(2026, 1, 1, 14, 0, 0, DateTimeKind.Utc);
+        var end = start.AddMinutes(durationMinutes);
+
+        var result = TP.Create(start, end);
+
+        Assert.True(result.IsFailure);
+        Assert.Contains(result.errorMessages, e => e.ErrorCode == "TimePeriod.Duration.TooShort");
+    }
+
+    [Theory]
+    [InlineData(210)]
+    [InlineData(240)]
+    public void Create_WhenDurationIsMoreThan3Hours_ReturnsFailure(int durationMinutes)
+    {
+        var start = new DateTime(2026, 1, 1, 14, 0, 0, DateTimeKind.Utc);
+        var end = start.AddMinutes(durationMinutes);
+
+        var result = TP.Create(start, end);
+
+        Assert.True(result.IsFailure);
+        Assert.Contains(result.errorMessages, e => e.ErrorCode == "TimePeriod.Duration.TooLong");
+    }
+
+    [Theory]
+    [InlineData(60)]
+    [InlineData(90)]
+    [InlineData(120)]
+    [InlineData(150)]
+    [InlineData(180)]
+    public void Create_WhenDurationIsBetween1And3Hours_ReturnsSuccess(int durationMinutes)
+    {
+        var start = new DateTime(2026, 1, 1, 14, 0, 0, DateTimeKind.Utc);
+        var end = start.AddMinutes(durationMinutes);
+
+        var result = TP.Create(start, end);
+
+        Assert.False(result.IsFailure);
+    }
+
     [Fact]
     public void Equals_WithSameStartAndEnd_ReturnsTrue()
     {
