@@ -41,6 +41,36 @@ public class CreateBookingScheduleTests
     }
 
     [Fact]
+    public void CreateBooking_WhenScheduleIsDeleted_ReturnsFailure()
+    {
+        var schedule = CreateDeletedScheduleWithCourt("D1");
+        var bookerId = new ViaId(1);
+        var slot = CreateValidSlot(schedule, 15, 0, 17, 0);
+
+        var result = schedule.CreateBooking(bookerId, CourtId.CreateCourtId("D1").value, slot);
+
+        Assert.True(result.IsFailure);
+        Assert.Contains(result.errorMessages, e => e.ErrorCode == "Schedule.Deleted");
+    }
+
+    [Fact]
+    public void CreateBooking_WhenScheduleIsDraft_ReturnsFailure()
+    {
+        var schedule = new ScheduleAggregate();
+        var courtId = CourtId.CreateCourtId("D1");
+        Assert.False(courtId.IsFailure);
+        schedule.AddCourt(courtId.value, false, false);
+
+        var bookerId = new ViaId(1);
+        var slot = CreateValidSlot(schedule, 15, 0, 17, 0);
+
+        var result = schedule.CreateBooking(bookerId, courtId.value, slot);
+
+        Assert.True(result.IsFailure);
+        Assert.Contains(result.errorMessages, e => e.ErrorCode == "Schedule.IsDraft");
+    }
+
+    [Fact]
     public void CreateBooking_TwoBookingsOnDifferentCourts_BothStored()
     {
         var schedule = CreateActiveScheduleWithCourts("D1", "D2");
@@ -60,6 +90,19 @@ public class CreateBookingScheduleTests
         Assert.False(courtId.IsFailure);
         schedule.AddCourt(courtId.value, false, false);
         schedule.ActivateSchedule();
+        return schedule;
+    }
+
+    // Sets a future date so RemoveSchedule() succeeds, producing a legitimately deleted schedule.
+    private static ScheduleAggregate CreateDeletedScheduleWithCourt(string courtName)
+    {
+        var schedule = new ScheduleAggregate();
+        schedule.UpdateSchedule(DateOnly.FromDateTime(DateTime.Now).AddDays(1));
+        var courtId = CourtId.CreateCourtId(courtName);
+        Assert.False(courtId.IsFailure);
+        schedule.AddCourt(courtId.value, false, false);
+        var removeResult = schedule.RemoveSchedule();
+        Assert.False(removeResult.IsFailure);
         return schedule;
     }
 

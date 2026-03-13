@@ -189,34 +189,51 @@ public class Schedule
     public Result<None> RemoveSchedule()
     {
         var errors = new List<OperationError>();
-        if (Date == DateOnly.FromDateTime(DateTime.Now)|| Date< DateOnly.FromDateTime(DateTime.Now))
+
+        if (Date == DateOnly.FromDateTime(DateTime.Now) || Date < DateOnly.FromDateTime(DateTime.Now))
         {
-            errors.Add(OperationError.Create("Schedule.InvalidRemoval","The removal of the schedule is not possible because the date has either passed or is happening already."));
-        }
-        
-        if (IsDraft == false)
-        {
-            //all bookings deleted
-            //players are notified
+            errors.Add(OperationError.Create("Schedule.InvalidRemoval", "The removal of the schedule is not possible because the date has either passed or is happening already."));
         }
 
-        if (isDeleted) //need to check when we can if the schedule is not empty/ not created in the database
+        if (isDeleted) // need to check when we can if the schedule is not empty/ not created in the database
         {
-            errors.Add(OperationError.Create("Schedule.Null","No daily schedule has been found or the schedule has already been deleted"));
+            errors.Add(OperationError.Create("Schedule.Null", "No daily schedule has been found or the schedule has already been deleted"));
         }
-            
-        isDeleted = true;
-        Courts.Clear();
+
         if (errors.Count > 0)
         {
             return Result<None>.Failure(errors);
         }
-        
+
+        if (IsDraft == false)
+        {
+            // TODO: cancel all bookings and notify players
+        }
+
+        isDeleted = true;
+        Courts.Clear();
         return Result<None>.Success(None.Value);
     }
     
     public Result<Booking> CreateBooking(ViaId bookerId, CourtId courtId, TimePeriod slot)
     {
+        var errors = new List<OperationError>();
+
+        if (isDeleted)
+        {
+            errors.Add(OperationError.Create("Schedule.Deleted", "The schedule has been deleted and cannot accept new bookings."));
+        }
+        
+        if (IsDraft)
+        {
+            errors.Add(OperationError.Create("Schedule.IsDraft", "The schedule is still in draft and cannot accept new bookings."));
+        }
+
+        if (errors.Count > 0)
+        {
+            return Result<Booking>.Failure(errors);
+        }
+
         var booking = new Booking(
             new BookingId(Guid.NewGuid()),
             courtId,
