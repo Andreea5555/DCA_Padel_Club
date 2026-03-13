@@ -6,18 +6,18 @@ namespace DCA_Padel_Club.Core.Domain.Aggregates.Schedules;
 
 public class Booking : Entity<BookingId>
 {
-    // private CourtId courtNumber;
+    private readonly CourtId courtNumber;
     private ViaId bookerId;
     private IList<ViaId> playerIds;
     private BookingStatus bookingStatus;
     private readonly TimePeriod bookingTimeSlot;
     
 
-    public Booking(BookingId id, ViaId bookerId, IList<ViaId> playerIds, BookingStatus bookingStatus, TimePeriod timeSlot) 
+    public Booking(BookingId id, CourtId courtNumber, ViaId bookerId, IList<ViaId> playerIds, BookingStatus bookingStatus, TimePeriod timeSlot) 
         : base(id)
     {
         this.bookerId = bookerId;
-        
+        this.courtNumber = courtNumber;
         if (playerIds is null)
         {
             throw new ArgumentNullException(nameof(playerIds));

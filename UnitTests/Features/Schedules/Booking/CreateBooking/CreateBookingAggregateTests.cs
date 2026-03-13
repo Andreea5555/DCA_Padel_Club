@@ -11,12 +11,24 @@ public class CreateBookingAggregateTests
     public void Ctor_WithNullPlayerList_ThrowsArgumentNullException()
     {
         var id = new BookingId(Guid.NewGuid());
+        var courtId = BookingTestHelper.CreateDefaultCourtId();
         var booker = new ViaId(1);
         var slot = BookingTestHelper.CreateValidTimeSlot();
 
-        var ex = Assert.Throws<ArgumentNullException>(() => new BookingAggregate(id, booker, null!, BookingStatus.Pending, slot));
+        var ex = Assert.Throws<ArgumentNullException>(() => new BookingAggregate(id, courtId, booker, null!, BookingStatus.Pending, slot));
 
         Assert.Equal("playerIds", ex.ParamName);
+    }
+
+    [Fact]
+    public void Ctor_StoresCourtId_Correctly()
+    {
+        var courtId = BookingTestHelper.CreateDefaultCourtId();
+        var booking = BookingTestHelper.CreateBooking(courtNumber: courtId);
+
+        var stored = BookingTestHelper.GetCourtId(booking);
+
+        Assert.Equal(courtId.GetValue(), stored.GetValue());
     }
 
     [Fact]
