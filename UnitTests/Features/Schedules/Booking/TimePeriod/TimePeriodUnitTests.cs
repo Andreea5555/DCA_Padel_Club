@@ -1,3 +1,5 @@
+using TP = DCA_Padel_Club.Core.Domain.Aggregates.Schedules.TimePeriod;
+
 namespace UnitTests.Features.Schedules.Booking.TimePeriod;
 
 public class TimePeriodUnitTests
@@ -8,7 +10,7 @@ public class TimePeriodUnitTests
         var start = new DateTime(2026, 1, 1, 10, 0, 0, DateTimeKind.Utc);
         var end = start.AddHours(1);
 
-        var result = DCA_Padel_Club.Core.Domain.Aggregates.Schedules.TimePeriod.Create(start, end);
+        var result = TP.Create(start, end);
 
         Assert.False(result.IsFailure);
         Assert.NotNull(result.value);
@@ -20,7 +22,7 @@ public class TimePeriodUnitTests
         var start = new DateTime(2026, 1, 1, 10, 0, 0, DateTimeKind.Local);
         var end = new DateTime(2026, 1, 1, 11, 0, 0, DateTimeKind.Utc);
 
-        var result = DCA_Padel_Club.Core.Domain.Aggregates.Schedules.TimePeriod.Create(start, end);
+        var result = TP.Create(start, end);
 
         Assert.True(result.IsFailure);
         Assert.Contains(result.errorMessages, e => e.ErrorCode == "TimePeriod.Start.NotUtc");
@@ -32,7 +34,7 @@ public class TimePeriodUnitTests
         var start = new DateTime(2026, 1, 1, 10, 0, 0, DateTimeKind.Utc);
         var end = new DateTime(2026, 1, 1, 11, 0, 0, DateTimeKind.Local);
 
-        var result = DCA_Padel_Club.Core.Domain.Aggregates.Schedules.TimePeriod.Create(start, end);
+        var result = TP.Create(start, end);
 
         Assert.True(result.IsFailure);
         Assert.Contains(result.errorMessages, e => e.ErrorCode == "TimePeriod.End.NotUtc");
@@ -44,7 +46,7 @@ public class TimePeriodUnitTests
         var start = new DateTime(2026, 1, 1, 10, 0, 0, DateTimeKind.Utc);
         var end = start;
 
-        var result = DCA_Padel_Club.Core.Domain.Aggregates.Schedules.TimePeriod.Create(start, end);
+        var result = TP.Create(start, end);
 
         Assert.True(result.IsFailure);
         Assert.Contains(result.errorMessages, e => e.ErrorCode == "TimePeriod.Range.Invalid");
@@ -56,22 +58,60 @@ public class TimePeriodUnitTests
         var start = new DateTime(2026, 1, 1, 11, 0, 0, DateTimeKind.Utc);
         var end = new DateTime(2026, 1, 1, 10, 0, 0, DateTimeKind.Utc);
 
-        var result = DCA_Padel_Club.Core.Domain.Aggregates.Schedules.TimePeriod.Create(start, end);
+        var result = TP.Create(start, end);
 
         Assert.True(result.IsFailure);
         Assert.Contains(result.errorMessages, e => e.ErrorCode == "TimePeriod.Range.Invalid");
     }
 
-    [Fact]
-    public void Create_WithOneTickDifference_AllowsBoundary()
-    {
-        var start = new DateTime(2026, 1, 1, 10, 0, 0, DateTimeKind.Utc);
-        var end = start.AddTicks(1);
 
-        var result = DCA_Padel_Club.Core.Domain.Aggregates.Schedules.TimePeriod.Create(start, end);
+    [Theory]
+    [InlineData(1)]
+    [InlineData(15)]
+    [InlineData(29)]
+    [InlineData(31)]
+    [InlineData(45)]
+    [InlineData(59)]
+    public void Create_WhenStartMinutesAreNot00Or30_ReturnsFailure(int minutes)
+    {
+        var start = new DateTime(2026, 1, 1, 14, minutes, 0, DateTimeKind.Utc);
+        var end = new DateTime(2026, 1, 1, 15, 0, 0, DateTimeKind.Utc);
+
+        var result = TP.Create(start, end);
+
+        Assert.True(result.IsFailure);
+        Assert.Contains(result.errorMessages, e => e.ErrorCode == "TimePeriod.Start.InvalidMinutes");
+    }
+
+    [Theory]
+    [InlineData(1)]
+    [InlineData(15)]
+    [InlineData(29)]
+    [InlineData(31)]
+    [InlineData(45)]
+    [InlineData(59)]
+    public void Create_WhenEndMinutesAreNot00Or30_ReturnsFailure(int minutes)
+    {
+        var start = new DateTime(2026, 1, 1, 14, 0, 0, DateTimeKind.Utc);
+        var end = new DateTime(2026, 1, 1, 15, minutes, 0, DateTimeKind.Utc);
+
+        var result = TP.Create(start, end);
+
+        Assert.True(result.IsFailure);
+        Assert.Contains(result.errorMessages, e => e.ErrorCode == "TimePeriod.End.InvalidMinutes");
+    }
+
+    [Theory]
+    [InlineData(0)]
+    [InlineData(30)]
+    public void Create_WhenBothMinutesAre00Or30_ReturnsSuccess(int startMinutes)
+    {
+        var start = new DateTime(2026, 1, 1, 14, startMinutes, 0, DateTimeKind.Utc);
+        var end = start.AddHours(1);
+
+        var result = TP.Create(start, end);
 
         Assert.False(result.IsFailure);
-        Assert.NotNull(result.value);
     }
 
     [Fact]
@@ -79,8 +119,8 @@ public class TimePeriodUnitTests
     {
         var start = new DateTime(2026, 1, 1, 10, 0, 0, DateTimeKind.Utc);
         var end = start.AddHours(1);
-        var leftResult = DCA_Padel_Club.Core.Domain.Aggregates.Schedules.TimePeriod.Create(start, end);
-        var rightResult = DCA_Padel_Club.Core.Domain.Aggregates.Schedules.TimePeriod.Create(start, end);
+        var leftResult = TP.Create(start, end);
+        var rightResult = TP.Create(start, end);
 
         Assert.False(leftResult.IsFailure);
         Assert.False(rightResult.IsFailure);
@@ -97,8 +137,8 @@ public class TimePeriodUnitTests
     {
         var start = new DateTime(2026, 1, 1, 10, 0, 0, DateTimeKind.Utc);
         var end = start.AddHours(1);
-        var leftResult = DCA_Padel_Club.Core.Domain.Aggregates.Schedules.TimePeriod.Create(start, end);
-        var rightResult = DCA_Padel_Club.Core.Domain.Aggregates.Schedules.TimePeriod.Create(start.AddMinutes(1), end.AddMinutes(1));
+        var leftResult = TP.Create(start, end);
+        var rightResult = TP.Create(start.AddMinutes(30), end.AddMinutes(30));
 
         Assert.False(leftResult.IsFailure);
         Assert.False(rightResult.IsFailure);

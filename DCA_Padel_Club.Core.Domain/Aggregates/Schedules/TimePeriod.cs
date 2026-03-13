@@ -23,7 +23,15 @@ public class TimePeriod : ValueObject
 
         if (endTime.Kind != DateTimeKind.Utc)
             errors.Add(OperationError.Create("TimePeriod.End.NotUtc", "End time must be in UTC"));
-        
+
+        if (startTime.Minute != 0 && startTime.Minute != 30)
+            errors.Add(OperationError.Create("TimePeriod.Start.InvalidMinutes",
+                "Start time minutes must be :00 or :30"));
+
+        if (endTime.Minute != 0 && endTime.Minute != 30)
+            errors.Add(OperationError.Create("TimePeriod.End.InvalidMinutes",
+                "End time minutes must be :00 or :30"));
+
         if (startTime >= endTime)
             errors.Add(OperationError.Create("TimePeriod.Range.Invalid", "Start time must be strictly earlier than end time"));
 
