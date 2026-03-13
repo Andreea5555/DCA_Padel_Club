@@ -1,4 +1,4 @@
-using System.Runtime.InteropServices.JavaScript;
+using DCA_Padel_Club.Core.Domain.Aggregates.Players;
 using DCA_Padel_Club.Core.Domain.Aggregates.Schedule;
 using DCA_Padel_Club.Core.Tools.OperationResult;
 
@@ -14,6 +14,7 @@ public class Schedule
     internal IList<PadelCourt> Courts { get; private set; }
     internal IList<TimePeriod> AvailabilityPeriods;
     internal bool isDeleted;
+    internal IList<Booking> bookings;
 
     public Schedule()
     {
@@ -25,6 +26,7 @@ public class Schedule
         Courts = new List<PadelCourt>();
         AvailabilityPeriods = new List<TimePeriod>();
         isDeleted = false;
+        bookings = new List<Booking>();
     }
 
     //needed to check in the database and implement USe Case ID2, F1
@@ -213,5 +215,18 @@ public class Schedule
         return Result<None>.Success(None.Value);
     }
     
+    public Result<Booking> CreateBooking(ViaId bookerId, CourtId courtId, TimePeriod slot)
+    {
+        var booking = new Booking(
+            new BookingId(Guid.NewGuid()),
+            courtId,
+            bookerId,
+            new List<ViaId>(),
+            BookingStatus.Pending,
+            slot);
+
+        bookings.Add(booking);
+        return Result<Booking>.Success(booking);
+    }
     
 }

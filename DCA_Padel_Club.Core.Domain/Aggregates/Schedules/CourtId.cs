@@ -1,5 +1,6 @@
 using DCA_Padel_Club.Core.Tools.OperationResult;
 
+namespace DCA_Padel_Club.Core.Domain.Aggregates.Schedules;
 public class CourtId
 {
     public string Value { get; }
