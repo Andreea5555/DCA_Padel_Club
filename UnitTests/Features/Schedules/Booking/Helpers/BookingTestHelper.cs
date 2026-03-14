@@ -2,6 +2,7 @@ using System.Reflection;
 using DCA_Padel_Club.Core.Domain.Aggregates.Players;
 using DCA_Padel_Club.Core.Domain.Aggregates.Schedules;
 using BookingAggregate = DCA_Padel_Club.Core.Domain.Aggregates.Schedules.Booking;
+using BookingSlotType = DCA_Padel_Club.Core.Domain.Aggregates.Schedules.BookingSlot;
 
 namespace UnitTests.Features.Schedules.Booking.Helpers;
 
@@ -28,12 +29,12 @@ internal static class BookingTestHelper
         return result.value;
     }
 
-    internal static BookingSlot CreateValidTimeSlot()
+    internal static BookingSlotType CreateValidTimeSlot()
     {
         var date = new DateOnly(2026, 1, 1);
         var start = new TimeOnly(10, 0);
         var end = new TimeOnly(11, 0);
-        var result = BookingSlot.Create(date, start, end);
+        var result = BookingSlotType.Create(date, start, end);
         Assert.False(result.IsFailure);
         return result.value;
     }
