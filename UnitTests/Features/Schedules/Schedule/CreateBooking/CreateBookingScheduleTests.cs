@@ -133,6 +133,34 @@ public class CreateBookingScheduleTests
         Assert.Contains(result.errorMessages, e => e.ErrorCode == "Schedule.SlotOutOfBounds");
     }
 
+    [Fact]
+    public void CreateBooking_WhenOverlapsExistingBookingOnSameCourt_ReturnsFailure()
+    {
+        var schedule = CreateActiveScheduleWithCourt("D1");
+        var courtId = CourtId.CreateCourtId("D1").value;
+        var slotA = CreateValidSlot(schedule, 15, 0, 17, 0);
+        var slotB = CreateValidSlot(schedule, 16, 0, 18, 0); 
+
+        schedule.CreateBooking(new ViaId(1), courtId, slotA);
+        var result = schedule.CreateBooking(new ViaId(2), courtId, slotB);
+
+        Assert.True(result.IsFailure);
+        Assert.Contains(result.errorMessages, e => e.ErrorCode == "Schedule.BookingOverlap");
+    }
+
+    [Fact]
+    public void CreateBooking_WhenSameTimeSlotOnDifferentCourt_ReturnsSuccess()
+    {
+        var schedule = CreateActiveScheduleWithCourts("D1", "D2");
+        var slotA = CreateValidSlot(schedule, 15, 0, 17, 0);
+        var slotB = CreateValidSlot(schedule, 15, 0, 17, 0);
+
+        schedule.CreateBooking(new ViaId(1), CourtId.CreateCourtId("D1").value, slotA);
+        var result = schedule.CreateBooking(new ViaId(2), CourtId.CreateCourtId("D2").value, slotB);
+
+        Assert.False(result.IsFailure);
+    }
+
     private static ScheduleAggregate CreateActiveScheduleWithCourt(string courtName)
     {
         var schedule = new ScheduleAggregate();

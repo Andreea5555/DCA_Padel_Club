@@ -11,7 +11,6 @@ public class Booking : Entity<BookingId>
     private IList<ViaId> playerIds;
     private BookingStatus bookingStatus;
     private readonly BookingSlot bookingTimeSlot;
-    
 
     public Booking(BookingId id, CourtId courtNumber, ViaId bookerId, IList<ViaId> playerIds, BookingStatus bookingStatus, BookingSlot timeSlot) 
         : base(id)
@@ -94,5 +93,12 @@ public class Booking : Entity<BookingId>
 
         bookingStatus = BookingStatus.Completed;
         return Result<None>.Success(None.Value);
+    }
+
+    internal bool IsOnCourtAndOverlaps(CourtId court, BookingSlot slot)
+    {
+        if (courtNumber.GetValue() != court.GetValue())
+            return false;
+        return bookingTimeSlot.Overlaps(slot);
     }
 }

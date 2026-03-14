@@ -230,6 +230,10 @@ public class Schedule
 
         errors.AddRange(slot.ValidateFitsWithin(Date, StartTime, EndTime));
 
+        if (bookings.Any(b => b.IsOnCourtAndOverlaps(courtId, slot)))
+            errors.Add(OperationError.Create("Schedule.BookingOverlap",
+                "The requested time slot overlaps with an existing booking on this court."));
+
         if (errors.Count > 0)
             return Result<Booking>.Failure(errors);
 
