@@ -101,4 +101,8 @@ public class Booking : Entity<BookingId>
             return false;
         return bookingTimeSlot.Overlaps(slot);
     }
+
+    internal bool IsBookedBy(ViaId id){
+        return bookerId == id;
+    }
 }

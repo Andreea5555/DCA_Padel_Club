@@ -161,6 +161,21 @@ public class CreateBookingScheduleTests
         Assert.False(result.IsFailure);
     }
 
+    [Fact]
+    public void CreateBooking_WhenPlayerAlreadyHasBookingOnSameDate_ReturnsFailure()
+    {
+        var schedule = CreateActiveScheduleWithCourts("D1", "D2");
+        var bookerId = new ViaId(1);
+        var slotA = CreateValidSlot(schedule, 15, 0, 17, 0);
+        var slotB = CreateValidSlot(schedule, 17, 0, 19, 0);
+
+        schedule.CreateBooking(bookerId, CourtId.CreateCourtId("D1").value, slotA);
+        var result = schedule.CreateBooking(bookerId, CourtId.CreateCourtId("D2").value, slotB);
+
+        Assert.True(result.IsFailure);
+        Assert.Contains(result.errorMessages, e => e.ErrorCode == "Schedule.PlayerAlreadyHasBooking");
+    }
+
     private static ScheduleAggregate CreateActiveScheduleWithCourt(string courtName)
     {
         var schedule = new ScheduleAggregate();

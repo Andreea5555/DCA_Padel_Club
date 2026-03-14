@@ -234,6 +234,10 @@ public class Schedule
             errors.Add(OperationError.Create("Schedule.BookingOverlap",
                 "The requested time slot overlaps with an existing booking on this court."));
 
+        if (bookings.Any(b => b.IsBookedBy(bookerId)))
+            errors.Add(OperationError.Create("Schedule.PlayerAlreadyHasBooking",
+                "The player already has a booking on this date."));
+
         if (errors.Count > 0)
             return Result<Booking>.Failure(errors);
 
