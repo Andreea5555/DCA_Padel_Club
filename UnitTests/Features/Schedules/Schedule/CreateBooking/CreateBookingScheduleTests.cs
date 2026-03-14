@@ -83,6 +83,56 @@ public class CreateBookingScheduleTests
         Assert.Equal(2, GetBookings(schedule).Count);
     }
 
+    [Fact]
+    public void CreateBooking_WhenCourtNotInSchedule_ReturnsFailure()
+    {
+        var schedule = CreateActiveScheduleWithCourt("D1");
+        var absentCourt = CourtId.CreateCourtId("D2").value;
+        var slot = CreateValidSlot(schedule, 15, 0, 17, 0);
+
+        var result = schedule.CreateBooking(new ViaId(1), absentCourt, slot);
+
+        Assert.True(result.IsFailure);
+        Assert.Contains(result.errorMessages, e => e.ErrorCode == "Schedule.CourtNotFound");
+    }
+
+    [Fact]
+    public void CreateBooking_WhenSlotStartsBeforeScheduleStart_ReturnsFailure()
+    {
+        var schedule = CreateActiveScheduleWithCourt("D1"); 
+        var slot = CreateSlotUtc(schedule, 14, 0, 16, 0);  
+
+        var result = schedule.CreateBooking(new ViaId(1), CourtId.CreateCourtId("D1").value, slot);
+
+        Assert.True(result.IsFailure);
+        Assert.Contains(result.errorMessages, e => e.ErrorCode == "Schedule.SlotOutOfBounds");
+    }
+
+    [Fact]
+    public void CreateBooking_WhenSlotEndsAfterScheduleEnd_ReturnsFailure()
+    {
+        var schedule = CreateActiveScheduleWithCourt("D1");
+        var slot = CreateSlotUtc(schedule, 21, 0, 23, 0);
+
+        var result = schedule.CreateBooking(new ViaId(1), CourtId.CreateCourtId("D1").value, slot);
+
+        Assert.True(result.IsFailure);
+        Assert.Contains(result.errorMessages, e => e.ErrorCode == "Schedule.SlotOutOfBounds");
+    }
+
+    [Fact]
+    public void CreateBooking_WhenSlotDateDiffersFromScheduleDate_ReturnsFailure()
+    {
+        var schedule = CreateActiveScheduleWithCourt("D1");
+        var wrongDate = schedule.Date.AddDays(1);
+        var slot = CreateSlotUtcOnDate(wrongDate, 15, 0, 17, 0);
+
+        var result = schedule.CreateBooking(new ViaId(1), CourtId.CreateCourtId("D1").value, slot);
+
+        Assert.True(result.IsFailure);
+        Assert.Contains(result.errorMessages, e => e.ErrorCode == "Schedule.SlotOutOfBounds");
+    }
+
     private static ScheduleAggregate CreateActiveScheduleWithCourt(string courtName)
     {
         var schedule = new ScheduleAggregate();
@@ -93,7 +143,6 @@ public class CreateBookingScheduleTests
         return schedule;
     }
 
-    // Sets a future date so RemoveSchedule() succeeds, producing a legitimately deleted schedule.
     private static ScheduleAggregate CreateDeletedScheduleWithCourt(string courtName)
     {
         var schedule = new ScheduleAggregate();
@@ -119,15 +168,38 @@ public class CreateBookingScheduleTests
         return schedule;
     }
     
-    private static TimePeriod CreateValidSlot(
+    private static BookingSlot CreateValidSlot(
         ScheduleAggregate schedule,
         int startHour, int startMinute,
         int endHour, int endMinute)
     {
-        var date = schedule.Date.ToDateTime(TimeOnly.MinValue, DateTimeKind.Utc);
-        var start = new DateTime(date.Year, date.Month, date.Day, startHour, startMinute, 0, DateTimeKind.Utc);
-        var end   = new DateTime(date.Year, date.Month, date.Day, endHour,   endMinute,   0, DateTimeKind.Utc);
-        var result = TimePeriod.Create(start, end);
+        return CreateSlotOnDate(schedule.Date, startHour, startMinute, endHour, endMinute);
+    }
+
+    private static BookingSlot CreateSlotUtc(
+        ScheduleAggregate schedule,
+        int startHour, int startMinute,
+        int endHour, int endMinute)
+    {
+        return CreateSlotOnDate(schedule.Date, startHour, startMinute, endHour, endMinute);
+    }
+
+    private static BookingSlot CreateSlotUtcOnDate(
+        DateOnly date,
+        int startHour, int startMinute,
+        int endHour, int endMinute)
+    {
+        return CreateSlotOnDate(date, startHour, startMinute, endHour, endMinute);
+    }
+
+    private static BookingSlot CreateSlotOnDate(
+        DateOnly date,
+        int startHour, int startMinute,
+        int endHour, int endMinute)
+    {
+        var start = new TimeOnly(startHour, startMinute);
+        var end = new TimeOnly(endHour, endMinute);
+        var result = BookingSlot.Create(date, start, end);
         Assert.False(result.IsFailure);
         return result.value;
     }

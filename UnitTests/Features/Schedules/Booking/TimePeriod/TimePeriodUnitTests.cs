@@ -17,30 +17,6 @@ public class TimePeriodUnitTests
     }
 
     [Fact]
-    public void Create_WithStartLocalTime_ReturnsFailure()
-    {
-        var start = new DateTime(2026, 1, 1, 10, 0, 0, DateTimeKind.Local);
-        var end = new DateTime(2026, 1, 1, 11, 0, 0, DateTimeKind.Utc);
-
-        var result = TP.Create(start, end);
-
-        Assert.True(result.IsFailure);
-        Assert.Contains(result.errorMessages, e => e.ErrorCode == "TimePeriod.Start.NotUtc");
-    }
-
-    [Fact]
-    public void Create_WithEndLocalTime_ReturnsFailure()
-    {
-        var start = new DateTime(2026, 1, 1, 10, 0, 0, DateTimeKind.Utc);
-        var end = new DateTime(2026, 1, 1, 11, 0, 0, DateTimeKind.Local);
-
-        var result = TP.Create(start, end);
-
-        Assert.True(result.IsFailure);
-        Assert.Contains(result.errorMessages, e => e.ErrorCode == "TimePeriod.End.NotUtc");
-    }
-
-    [Fact]
     public void Create_WithStartEqualsEnd_ReturnsFailure()
     {
         var start = new DateTime(2026, 1, 1, 10, 0, 0, DateTimeKind.Utc);
@@ -108,49 +84,6 @@ public class TimePeriodUnitTests
     {
         var start = new DateTime(2026, 1, 1, 14, startMinutes, 0, DateTimeKind.Utc);
         var end = start.AddHours(1);
-
-        var result = TP.Create(start, end);
-
-        Assert.False(result.IsFailure);
-    }
-
-    [Theory]
-    [InlineData(30)]
-    public void Create_WhenDurationIsLessThan1Hour_ReturnsFailure(int durationMinutes)
-    {
-        var start = new DateTime(2026, 1, 1, 14, 0, 0, DateTimeKind.Utc);
-        var end = start.AddMinutes(durationMinutes);
-
-        var result = TP.Create(start, end);
-
-        Assert.True(result.IsFailure);
-        Assert.Contains(result.errorMessages, e => e.ErrorCode == "TimePeriod.Duration.TooShort");
-    }
-
-    [Theory]
-    [InlineData(210)]
-    [InlineData(240)]
-    public void Create_WhenDurationIsMoreThan3Hours_ReturnsFailure(int durationMinutes)
-    {
-        var start = new DateTime(2026, 1, 1, 14, 0, 0, DateTimeKind.Utc);
-        var end = start.AddMinutes(durationMinutes);
-
-        var result = TP.Create(start, end);
-
-        Assert.True(result.IsFailure);
-        Assert.Contains(result.errorMessages, e => e.ErrorCode == "TimePeriod.Duration.TooLong");
-    }
-
-    [Theory]
-    [InlineData(60)]
-    [InlineData(90)]
-    [InlineData(120)]
-    [InlineData(150)]
-    [InlineData(180)]
-    public void Create_WhenDurationIsBetween1And3Hours_ReturnsSuccess(int durationMinutes)
-    {
-        var start = new DateTime(2026, 1, 1, 14, 0, 0, DateTimeKind.Utc);
-        var end = start.AddMinutes(durationMinutes);
 
         var result = TP.Create(start, end);
 
