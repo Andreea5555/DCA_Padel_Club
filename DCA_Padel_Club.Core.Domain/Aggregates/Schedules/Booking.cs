@@ -10,10 +10,10 @@ public class Booking : Entity<BookingId>
     private ViaId bookerId;
     private IList<ViaId> playerIds;
     private BookingStatus bookingStatus;
-    private readonly TimePeriod bookingTimeSlot;
+    private readonly BookingSlot bookingTimeSlot;
     
 
-    public Booking(BookingId id, CourtId courtNumber, ViaId bookerId, IList<ViaId> playerIds, BookingStatus bookingStatus, TimePeriod timeSlot) 
+    public Booking(BookingId id, CourtId courtNumber, ViaId bookerId, IList<ViaId> playerIds, BookingStatus bookingStatus, BookingSlot timeSlot) 
         : base(id)
     {
         this.bookerId = bookerId;

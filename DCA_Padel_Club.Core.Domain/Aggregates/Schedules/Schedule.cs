@@ -21,7 +21,7 @@ public class Schedule
         ScheduleId = Guid.NewGuid();
         Date= DateOnly.FromDateTime(DateTime.Now);
         StartTime = TimeOnly.Parse("15:00:00");
-        EndTime = TimeOnly.Parse("20:00:00");
+        EndTime = TimeOnly.Parse("22:00:00");
         IsDraft = true;
         Courts = new List<PadelCourt>();
         AvailabilityPeriods = new List<TimePeriod>();
@@ -215,24 +215,23 @@ public class Schedule
         return Result<None>.Success(None.Value);
     }
     
-    public Result<Booking> CreateBooking(ViaId bookerId, CourtId courtId, TimePeriod slot)
+    public Result<Booking> CreateBooking(ViaId bookerId, CourtId courtId, BookingSlot slot)
     {
         var errors = new List<OperationError>();
 
         if (isDeleted)
-        {
             errors.Add(OperationError.Create("Schedule.Deleted", "The schedule has been deleted and cannot accept new bookings."));
-        }
-        
+
         if (IsDraft)
-        {
             errors.Add(OperationError.Create("Schedule.IsDraft", "The schedule is still in draft and cannot accept new bookings."));
-        }
+
+        if (!Courts.Any(c => c.GetID() == courtId.GetValue()))
+            errors.Add(OperationError.Create("Schedule.CourtNotFound", "The requested court does not exist in this schedule."));
+
+        errors.AddRange(slot.ValidateFitsWithin(Date, StartTime, EndTime));
 
         if (errors.Count > 0)
-        {
             return Result<Booking>.Failure(errors);
-        }
 
         var booking = new Booking(
             new BookingId(Guid.NewGuid()),
