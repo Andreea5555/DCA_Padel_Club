@@ -1,4 +1,5 @@
-﻿using DCA_Padel_Club.Core.Domain.Aggregates.Schedule;
+using DCA_Padel_Club.Core.Domain.Aggregates.Schedule;
+using DCA_Padel_Club.Core.Domain.Aggregates.Schedules;
 
 namespace UnitTests.Features.Schedule.ManageBusyPadelCourt;
 
@@ -6,9 +7,8 @@ public class ManageBusyPadelCourtTests
 {
     private PadelCourt CreatePadelCourt()
     {
-        var result = CourtId.CreateCourtId("S");
-
-    return new PadelCourt(result.value);
+        var result = CourtId.CreateCourtId("S1");
+        return new PadelCourt(result.value);
     }
 
     [Fact]

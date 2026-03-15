@@ -6,18 +6,17 @@ namespace DCA_Padel_Club.Core.Domain.Aggregates.Schedules;
 
 public class Booking : Entity<BookingId>
 {
-    // private CourtId courtNumber;
+    private readonly CourtId courtNumber;
     private ViaId bookerId;
     private IList<ViaId> playerIds;
     private BookingStatus bookingStatus;
-    private readonly TimePeriod bookingTimeSlot;
-    
+    private readonly BookingSlot bookingTimeSlot;
 
-    public Booking(BookingId id, ViaId bookerId, IList<ViaId> playerIds, BookingStatus bookingStatus, TimePeriod timeSlot) 
+    public Booking(BookingId id, CourtId courtNumber, ViaId bookerId, IList<ViaId> playerIds, BookingStatus bookingStatus, BookingSlot timeSlot) 
         : base(id)
     {
         this.bookerId = bookerId;
-        
+        this.courtNumber = courtNumber;
         if (playerIds is null)
         {
             throw new ArgumentNullException(nameof(playerIds));
@@ -94,5 +93,16 @@ public class Booking : Entity<BookingId>
 
         bookingStatus = BookingStatus.Completed;
         return Result<None>.Success(None.Value);
+    }
+
+    internal bool IsOnCourtAndOverlaps(CourtId court, BookingSlot slot)
+    {
+        if (courtNumber.GetValue() != court.GetValue())
+            return false;
+        return bookingTimeSlot.Overlaps(slot);
+    }
+
+    internal bool IsBookedBy(ViaId id){
+        return bookerId == id;
     }
 }

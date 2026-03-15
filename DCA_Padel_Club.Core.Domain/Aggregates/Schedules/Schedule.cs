@@ -1,4 +1,4 @@
-using System.Runtime.InteropServices.JavaScript;
+using DCA_Padel_Club.Core.Domain.Aggregates.Players;
 using DCA_Padel_Club.Core.Domain.Aggregates.Schedule;
 using DCA_Padel_Club.Core.Tools.OperationResult;
 
@@ -14,17 +14,19 @@ public class Schedule
     internal IList<PadelCourt> Courts { get; private set; }
     internal IList<TimePeriod> AvailabilityPeriods;
     internal bool isDeleted;
+    internal IList<Booking> bookings;
 
     public Schedule()
     {
         ScheduleId = Guid.NewGuid();
         Date= DateOnly.FromDateTime(DateTime.Now);
         StartTime = TimeOnly.Parse("15:00:00");
-        EndTime = TimeOnly.Parse("20:00:00");
+        EndTime = TimeOnly.Parse("22:00:00");
         IsDraft = true;
         Courts = new List<PadelCourt>();
         AvailabilityPeriods = new List<TimePeriod>();
         isDeleted = false;
+        bookings = new List<Booking>();
     }
 
     //needed to check in the database and implement USe Case ID2, F1
@@ -187,31 +189,69 @@ public class Schedule
     public Result<None> RemoveSchedule()
     {
         var errors = new List<OperationError>();
-        if (Date == DateOnly.FromDateTime(DateTime.Now)|| Date< DateOnly.FromDateTime(DateTime.Now))
+
+        if (Date == DateOnly.FromDateTime(DateTime.Now) || Date < DateOnly.FromDateTime(DateTime.Now))
         {
-            errors.Add(OperationError.Create("Schedule.InvalidRemoval","The removal of the schedule is not possible because the date has either passed or is happening already."));
+            errors.Add(OperationError.Create("Schedule.InvalidRemoval", "The removal of the schedule is not possible because the date has either passed or is happening already."));
         }
-        
+
+        if (isDeleted) // need to check when we can if the schedule is not empty/ not created in the database
+        {
+            errors.Add(OperationError.Create("Schedule.Null", "No daily schedule has been found or the schedule has already been deleted"));
+        }
+
+        if (errors.Count > 0)
+        {
+            return Result<None>.Failure(errors);
+        }
+
         if (IsDraft == false)
         {
             //all bookings deleted
             //players are notified
         }
 
-        if (isDeleted) //need to check when we can if the schedule is not empty/ not created in the database
-        {
-            errors.Add(OperationError.Create("Schedule.Null","No daily schedule has been found or the schedule has already been deleted"));
-        }
-            
         isDeleted = true;
         Courts.Clear();
-        if (errors.Count > 0)
-        {
-            return Result<None>.Failure(errors);
-        }
-        
         return Result<None>.Success(None.Value);
     }
     
+    public Result<Booking> CreateBooking(ViaId bookerId, CourtId courtId, BookingSlot slot)
+    {
+        var errors = new List<OperationError>();
+
+        if (isDeleted)
+            errors.Add(OperationError.Create("Schedule.Deleted", "The schedule has been deleted and cannot accept new bookings."));
+
+        if (IsDraft)
+            errors.Add(OperationError.Create("Schedule.IsDraft", "The schedule is still in draft and cannot accept new bookings."));
+
+        if (!Courts.Any(c => c.GetID() == courtId.GetValue()))
+            errors.Add(OperationError.Create("Schedule.CourtNotFound", "The requested court does not exist in this schedule."));
+
+        errors.AddRange(slot.ValidateFitsWithin(Date, StartTime, EndTime));
+
+        if (bookings.Any(b => b.IsOnCourtAndOverlaps(courtId, slot)))
+            errors.Add(OperationError.Create("Schedule.BookingOverlap",
+                "The requested time slot overlaps with an existing booking on this court."));
+
+        if (bookings.Any(b => b.IsBookedBy(bookerId)))
+            errors.Add(OperationError.Create("Schedule.PlayerAlreadyHasBooking",
+                "The player already has a booking on this date."));
+
+        if (errors.Count > 0)
+            return Result<Booking>.Failure(errors);
+
+        var booking = new Booking(
+            new BookingId(Guid.NewGuid()),
+            courtId,
+            bookerId,
+            new List<ViaId>(),
+            BookingStatus.Pending,
+            slot);
+
+        bookings.Add(booking);
+        return Result<Booking>.Success(booking);
+    }
     
 }
