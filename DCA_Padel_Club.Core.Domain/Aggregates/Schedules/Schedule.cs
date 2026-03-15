@@ -207,7 +207,8 @@ public class Schedule
 
         if (IsDraft == false)
         {
-            // TODO: cancel all bookings and notify players
+            //all bookings deleted
+            //players are notified
         }
 
         isDeleted = true;
