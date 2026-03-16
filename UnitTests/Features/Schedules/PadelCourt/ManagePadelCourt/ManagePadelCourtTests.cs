@@ -3,7 +3,7 @@ using DCA_Padel_Club.Core.Domain.Aggregates.Schedules;
 
 namespace UnitTests.Features.Schedule.ManageBusyPadelCourt;
 
-public class ManageBusyPadelCourtTests
+public class ManagePadelCourtTests
 {
     private PadelCourt CreatePadelCourt()
     {
@@ -34,7 +34,8 @@ public class ManageBusyPadelCourtTests
         padelCourt.EnableVIPAccess();
         Assert.True(padelCourt.isVIPEnabled);
     }
-
+    
+    [Fact]
     public void VIPAccessIsNotEnabled()
     {
         var padelCourt = CreatePadelCourt();
