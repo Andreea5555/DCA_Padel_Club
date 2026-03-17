@@ -70,11 +70,18 @@
 ## 6. UC5 - Add Courts To Daily Schedule
 ### Domain Implementation
 * [x] CourtId value object (S/D prefix, 1-10 number, 2-3 chars)
-* [x] AddCourt() with duplicate check and past-date guard
-* [ ] F3 - Deleted schedule check not implemented
+* [x] AddCourt() with duplicate check, past-date guard, and deleted-schedule guard
 
 ### Unit Tests (TDD)
-* [ ] No tests yet — all scenarios untested
+* [x] S1 - AddCourt_WhenScheduleHasFutureDate_ReturnsSuccess
+* [x] S2 - AddCourt_WhenNoCourtsPresentYet_AddsFirstCourtSuccessfully
+* [x] S3 - AddCourt_WhenOneCourtAlreadyPresent_AddsSecondCourtSuccessfully
+* [x] F1 - AddCourt_WhenScheduleIsInPast_ReturnsFailure
+* [x] F2 - CreateCourtId_WithInvalidPrefix_ReturnsFailure
+* [x] F3 - AddCourt_WhenScheduleIsDeleted_ReturnsFailure
+* [x] F4 - CreateCourtId_WithNumberAbove10_ReturnsFailure, CreateCourtId_WithNumberZero_ReturnsFailure
+* [x] F5 - CreateCourtId_WithTooShortName_ReturnsFailure, CreateCourtId_WithTooLongName_ReturnsFailure
+* [x] F7 - AddCourt_WhenSameCourtAddedTwice_ReturnsFailure
 
 ## 7. UC6 - Activate Daily Schedule
 ### Domain Implementation
