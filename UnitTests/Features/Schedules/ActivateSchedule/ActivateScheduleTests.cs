@@ -1,6 +1,7 @@
 namespace UnitTests.Features.Schedules.ActivateSchedule;
 using DCA_Padel_Club.Core.Domain.Aggregates.Schedules;
 using DCA_Padel_Club.Core.Domain.Aggregates.Schedule;
+using UnitTests.Helpers;
 public class ActivateScheduleTests
 {
     private Schedule CreateSchedule()
@@ -35,7 +36,7 @@ public class ActivateScheduleTests
     {
         var schedule = CreateSchedule();
         schedule.UpdateSchedule(
-            DateOnly.FromDateTime(DateTime.Now.AddDays(-1)));
+            DateOnly.FromDateTime(DateTime.Now.AddDays(-1)), FakeCurrentDate.RealNow());
         schedule.UpdateSchedule(TimeOnly.FromDateTime(DateTime.Now),
             TimeOnly.FromDateTime(DateTime.Now));
 
@@ -64,7 +65,7 @@ public class ActivateScheduleTests
         var schedule = CreateSchedule();
         schedule.Courts.Add(CreatePadelCourt());
 
-        schedule.UpdateSchedule(DateOnly.FromDateTime(DateTime.Now.AddDays(1)));
+        schedule.UpdateSchedule(DateOnly.FromDateTime(DateTime.Now.AddDays(1)), FakeCurrentDate.RealNow());
         schedule.UpdateSchedule(TimeOnly.FromDateTime(DateTime.Now.AddHours(1)),
             TimeOnly.FromDateTime(DateTime.Now.AddHours(4)));
         
