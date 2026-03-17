@@ -29,3 +29,23 @@
 * [x] S3 - VIP Court Eligibility evaluation
 * [x] S4 - Profile updates (Email, Password Result checks)
 * [x] S5 - IsEligibleToBook() evaluation logic (DONE!)
+
+
+## 4.UC3 - Create New Daily Schedule
+### Domain Implementation
+* [x] Happening through constructor of Schedule
+
+### Unit Tests (TDD) 
+* [x] no need since it should not be able to fail
+
+## 5.UC4 - Update Time And Date Of Schedule
+### Domain Implementation
+* [x] Checking Date & Time Validation 
+* [x] Catching list of errors if relevant
+* [x] Returning errors if relevant
+* [x] Updating the fields inside Schedule
+* [x] Returning success result if relevant
+
+### Unit Tests (TDD)
+* [x] Update Schedule Date Schedule_NotDraft (Done?)
+* [x] Update 
