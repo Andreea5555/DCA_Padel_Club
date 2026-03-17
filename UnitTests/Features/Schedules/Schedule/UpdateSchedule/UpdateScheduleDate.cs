@@ -32,7 +32,6 @@ public class UpdateScheduleDate
         Assert.Equal(futureDate, schedule.Date);
     }
 
-    
     [Fact]
     public void UpdateScheduleDate_DateInPast_ReturnsFailure()
     {
@@ -45,7 +44,7 @@ public class UpdateScheduleDate
         Assert.True(result.IsFailure);
         Assert.Contains(result.errorMessages, e => e.ErrorCode == "Schedule.InvalidDate");
     }
-    
+
     [Fact]
     public void UpdateScheduleDate_NotDraftAndDateInPast_ReturnsBothErrors()
     {

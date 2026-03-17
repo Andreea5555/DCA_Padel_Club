@@ -52,7 +52,7 @@ public class UpdateScheduleTime
     }
     
     [Fact]
-    public void UpdateSchedule_Minutes_Are_Invalid()
+    public void UpdateScheduleTime_Minutes_Are_Invalid()
     {
         
         var schedule = CreateSchedule();
@@ -66,7 +66,7 @@ public class UpdateScheduleTime
     }
     
     [Fact]
-    public void UpdateSchedule_Return_Multiple_Errors()
+    public void UpdateScheduleTime_Return_Multiple_Errors()
     {
         var schedule = CreateSchedule();
         schedule.IsDraft = false; 
@@ -83,7 +83,7 @@ public class UpdateScheduleTime
     }
     
     [Fact]
-    public void UpdateSchedule_Success()
+    public void UpdateScheduleTime_Success()
     {
         
         var schedule = CreateSchedule();
