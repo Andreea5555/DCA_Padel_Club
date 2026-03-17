@@ -222,9 +222,14 @@ public class Schedule
         return Result<None>.Success(None.Value);
     }
     
-    public Result<Booking> CreateBooking(ViaId bookerId, CourtId courtId, BookingSlot slot)
+    public Result<Booking> CreateBooking(ViaId bookerId, CourtId courtId, BookingSlot slot, ICurrentTime currentTime)
     {
         var errors = new List<OperationError>();
+
+        var today = DateOnly.FromDateTime(DateTime.Now);
+        if (slot.Date < today || (slot.Date == today && slot.StartTime < currentTime.Now))
+            errors.Add(OperationError.Create("Schedule.BookingInPast",
+                "The booking slot starts before the current time."));
 
         if (isDeleted)
             errors.Add(OperationError.Create("Schedule.Deleted", "The schedule has been deleted and cannot accept new bookings."));
