@@ -1,4 +1,5 @@
 using DCA_Padel_Club.Core.Domain.Aggregates.Schedules;
+using UnitTests.Helpers;
 using ScheduleAggregate = DCA_Padel_Club.Core.Domain.Aggregates.Schedules.Schedule;
 
 namespace UnitTests.Features.Schedules.Schedule.RemoveSchedule;
@@ -9,7 +10,7 @@ public class RemoveScheduleTests
     public void RemoveSchedule_WhenDateIsInFuture_ReturnsSuccess_AndMarksDeleted()
     {
         var schedule = new ScheduleAggregate();
-        schedule.UpdateSchedule(DateOnly.FromDateTime(DateTime.Now).AddDays(1));
+        schedule.UpdateSchedule(DateOnly.FromDateTime(DateTime.Now).AddDays(1), FakeCurrentDate.RealNow());
 
         var result = schedule.RemoveSchedule();
 
@@ -51,7 +52,7 @@ public class RemoveScheduleTests
     public void RemoveSchedule_WhenAlreadyDeleted_ReturnsFailure_AndDoesNotMutateSchedule()
     {
         var schedule = new ScheduleAggregate();
-        schedule.UpdateSchedule(DateOnly.FromDateTime(DateTime.Now).AddDays(1));
+        schedule.UpdateSchedule(DateOnly.FromDateTime(DateTime.Now).AddDays(1), FakeCurrentDate.RealNow());
         schedule.RemoveSchedule();
         Assert.True(schedule.isDeleted);
 

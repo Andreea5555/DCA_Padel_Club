@@ -1,5 +1,6 @@
 using DCA_Padel_Club.Core.Domain.Aggregates.Players;
 using DCA_Padel_Club.Core.Domain.Aggregates.Schedule;
+using DCA_Padel_Club.Core.Domain.Common.Contracts;
 using DCA_Padel_Club.Core.Tools.OperationResult;
 
 namespace DCA_Padel_Club.Core.Domain.Aggregates.Schedules;
@@ -63,7 +64,7 @@ public class Schedule
     }
 
     //needed to check in the database and implement USe Case ID2, F1
-    public Result<Schedule> UpdateSchedule( DateOnly date)
+    public Result<Schedule> UpdateSchedule(DateOnly date, ICurrentDate currentDate)
     {
         Date = date;
         var errors = new List<OperationError>();
@@ -71,7 +72,7 @@ public class Schedule
         {
             errors.Add(OperationError.Create("Schedule.IsNotDraft", "The schedule cannot be active while updating it."));
         }
-        if(date< DateOnly.FromDateTime(DateTime.Now))
+        if (date < currentDate.Now)
         {
             errors.Add(OperationError.Create("Schedule.InvalidDate","The date chosen has already passed"));
         }
@@ -80,7 +81,6 @@ public class Schedule
             return Result<Schedule>.Failure(errors);
         }
         return Result<Schedule>.Success(this);
-        
     }
     
     //Not finished, implementation for UseCase ID3: F3 is needed since it's related to the database as well

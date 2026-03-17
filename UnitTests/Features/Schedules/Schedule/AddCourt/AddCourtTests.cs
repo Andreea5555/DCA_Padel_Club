@@ -1,4 +1,5 @@
 using DCA_Padel_Club.Core.Tools.OperationResult;
+using UnitTests.Helpers;
 
 namespace UnitTests.Features.Schedules.Schedule.AddCourt;
 using  DCA_Padel_Club.Core.Domain.Aggregates.Schedules;
@@ -22,7 +23,7 @@ public class AddCourtTests
     public void AddCourt_Date_InThe_Past()
     {
         var schedule = CreateSchedule();
-        schedule.UpdateSchedule(DateOnly.FromDateTime(DateTime.Now).AddDays(-1));
+        schedule.UpdateSchedule(DateOnly.FromDateTime(DateTime.Now).AddDays(-1), FakeCurrentDate.RealNow());
         
         // schedule.AddCourt(CreateCourtId(),false,false);
     }

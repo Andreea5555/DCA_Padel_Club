@@ -1,6 +1,7 @@
 using System.Reflection;
 using DCA_Padel_Club.Core.Domain.Aggregates.Players;
 using DCA_Padel_Club.Core.Domain.Aggregates.Schedules;
+using UnitTests.Helpers;
 using BookingAggregate = DCA_Padel_Club.Core.Domain.Aggregates.Schedules.Booking;
 using ScheduleAggregate = DCA_Padel_Club.Core.Domain.Aggregates.Schedules.Schedule;
     
@@ -189,7 +190,7 @@ public class CreateBookingScheduleTests
     private static ScheduleAggregate CreateDeletedScheduleWithCourt(string courtName)
     {
         var schedule = new ScheduleAggregate();
-        schedule.UpdateSchedule(DateOnly.FromDateTime(DateTime.Now).AddDays(1));
+        schedule.UpdateSchedule(DateOnly.FromDateTime(DateTime.Now).AddDays(1), FakeCurrentDate.RealNow());
         var courtId = CourtId.CreateCourtId(courtName);
         Assert.False(courtId.IsFailure);
         schedule.AddCourt(courtId.value, false, false);
