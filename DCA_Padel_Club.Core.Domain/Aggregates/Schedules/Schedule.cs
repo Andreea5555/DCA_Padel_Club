@@ -83,10 +83,16 @@ public class Schedule
         return Result<Schedule>.Success(this);
     }
     
-    //Not finished, implementation for UseCase ID3: F3 is needed since it's related to the database as well
+    //Not finished, implementation for UseCase ID3: F6 is needed since it's related to the database as well
     public Result<None> AddCourt(CourtId courtId, bool isVIPEnabled, bool isOccupied)
     {
         var errors = new List<OperationError>();
+
+        if (isDeleted)
+        {
+            errors.Add(OperationError.Create("Schedule.Deleted", "The schedule has been deleted and courts cannot be added."));
+        }
+
         if(Date< DateOnly.FromDateTime(DateTime.Now))
         {
             errors.Add(OperationError.Create("Schedule.InvalidDate","The date chosen has already passed"));
