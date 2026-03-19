@@ -108,6 +108,6 @@ public class Booking : Entity<BookingId>
     }
 
     internal bool IsBookedBy(ViaId id){
-        return bookerId.GetValue() == id.GetValue();
+        return bookerId == id;
     }
 }
