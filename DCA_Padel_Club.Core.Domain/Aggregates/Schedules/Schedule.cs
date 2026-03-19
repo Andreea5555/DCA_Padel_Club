@@ -258,6 +258,10 @@ public class Schedule
             errors.Add(OperationError.Create("Schedule.PlayerAlreadyHasBooking",
                 "The player already has a booking on this date."));
 
+        if (LeavesHoleOnCourt(courtId, slot))
+            errors.Add(OperationError.Create("Schedule.BookingLeavesHole",
+                "The booking would leave a gap shorter than 1 hour."));
+
         if (errors.Count > 0)
             return Result<Booking>.Failure(errors);
 
@@ -272,5 +276,26 @@ public class Schedule
         bookings.Add(booking);
         return Result<Booking>.Success(booking);
     }
-    
+
+    private bool LeavesHoleOnCourt(CourtId courtId, BookingSlot slot)
+    {
+        TimeOnly prevEnd = StartTime;
+        TimeOnly nextStart = EndTime;
+
+        foreach (var b in bookings.Where(b => b.IsOnCourt(courtId)))
+        {
+            var (start, end) = b.GetSlotBoundaries();
+            if (end <= slot.StartTime && end > prevEnd)
+                prevEnd = end;
+            if (start >= slot.EndTime && start < nextStart)
+                nextStart = start;
+        }
+
+        var gapBefore = slot.StartTime - prevEnd;
+        var gapAfter = nextStart - slot.EndTime;
+
+        return (gapBefore > TimeSpan.Zero && gapBefore < TimeSpan.FromHours(1)) ||
+               (gapAfter > TimeSpan.Zero && gapAfter < TimeSpan.FromHours(1));
+    }
+
 }
