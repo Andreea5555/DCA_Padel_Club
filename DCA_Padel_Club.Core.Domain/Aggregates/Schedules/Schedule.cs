@@ -1,13 +1,13 @@
 using DCA_Padel_Club.Core.Domain.Aggregates.Players;
 using DCA_Padel_Club.Core.Domain.Aggregates.Schedule;
+using DCA_Padel_Club.Core.Domain.Common.Bases;
 using DCA_Padel_Club.Core.Domain.Common.Contracts;
 using DCA_Padel_Club.Core.Tools.OperationResult;
 
 namespace DCA_Padel_Club.Core.Domain.Aggregates.Schedules;
 
-public class Schedule
+public class Schedule : AggregateRoot<ScheduleId>
 {
-    internal Guid ScheduleId { get; private set; }
     internal DateOnly Date { get; private set; }
     internal TimeOnly StartTime { get; private set; }
     internal TimeOnly EndTime { get; private set; }
@@ -17,9 +17,8 @@ public class Schedule
     internal bool isDeleted;
     internal IList<Booking> bookings;
 
-    public Schedule()
+    private Schedule(ScheduleId id) : base(id)
     {
-        ScheduleId = Guid.NewGuid();
         Date= DateOnly.FromDateTime(DateTime.Now);
         StartTime = TimeOnly.Parse("15:00:00");
         EndTime = TimeOnly.Parse("22:00:00");
@@ -28,6 +27,11 @@ public class Schedule
         AvailabilityPeriods = new List<TimePeriod>();
         isDeleted = false;
         bookings = new List<Booking>();
+    }
+
+    public static Schedule Create()
+    {
+        return new Schedule(new ScheduleId(Guid.NewGuid()));
     }
 
     //needed to check in the database and implement USe Case ID2, F1
