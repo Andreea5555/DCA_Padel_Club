@@ -6,10 +6,7 @@ using  DCA_Padel_Club.Core.Domain.Aggregates.Schedules;
 using DCA_Padel_Club.Core.Domain.Aggregates.Schedule;
 public class AddCourtTests
 {
-    private Schedule CreateSchedule()
-    {
-        return Schedule.Create();
-    }
+    private static Schedule CreateSchedule() => Schedule.Create();
 
     private Result<CourtId> CreateCourtId()
     {

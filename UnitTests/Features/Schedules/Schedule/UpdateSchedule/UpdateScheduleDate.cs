@@ -5,7 +5,7 @@ namespace UnitTests.Features.Schedules.UpdateSchedule;
 
 public class UpdateScheduleDate
 {
-    private static ScheduleAggregate CreateSchedule() => new ScheduleAggregate();
+    private static ScheduleAggregate CreateSchedule() => ScheduleAggregate.Create();
 
     [Fact]
     public void UpdateScheduleDate_Schedule_NotDraft()

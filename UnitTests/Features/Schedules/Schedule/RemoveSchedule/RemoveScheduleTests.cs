@@ -9,7 +9,7 @@ public class RemoveScheduleTests
     [Fact]
     public void RemoveSchedule_WhenDateIsInFuture_ReturnsSuccess_AndMarksDeleted()
     {
-        var schedule = new ScheduleAggregate();
+        var schedule = ScheduleAggregate.Create();
         schedule.UpdateSchedule(DateOnly.FromDateTime(DateTime.Now).AddDays(1), TestDefaults.Now);
 
         var result = schedule.RemoveSchedule(TestDefaults.Now);
@@ -21,7 +21,7 @@ public class RemoveScheduleTests
     [Fact]
     public void RemoveSchedule_WhenDateIsToday_ReturnsFailure_AndDoesNotMutateSchedule()
     {
-        var schedule = new ScheduleAggregate();
+        var schedule = ScheduleAggregate.Create();
         var courtsBefore = schedule.Courts.Count;
 
         var result = schedule.RemoveSchedule(TestDefaults.Now);
@@ -34,7 +34,7 @@ public class RemoveScheduleTests
     [Fact]
     public void RemoveSchedule_WhenDateIsInPast_ReturnsFailure_AndDoesNotMutateSchedule()
     {
-        var schedule = new ScheduleAggregate();
+        var schedule = ScheduleAggregate.Create();
         var dateField = typeof(ScheduleAggregate)
             .GetProperty("Date", System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Public);
         dateField!.SetValue(schedule, DateOnly.FromDateTime(DateTime.Now).AddDays(-1));
@@ -51,7 +51,7 @@ public class RemoveScheduleTests
     [Fact]
     public void RemoveSchedule_WhenAlreadyDeleted_ReturnsFailure_AndDoesNotMutateSchedule()
     {
-        var schedule = new ScheduleAggregate();
+        var schedule = ScheduleAggregate.Create();
         schedule.UpdateSchedule(DateOnly.FromDateTime(DateTime.Now).AddDays(1), TestDefaults.Now);
         schedule.RemoveSchedule(TestDefaults.Now);
         Assert.True(schedule.isDeleted);

@@ -1,11 +1,9 @@
 namespace UnitTests.Features.Schedules.UpdateSchedule;
 using DCA_Padel_Club.Core.Domain.Aggregates.Schedules;
+using UnitTests.Helpers;
 public class UpdateScheduleTime
 {
-    private Schedule CreateSchedule()
-    {
-        return new Schedule();
-    }
+    private static Schedule CreateSchedule() => Schedule.Create();
 
 
     [Fact]
