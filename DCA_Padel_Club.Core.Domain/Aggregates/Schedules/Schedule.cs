@@ -84,7 +84,7 @@ public class Schedule
     }
     
     //Not finished, implementation for UseCase ID3: F6 is needed since it's related to the database as well
-    public Result<None> AddCourt(CourtId courtId, bool isVIPEnabled, bool isOccupied)
+    public Result<None> AddCourt(CourtId courtId, bool isVIPEnabled, bool isOccupied, ICurrentDate currentDate)
     {
         var errors = new List<OperationError>();
 
@@ -93,7 +93,7 @@ public class Schedule
             errors.Add(OperationError.Create("Schedule.Deleted", "The schedule has been deleted and courts cannot be added."));
         }
 
-        if(Date< DateOnly.FromDateTime(DateTime.Now))
+        if(Date< currentDate.Now)
         {
             errors.Add(OperationError.Create("Schedule.InvalidDate","The date chosen has already passed"));
         }
@@ -156,7 +156,7 @@ public class Schedule
 
     }
 
-    public Result<None> ActivateSchedule(IActiveScheduleOnDate activeScheduleOnDate)
+    public Result<None> ActivateSchedule(IActiveScheduleOnDate activeScheduleOnDate, ICurrentDate currentDate, ICurrentTime currentTime)
     {
         var errors = new List<OperationError>();
 
@@ -170,7 +170,7 @@ public class Schedule
             errors.Add(OperationError.Create("Schedule.NoCourtsAvailable", "There are no courts in the schedule, please add at least one court before activation."));
         }
 
-        if (Date < DateOnly.FromDateTime(DateTime.Now)&&StartTime< TimeOnly.FromDateTime(DateTime.Now))
+        if (Date < currentDate.Now && StartTime < currentTime.Now)
         {
             errors.Add(OperationError.Create("Schedule.InvalidStartTime","The start time chosen for the schedule has already passed"));
         }
@@ -200,11 +200,11 @@ public class Schedule
     }
 
     //still needs work
-    public Result<None> RemoveSchedule()
+    public Result<None> RemoveSchedule(ICurrentDate currentDate)
     {
         var errors = new List<OperationError>();
 
-        if (Date == DateOnly.FromDateTime(DateTime.Now) || Date < DateOnly.FromDateTime(DateTime.Now))
+        if (Date <= currentDate.Now)
         {
             errors.Add(OperationError.Create("Schedule.InvalidRemoval", "The removal of the schedule is not possible because the date has either passed or is happening already."));
         }
@@ -230,12 +230,11 @@ public class Schedule
         return Result<None>.Success(None.Value);
     }
     
-    public Result<Booking> CreateBooking(ViaId bookerId, CourtId courtId, BookingSlot slot, ICurrentTime currentTime)
+    public Result<Booking> CreateBooking(ViaId bookerId, CourtId courtId, BookingSlot slot, ICurrentDate currentDate, ICurrentTime currentTime)
     {
         var errors = new List<OperationError>();
 
-        var today = DateOnly.FromDateTime(DateTime.Now);
-        if (slot.Date < today || (slot.Date == today && slot.StartTime < currentTime.Now))
+        if (slot.Date < currentDate.Now || (slot.Date == currentDate.Now && slot.StartTime < currentTime.Now))
             errors.Add(OperationError.Create("Schedule.BookingInPast",
                 "The booking slot starts before the current time."));
 
