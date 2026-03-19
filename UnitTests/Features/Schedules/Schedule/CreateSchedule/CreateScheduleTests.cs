@@ -57,6 +57,6 @@ public class CreateScheduleTests
     {
         var schedule = ScheduleAggregate.Create();
 
-        Assert.False(schedule.isDeleted);
+        Assert.False(schedule.IsDeleted);
     }
 }

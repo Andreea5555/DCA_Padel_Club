@@ -15,7 +15,7 @@ public class RemoveScheduleTests
         var result = schedule.RemoveSchedule(TestDefaults.Now);
 
         Assert.False(result.IsFailure);
-        Assert.True(schedule.isDeleted);
+        Assert.True(schedule.IsDeleted);
     }
 
     [Fact]
@@ -27,7 +27,7 @@ public class RemoveScheduleTests
         var result = schedule.RemoveSchedule(TestDefaults.Now);
 
         Assert.True(result.IsFailure);
-        Assert.False(schedule.isDeleted);
+        Assert.False(schedule.IsDeleted);
         Assert.Equal(courtsBefore, schedule.Courts.Count);
     }
 
@@ -44,7 +44,7 @@ public class RemoveScheduleTests
         var result = schedule.RemoveSchedule(TestDefaults.Now);
 
         Assert.True(result.IsFailure);
-        Assert.False(schedule.isDeleted);
+        Assert.False(schedule.IsDeleted);
         Assert.Equal(courtsBefore, schedule.Courts.Count);
     }
 
@@ -54,7 +54,7 @@ public class RemoveScheduleTests
         var schedule = ScheduleAggregate.Create();
         schedule.UpdateSchedule(DateOnly.FromDateTime(DateTime.Now).AddDays(1), TestDefaults.Now);
         schedule.RemoveSchedule(TestDefaults.Now);
-        Assert.True(schedule.isDeleted);
+        Assert.True(schedule.IsDeleted);
 
         var result = schedule.RemoveSchedule(TestDefaults.Now);
 

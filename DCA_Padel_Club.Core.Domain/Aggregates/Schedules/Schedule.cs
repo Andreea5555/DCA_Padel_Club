@@ -14,8 +14,8 @@ public class Schedule : AggregateRoot<ScheduleId>
     internal Boolean IsDraft;
     internal IList<PadelCourt> Courts { get; private set; }
     internal IList<TimePeriod> AvailabilityPeriods;
-    internal bool isDeleted;
-    internal IList<Booking> bookings;
+    internal bool IsDeleted;
+    internal IList<Booking> Bookings;
 
     private Schedule(ScheduleId id) : base(id)
     {
@@ -25,8 +25,8 @@ public class Schedule : AggregateRoot<ScheduleId>
         IsDraft = true;
         Courts = new List<PadelCourt>();
         AvailabilityPeriods = new List<TimePeriod>();
-        isDeleted = false;
-        bookings = new List<Booking>();
+        IsDeleted = false;
+        Bookings = new List<Booking>();
     }
 
     public static Schedule Create()
@@ -92,7 +92,7 @@ public class Schedule : AggregateRoot<ScheduleId>
     {
         var errors = new List<OperationError>();
 
-        if (isDeleted)
+        if (IsDeleted)
         {
             errors.Add(OperationError.Create("Schedule.Deleted", "The schedule has been deleted and courts cannot be added."));
         }
@@ -164,7 +164,7 @@ public class Schedule : AggregateRoot<ScheduleId>
     {
         var errors = new List<OperationError>();
 
-        if (isDeleted)
+        if (IsDeleted)
         {
             errors.Add(OperationError.Create("Schedule.Deleted", "The schedule has been deleted and cannot be activated."));
         }
@@ -213,7 +213,7 @@ public class Schedule : AggregateRoot<ScheduleId>
             errors.Add(OperationError.Create("Schedule.InvalidRemoval", "The removal of the schedule is not possible because the date has either passed or is happening already."));
         }
 
-        if (isDeleted) // need to check when we can if the schedule is not empty/ not created in the database
+        if (IsDeleted) // need to check when we can if the schedule is not empty/ not created in the database
         {
             errors.Add(OperationError.Create("Schedule.Null", "No daily schedule has been found or the schedule has already been deleted"));
         }
@@ -229,7 +229,7 @@ public class Schedule : AggregateRoot<ScheduleId>
             //players are notified
         }
 
-        isDeleted = true;
+        IsDeleted = true;
         Courts.Clear();
         return Result<None>.Success(None.Value);
     }
@@ -242,7 +242,7 @@ public class Schedule : AggregateRoot<ScheduleId>
             errors.Add(OperationError.Create("Schedule.BookingInPast",
                 "The booking slot starts before the current time."));
 
-        if (isDeleted)
+        if (IsDeleted)
             errors.Add(OperationError.Create("Schedule.Deleted", "The schedule has been deleted and cannot accept new bookings."));
 
         if (IsDraft)
@@ -253,11 +253,11 @@ public class Schedule : AggregateRoot<ScheduleId>
 
         errors.AddRange(slot.ValidateFitsWithin(Date, StartTime, EndTime));
 
-        if (bookings.Any(b => b.IsOnCourtAndOverlaps(courtId, slot)))
+        if (Bookings.Any(b => b.IsOnCourtAndOverlaps(courtId, slot)))
             errors.Add(OperationError.Create("Schedule.BookingOverlap",
                 "The requested time slot overlaps with an existing booking on this court."));
 
-        if (bookings.Any(b => b.IsBookedBy(bookerId)))
+        if (Bookings.Any(b => b.IsBookedBy(bookerId)))
             errors.Add(OperationError.Create("Schedule.PlayerAlreadyHasBooking",
                 "The player already has a booking on this date."));
 
@@ -276,7 +276,7 @@ public class Schedule : AggregateRoot<ScheduleId>
             BookingStatus.Pending,
             slot);
 
-        bookings.Add(booking);
+        Bookings.Add(booking);
         return Result<Booking>.Success(booking);
     }
 
@@ -285,7 +285,7 @@ public class Schedule : AggregateRoot<ScheduleId>
         TimeOnly prevEnd = StartTime;
         TimeOnly nextStart = EndTime;
 
-        foreach (var b in bookings.Where(b => b.IsOnCourt(courtId)))
+        foreach (var b in Bookings.Where(b => b.IsOnCourt(courtId)))
         {
             var (start, end) = b.GetSlotBoundaries();
             if (end <= slot.StartTime && end > prevEnd)
