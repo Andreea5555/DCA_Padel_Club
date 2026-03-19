@@ -5,12 +5,7 @@ using UnitTests.Helpers;
 public class ActivateScheduleTests
 {
 
-    private Schedule CreateSchedule()
-    {
-        Schedule schedule= new Schedule();
-
-        return schedule;
-    }
+    private static Schedule CreateSchedule() => Schedule.Create();
 
     private PadelCourt CreatePadelCourt()
     {

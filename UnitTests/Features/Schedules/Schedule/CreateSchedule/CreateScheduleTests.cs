@@ -7,15 +7,15 @@ public class CreateScheduleTests
     [Fact]
     public void CreateSchedule_HasNonEmptyId()
     {
-        var schedule = new ScheduleAggregate();
+        var schedule = ScheduleAggregate.Create();
 
-        Assert.NotEqual(Guid.Empty, schedule.ScheduleId);
+        Assert.NotEqual(Guid.Empty, schedule.Id.Id);
     }
 
     [Fact]
     public void CreateSchedule_IsDraft()
     {
-        var schedule = new ScheduleAggregate();
+        var schedule = ScheduleAggregate.Create();
 
         Assert.True(schedule.IsDraft);
     }
@@ -23,7 +23,7 @@ public class CreateScheduleTests
     [Fact]
     public void CreateSchedule_HasEmptyCourts()
     {
-        var schedule = new ScheduleAggregate();
+        var schedule = ScheduleAggregate.Create();
 
         Assert.Empty(schedule.Courts);
     }
@@ -31,7 +31,7 @@ public class CreateScheduleTests
     [Fact]
     public void CreateSchedule_DefaultStartTimeIs15()
     {
-        var schedule = new ScheduleAggregate();
+        var schedule = ScheduleAggregate.Create();
 
         Assert.Equal(TimeOnly.Parse("15:00"), schedule.StartTime);
     }
@@ -39,7 +39,7 @@ public class CreateScheduleTests
     [Fact]
     public void CreateSchedule_DefaultEndTimeIs22()
     {
-        var schedule = new ScheduleAggregate();
+        var schedule = ScheduleAggregate.Create();
 
         Assert.Equal(TimeOnly.Parse("22:00"), schedule.EndTime);
     }
@@ -47,7 +47,7 @@ public class CreateScheduleTests
     [Fact]
     public void CreateSchedule_DefaultDateIsToday()
     {
-        var schedule = new ScheduleAggregate();
+        var schedule = ScheduleAggregate.Create();
 
         Assert.Equal(DateOnly.FromDateTime(DateTime.Now), schedule.Date);
     }
@@ -55,7 +55,7 @@ public class CreateScheduleTests
     [Fact]
     public void CreateSchedule_IsNotDeleted()
     {
-        var schedule = new ScheduleAggregate();
+        var schedule = ScheduleAggregate.Create();
 
         Assert.False(schedule.isDeleted);
     }

@@ -57,7 +57,7 @@ public class CreateBookingScheduleTests
     [Fact]
     public void CreateBooking_WhenScheduleIsDraft_ReturnsFailure()
     {
-        var schedule = new ScheduleAggregate();
+        var schedule = ScheduleAggregate.Create();
         var courtId = CourtId.CreateCourtId("D1");
         Assert.False(courtId.IsFailure);
         schedule.AddCourt(courtId.value, false, false, TestDefaults.Now);
@@ -270,7 +270,7 @@ public class CreateBookingScheduleTests
 
     private static ScheduleAggregate CreateActiveScheduleWithCourt(string courtName)
     {
-        var schedule = new ScheduleAggregate();
+        var schedule = ScheduleAggregate.Create();
         var courtId = CourtId.CreateCourtId(courtName);
         Assert.False(courtId.IsFailure);
         schedule.AddCourt(courtId.value, false, false, TestDefaults.Now);
@@ -280,7 +280,7 @@ public class CreateBookingScheduleTests
 
     private static ScheduleAggregate CreateDeletedScheduleWithCourt(string courtName)
     {
-        var schedule = new ScheduleAggregate();
+        var schedule = ScheduleAggregate.Create();
         schedule.UpdateSchedule(DateOnly.FromDateTime(DateTime.Now).AddDays(1), TestDefaults.Now);
         var courtId = CourtId.CreateCourtId(courtName);
         Assert.False(courtId.IsFailure);
@@ -292,7 +292,7 @@ public class CreateBookingScheduleTests
 
     private static ScheduleAggregate CreateActiveScheduleWithCourts(params string[] courtNames)
     {
-        var schedule = new ScheduleAggregate();
+        var schedule = ScheduleAggregate.Create();
         foreach (var name in courtNames)
         {
             var courtId = CourtId.CreateCourtId(name);

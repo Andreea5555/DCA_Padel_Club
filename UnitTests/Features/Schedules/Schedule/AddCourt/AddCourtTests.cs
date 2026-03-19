@@ -6,10 +6,7 @@ using  DCA_Padel_Club.Core.Domain.Aggregates.Schedules;
 using DCA_Padel_Club.Core.Domain.Aggregates.Schedule;
 public class AddCourtTests
 {
-    private Schedule CreateSchedule()
-    {
-        return new Schedule();
-    }
+    private static Schedule CreateSchedule() => Schedule.Create();
 
     private Result<CourtId> CreateCourtId()
     {
@@ -55,7 +52,7 @@ public class AddCourtTests
     [Fact]
     public void AddCourt_WhenScheduleIsInPast_ReturnsFailure()
     {
-        var schedule = new Schedule();
+        var schedule = Schedule.Create();
         schedule.UpdateSchedule(DateOnly.FromDateTime(DateTime.Now).AddDays(-1), TestDefaults.Now);
 
         var result = schedule.AddCourt(CreateCourtId().value, false, false, TestDefaults.Now);
