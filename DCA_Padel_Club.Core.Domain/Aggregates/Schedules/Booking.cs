@@ -95,14 +95,19 @@ public class Booking : Entity<BookingId>
         return Result<None>.Success(None.Value);
     }
 
-    internal bool IsOnCourtAndOverlaps(CourtId court, BookingSlot slot)
-    {
-        if (courtNumber.GetValue() != court.GetValue())
-            return false;
-        return bookingTimeSlot.Overlaps(slot);
+    internal bool IsOnCourt(CourtId court){
+        return courtNumber.GetValue() == court.GetValue();
+    }
+
+    internal bool IsOnCourtAndOverlaps(CourtId court, BookingSlot slot){
+        return IsOnCourt(court) && bookingTimeSlot.Overlaps(slot);
+    }
+
+    internal (TimeOnly Start, TimeOnly End) GetSlotBoundaries(){
+        return (bookingTimeSlot.StartTime, bookingTimeSlot.EndTime);
     }
 
     internal bool IsBookedBy(ViaId id){
-        return bookerId == id;
+        return bookerId.GetValue() == id.GetValue();
     }
 }
