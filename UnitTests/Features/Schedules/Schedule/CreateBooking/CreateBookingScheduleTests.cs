@@ -190,6 +190,90 @@ public class CreateBookingScheduleTests
         Assert.Contains(result.errorMessages, e => e.ErrorCode == "Schedule.PlayerAlreadyHasBooking");
     }
 
+    [Fact]
+    public void CreateBooking_WhenGapAfterExistingBookingIsTooShort_ReturnsFailure()
+    {
+        var schedule = CreateActiveScheduleWithCourt("D1");
+        var midnight = new FakeCurrentTime(new TimeOnly(0, 0));
+        schedule.CreateBooking(new ViaId(1), CourtId.CreateCourtId("D1").value,
+            CreateValidSlot(schedule, 15, 0, 17, 0), midnight);
+
+        var result = schedule.CreateBooking(new ViaId(2), CourtId.CreateCourtId("D1").value,
+            CreateValidSlot(schedule, 17, 30, 19, 0), midnight);
+
+        Assert.True(result.IsFailure);
+        Assert.Contains(result.errorMessages, e => e.ErrorCode == "Schedule.BookingLeavesHole");
+    }
+
+    [Fact]
+    public void CreateBooking_WhenGapBeforeExistingBookingIsTooShort_ReturnsFailure()
+    {
+        var schedule = CreateActiveScheduleWithCourt("D1");
+        var midnight = new FakeCurrentTime(new TimeOnly(0, 0));
+        schedule.CreateBooking(new ViaId(1), CourtId.CreateCourtId("D1").value,
+            CreateValidSlot(schedule, 18, 0, 20, 0), midnight);
+
+        var result = schedule.CreateBooking(new ViaId(2), CourtId.CreateCourtId("D1").value,
+            CreateValidSlot(schedule, 15, 0, 17, 30), midnight);
+
+        Assert.True(result.IsFailure);
+        Assert.Contains(result.errorMessages, e => e.ErrorCode == "Schedule.BookingLeavesHole");
+    }
+
+    [Fact]
+    public void CreateBooking_WhenGapAtScheduleStartIsTooShort_ReturnsFailure()
+    {
+        var schedule = CreateActiveScheduleWithCourt("D1");
+        var midnight = new FakeCurrentTime(new TimeOnly(0, 0));
+
+        var result = schedule.CreateBooking(new ViaId(1), CourtId.CreateCourtId("D1").value,
+            CreateValidSlot(schedule, 15, 30, 17, 0), midnight);
+
+        Assert.True(result.IsFailure);
+        Assert.Contains(result.errorMessages, e => e.ErrorCode == "Schedule.BookingLeavesHole");
+    }
+
+    [Fact]
+    public void CreateBooking_WhenGapAtScheduleEndIsTooShort_ReturnsFailure()
+    {
+        var schedule = CreateActiveScheduleWithCourt("D1");
+        var midnight = new FakeCurrentTime(new TimeOnly(0, 0));
+
+        var result = schedule.CreateBooking(new ViaId(1), CourtId.CreateCourtId("D1").value,
+            CreateValidSlot(schedule, 19, 0, 21, 30), midnight);
+
+        Assert.True(result.IsFailure);
+        Assert.Contains(result.errorMessages, e => e.ErrorCode == "Schedule.BookingLeavesHole");
+    }
+
+    [Fact]
+    public void CreateBooking_WhenBookingsAreAdjacentWithNoGap_ReturnsSuccess()
+    {
+        var schedule = CreateActiveScheduleWithCourt("D1");
+        var midnight = new FakeCurrentTime(new TimeOnly(0, 0));
+        schedule.CreateBooking(new ViaId(1), CourtId.CreateCourtId("D1").value,
+            CreateValidSlot(schedule, 15, 0, 17, 0), midnight);
+
+        var result = schedule.CreateBooking(new ViaId(2), CourtId.CreateCourtId("D1").value,
+            CreateValidSlot(schedule, 17, 0, 19, 0), midnight);
+
+        Assert.False(result.IsFailure);
+    }
+
+    [Fact]
+    public void CreateBooking_WhenGapIsExactlyOneHour_ReturnsSuccess()
+    {
+        var schedule = CreateActiveScheduleWithCourt("D1");
+        var midnight = new FakeCurrentTime(new TimeOnly(0, 0));
+        schedule.CreateBooking(new ViaId(1), CourtId.CreateCourtId("D1").value,
+            CreateValidSlot(schedule, 15, 0, 17, 0), midnight);
+
+        var result = schedule.CreateBooking(new ViaId(2), CourtId.CreateCourtId("D1").value,
+            CreateValidSlot(schedule, 18, 0, 20, 0), midnight);
+
+        Assert.False(result.IsFailure);
+    }
+
     private static ScheduleAggregate CreateActiveScheduleWithCourt(string courtName)
     {
         var schedule = new ScheduleAggregate();
