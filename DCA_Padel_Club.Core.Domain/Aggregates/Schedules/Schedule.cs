@@ -156,10 +156,15 @@ public class Schedule
 
     }
 
-    // TODO create a domain contract to return a daily schedule by date
-    public Result<None> ActivateSchedule( /*IScheduleByDate ...*/)
+    public Result<None> ActivateSchedule(IActiveScheduleOnDate activeScheduleOnDate)
     {
-        var errors = new List<OperationError>();   
+        var errors = new List<OperationError>();
+
+        if (isDeleted)
+        {
+            errors.Add(OperationError.Create("Schedule.Deleted", "The schedule has been deleted and cannot be activated."));
+        }
+
         if (Courts.Count == 0)
         {
             errors.Add(OperationError.Create("Schedule.NoCourtsAvailable", "There are no courts in the schedule, please add at least one court before activation."));
@@ -170,7 +175,10 @@ public class Schedule
             errors.Add(OperationError.Create("Schedule.InvalidStartTime","The start time chosen for the schedule has already passed"));
         }
 
-        //TODO failure scenario needed to see if the schedule exists -> related to the domain contract but also cannot finish until database is introduced in session 9
+        if (activeScheduleOnDate.ExistsActiveScheduleOn(Date))
+        {
+            errors.Add(OperationError.Create("Schedule.DateConflict", "Another active schedule already exists for this date."));
+        }
 
         if (IsDraft == false)
         {
