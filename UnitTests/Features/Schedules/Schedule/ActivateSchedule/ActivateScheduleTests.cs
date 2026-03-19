@@ -7,7 +7,7 @@ public class ActivateScheduleTests
 
     private Schedule CreateSchedule()
     {
-        Schedule schedule= new Schedule();
+        Schedule schedule= Schedule.Create();
 
         return schedule;
     }

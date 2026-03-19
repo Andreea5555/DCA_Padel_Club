@@ -8,7 +8,7 @@ public class AddCourtTests
 {
     private Schedule CreateSchedule()
     {
-        return new Schedule();
+        return Schedule.Create();
     }
 
     private Result<CourtId> CreateCourtId()
@@ -55,7 +55,7 @@ public class AddCourtTests
     [Fact]
     public void AddCourt_WhenScheduleIsInPast_ReturnsFailure()
     {
-        var schedule = new Schedule();
+        var schedule = Schedule.Create();
         schedule.UpdateSchedule(DateOnly.FromDateTime(DateTime.Now).AddDays(-1), TestDefaults.Now);
 
         var result = schedule.AddCourt(CreateCourtId().value, false, false, TestDefaults.Now);
