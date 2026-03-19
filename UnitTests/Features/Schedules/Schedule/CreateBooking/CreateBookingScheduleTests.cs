@@ -4,7 +4,7 @@ using DCA_Padel_Club.Core.Domain.Aggregates.Schedules;
 using UnitTests.Helpers;
 using BookingAggregate = DCA_Padel_Club.Core.Domain.Aggregates.Schedules.Booking;
 using ScheduleAggregate = DCA_Padel_Club.Core.Domain.Aggregates.Schedules.Schedule;
-    
+
 namespace UnitTests.Features.Schedules.Schedule.CreateBooking;
 
 public class CreateBookingScheduleTests
@@ -16,7 +16,7 @@ public class CreateBookingScheduleTests
         var bookerId = new ViaId(1);
         var slot = CreateValidSlot(schedule, 15, 0, 17, 0);
 
-        var result = schedule.CreateBooking(bookerId, CourtId.CreateCourtId("D1").value, slot, new FakeCurrentTime(new TimeOnly(0, 0)));
+        var result = schedule.CreateBooking(bookerId, CourtId.CreateCourtId("D1").value, slot, TestDefaults.Now, TestDefaults.Midnight);
 
         Assert.False(result.IsFailure);
         Assert.NotNull(result.value);
@@ -33,7 +33,7 @@ public class CreateBookingScheduleTests
         var courtId = CourtId.CreateCourtId("D1").value;
         var slot = CreateValidSlot(schedule, 15, 0, 17, 0);
 
-        var result = schedule.CreateBooking(bookerId, courtId, slot, new FakeCurrentTime(new TimeOnly(0, 0)));
+        var result = schedule.CreateBooking(bookerId, courtId, slot, TestDefaults.Now, TestDefaults.Midnight);
 
         Assert.False(result.IsFailure);
         var booking = result.value;
@@ -48,7 +48,7 @@ public class CreateBookingScheduleTests
         var bookerId = new ViaId(1);
         var slot = CreateValidSlot(schedule, 15, 0, 17, 0);
 
-        var result = schedule.CreateBooking(bookerId, CourtId.CreateCourtId("D1").value, slot, new FakeCurrentTime(new TimeOnly(0, 0)));
+        var result = schedule.CreateBooking(bookerId, CourtId.CreateCourtId("D1").value, slot, TestDefaults.Now, TestDefaults.Midnight);
 
         Assert.True(result.IsFailure);
         Assert.Contains(result.errorMessages, e => e.ErrorCode == "Schedule.Deleted");
@@ -60,12 +60,12 @@ public class CreateBookingScheduleTests
         var schedule = new ScheduleAggregate();
         var courtId = CourtId.CreateCourtId("D1");
         Assert.False(courtId.IsFailure);
-        schedule.AddCourt(courtId.value, false, false);
+        schedule.AddCourt(courtId.value, false, false, TestDefaults.Now);
 
         var bookerId = new ViaId(1);
         var slot = CreateValidSlot(schedule, 15, 0, 17, 0);
 
-        var result = schedule.CreateBooking(bookerId, courtId.value, slot, new FakeCurrentTime(new TimeOnly(0, 0)));
+        var result = schedule.CreateBooking(bookerId, courtId.value, slot, TestDefaults.Now, TestDefaults.Midnight);
 
         Assert.True(result.IsFailure);
         Assert.Contains(result.errorMessages, e => e.ErrorCode == "Schedule.IsDraft");
@@ -78,8 +78,8 @@ public class CreateBookingScheduleTests
         var slotA = CreateValidSlot(schedule, 15, 0, 17, 0);
         var slotB = CreateValidSlot(schedule, 15, 0, 17, 0);
 
-        schedule.CreateBooking(new ViaId(1), CourtId.CreateCourtId("D1").value, slotA, new FakeCurrentTime(new TimeOnly(0, 0)));
-        schedule.CreateBooking(new ViaId(2), CourtId.CreateCourtId("D2").value, slotB, new FakeCurrentTime(new TimeOnly(0, 0)));
+        schedule.CreateBooking(new ViaId(1), CourtId.CreateCourtId("D1").value, slotA, TestDefaults.Now, TestDefaults.Midnight);
+        schedule.CreateBooking(new ViaId(2), CourtId.CreateCourtId("D2").value, slotB, TestDefaults.Now, TestDefaults.Midnight);
 
         Assert.Equal(2, GetBookings(schedule).Count);
     }
@@ -91,7 +91,7 @@ public class CreateBookingScheduleTests
         var absentCourt = CourtId.CreateCourtId("D2").value;
         var slot = CreateValidSlot(schedule, 15, 0, 17, 0);
 
-        var result = schedule.CreateBooking(new ViaId(1), absentCourt, slot, new FakeCurrentTime(new TimeOnly(0, 0)));
+        var result = schedule.CreateBooking(new ViaId(1), absentCourt, slot, TestDefaults.Now, TestDefaults.Midnight);
 
         Assert.True(result.IsFailure);
         Assert.Contains(result.errorMessages, e => e.ErrorCode == "Schedule.CourtNotFound");
@@ -100,10 +100,10 @@ public class CreateBookingScheduleTests
     [Fact]
     public void CreateBooking_WhenSlotStartsBeforeScheduleStart_ReturnsFailure()
     {
-        var schedule = CreateActiveScheduleWithCourt("D1"); 
-        var slot = CreateSlotUtc(schedule, 14, 0, 16, 0);  
+        var schedule = CreateActiveScheduleWithCourt("D1");
+        var slot = CreateSlotUtc(schedule, 14, 0, 16, 0);
 
-        var result = schedule.CreateBooking(new ViaId(1), CourtId.CreateCourtId("D1").value, slot, new FakeCurrentTime(new TimeOnly(0, 0)));
+        var result = schedule.CreateBooking(new ViaId(1), CourtId.CreateCourtId("D1").value, slot, TestDefaults.Now, TestDefaults.Midnight);
 
         Assert.True(result.IsFailure);
         Assert.Contains(result.errorMessages, e => e.ErrorCode == "Schedule.SlotOutOfBounds");
@@ -115,7 +115,7 @@ public class CreateBookingScheduleTests
         var schedule = CreateActiveScheduleWithCourt("D1");
         var slot = CreateSlotUtc(schedule, 21, 0, 23, 0);
 
-        var result = schedule.CreateBooking(new ViaId(1), CourtId.CreateCourtId("D1").value, slot, new FakeCurrentTime(new TimeOnly(0, 0)));
+        var result = schedule.CreateBooking(new ViaId(1), CourtId.CreateCourtId("D1").value, slot, TestDefaults.Now, TestDefaults.Midnight);
 
         Assert.True(result.IsFailure);
         Assert.Contains(result.errorMessages, e => e.ErrorCode == "Schedule.SlotOutOfBounds");
@@ -128,7 +128,7 @@ public class CreateBookingScheduleTests
         var wrongDate = schedule.Date.AddDays(1);
         var slot = CreateSlotUtcOnDate(wrongDate, 15, 0, 17, 0);
 
-        var result = schedule.CreateBooking(new ViaId(1), CourtId.CreateCourtId("D1").value, slot, new FakeCurrentTime(new TimeOnly(0, 0)));
+        var result = schedule.CreateBooking(new ViaId(1), CourtId.CreateCourtId("D1").value, slot, TestDefaults.Now, TestDefaults.Midnight);
 
         Assert.True(result.IsFailure);
         Assert.Contains(result.errorMessages, e => e.ErrorCode == "Schedule.SlotOutOfBounds");
@@ -140,10 +140,10 @@ public class CreateBookingScheduleTests
         var schedule = CreateActiveScheduleWithCourt("D1");
         var courtId = CourtId.CreateCourtId("D1").value;
         var slotA = CreateValidSlot(schedule, 15, 0, 17, 0);
-        var slotB = CreateValidSlot(schedule, 16, 0, 18, 0); 
+        var slotB = CreateValidSlot(schedule, 16, 0, 18, 0);
 
-        schedule.CreateBooking(new ViaId(1), courtId, slotA, new FakeCurrentTime(new TimeOnly(0, 0)));
-        var result = schedule.CreateBooking(new ViaId(2), courtId, slotB, new FakeCurrentTime(new TimeOnly(0, 0)));
+        schedule.CreateBooking(new ViaId(1), courtId, slotA, TestDefaults.Now, TestDefaults.Midnight);
+        var result = schedule.CreateBooking(new ViaId(2), courtId, slotB, TestDefaults.Now, TestDefaults.Midnight);
 
         Assert.True(result.IsFailure);
         Assert.Contains(result.errorMessages, e => e.ErrorCode == "Schedule.BookingOverlap");
@@ -156,8 +156,8 @@ public class CreateBookingScheduleTests
         var slotA = CreateValidSlot(schedule, 15, 0, 17, 0);
         var slotB = CreateValidSlot(schedule, 15, 0, 17, 0);
 
-        schedule.CreateBooking(new ViaId(1), CourtId.CreateCourtId("D1").value, slotA, new FakeCurrentTime(new TimeOnly(0, 0)));
-        var result = schedule.CreateBooking(new ViaId(2), CourtId.CreateCourtId("D2").value, slotB, new FakeCurrentTime(new TimeOnly(0, 0)));
+        schedule.CreateBooking(new ViaId(1), CourtId.CreateCourtId("D1").value, slotA, TestDefaults.Now, TestDefaults.Midnight);
+        var result = schedule.CreateBooking(new ViaId(2), CourtId.CreateCourtId("D2").value, slotB, TestDefaults.Now, TestDefaults.Midnight);
 
         Assert.False(result.IsFailure);
     }
@@ -169,7 +169,7 @@ public class CreateBookingScheduleTests
         var fakeTime = new FakeCurrentTime(new TimeOnly(18, 0));
         var slot = CreateValidSlot(schedule, 15, 0, 17, 0);
 
-        var result = schedule.CreateBooking(new ViaId(1), CourtId.CreateCourtId("D1").value, slot, fakeTime);
+        var result = schedule.CreateBooking(new ViaId(1), CourtId.CreateCourtId("D1").value, slot, TestDefaults.Now, fakeTime);
 
         Assert.True(result.IsFailure);
         Assert.Contains(result.errorMessages, e => e.ErrorCode == "Schedule.BookingInPast");
@@ -183,8 +183,8 @@ public class CreateBookingScheduleTests
         var slotA = CreateValidSlot(schedule, 15, 0, 17, 0);
         var slotB = CreateValidSlot(schedule, 17, 0, 19, 0);
 
-        schedule.CreateBooking(bookerId, CourtId.CreateCourtId("D1").value, slotA, new FakeCurrentTime(new TimeOnly(0, 0)));
-        var result = schedule.CreateBooking(bookerId, CourtId.CreateCourtId("D2").value, slotB, new FakeCurrentTime(new TimeOnly(0, 0)));
+        schedule.CreateBooking(bookerId, CourtId.CreateCourtId("D1").value, slotA, TestDefaults.Now, TestDefaults.Midnight);
+        var result = schedule.CreateBooking(bookerId, CourtId.CreateCourtId("D2").value, slotB, TestDefaults.Now, TestDefaults.Midnight);
 
         Assert.True(result.IsFailure);
         Assert.Contains(result.errorMessages, e => e.ErrorCode == "Schedule.PlayerAlreadyHasBooking");
@@ -194,12 +194,11 @@ public class CreateBookingScheduleTests
     public void CreateBooking_WhenGapAfterExistingBookingIsTooShort_ReturnsFailure()
     {
         var schedule = CreateActiveScheduleWithCourt("D1");
-        var midnight = new FakeCurrentTime(new TimeOnly(0, 0));
         schedule.CreateBooking(new ViaId(1), CourtId.CreateCourtId("D1").value,
-            CreateValidSlot(schedule, 15, 0, 17, 0), midnight);
+            CreateValidSlot(schedule, 15, 0, 17, 0), TestDefaults.Now, TestDefaults.Midnight);
 
         var result = schedule.CreateBooking(new ViaId(2), CourtId.CreateCourtId("D1").value,
-            CreateValidSlot(schedule, 17, 30, 19, 0), midnight);
+            CreateValidSlot(schedule, 17, 30, 19, 0), TestDefaults.Now, TestDefaults.Midnight);
 
         Assert.True(result.IsFailure);
         Assert.Contains(result.errorMessages, e => e.ErrorCode == "Schedule.BookingLeavesHole");
@@ -209,12 +208,11 @@ public class CreateBookingScheduleTests
     public void CreateBooking_WhenGapBeforeExistingBookingIsTooShort_ReturnsFailure()
     {
         var schedule = CreateActiveScheduleWithCourt("D1");
-        var midnight = new FakeCurrentTime(new TimeOnly(0, 0));
         schedule.CreateBooking(new ViaId(1), CourtId.CreateCourtId("D1").value,
-            CreateValidSlot(schedule, 18, 0, 20, 0), midnight);
+            CreateValidSlot(schedule, 18, 0, 20, 0), TestDefaults.Now, TestDefaults.Midnight);
 
         var result = schedule.CreateBooking(new ViaId(2), CourtId.CreateCourtId("D1").value,
-            CreateValidSlot(schedule, 15, 0, 17, 30), midnight);
+            CreateValidSlot(schedule, 15, 0, 17, 30), TestDefaults.Now, TestDefaults.Midnight);
 
         Assert.True(result.IsFailure);
         Assert.Contains(result.errorMessages, e => e.ErrorCode == "Schedule.BookingLeavesHole");
@@ -224,10 +222,9 @@ public class CreateBookingScheduleTests
     public void CreateBooking_WhenGapAtScheduleStartIsTooShort_ReturnsFailure()
     {
         var schedule = CreateActiveScheduleWithCourt("D1");
-        var midnight = new FakeCurrentTime(new TimeOnly(0, 0));
 
         var result = schedule.CreateBooking(new ViaId(1), CourtId.CreateCourtId("D1").value,
-            CreateValidSlot(schedule, 15, 30, 17, 0), midnight);
+            CreateValidSlot(schedule, 15, 30, 17, 0), TestDefaults.Now, TestDefaults.Midnight);
 
         Assert.True(result.IsFailure);
         Assert.Contains(result.errorMessages, e => e.ErrorCode == "Schedule.BookingLeavesHole");
@@ -237,10 +234,9 @@ public class CreateBookingScheduleTests
     public void CreateBooking_WhenGapAtScheduleEndIsTooShort_ReturnsFailure()
     {
         var schedule = CreateActiveScheduleWithCourt("D1");
-        var midnight = new FakeCurrentTime(new TimeOnly(0, 0));
 
         var result = schedule.CreateBooking(new ViaId(1), CourtId.CreateCourtId("D1").value,
-            CreateValidSlot(schedule, 19, 0, 21, 30), midnight);
+            CreateValidSlot(schedule, 19, 0, 21, 30), TestDefaults.Now, TestDefaults.Midnight);
 
         Assert.True(result.IsFailure);
         Assert.Contains(result.errorMessages, e => e.ErrorCode == "Schedule.BookingLeavesHole");
@@ -250,12 +246,11 @@ public class CreateBookingScheduleTests
     public void CreateBooking_WhenBookingsAreAdjacentWithNoGap_ReturnsSuccess()
     {
         var schedule = CreateActiveScheduleWithCourt("D1");
-        var midnight = new FakeCurrentTime(new TimeOnly(0, 0));
         schedule.CreateBooking(new ViaId(1), CourtId.CreateCourtId("D1").value,
-            CreateValidSlot(schedule, 15, 0, 17, 0), midnight);
+            CreateValidSlot(schedule, 15, 0, 17, 0), TestDefaults.Now, TestDefaults.Midnight);
 
         var result = schedule.CreateBooking(new ViaId(2), CourtId.CreateCourtId("D1").value,
-            CreateValidSlot(schedule, 17, 0, 19, 0), midnight);
+            CreateValidSlot(schedule, 17, 0, 19, 0), TestDefaults.Now, TestDefaults.Midnight);
 
         Assert.False(result.IsFailure);
     }
@@ -264,12 +259,11 @@ public class CreateBookingScheduleTests
     public void CreateBooking_WhenGapIsExactlyOneHour_ReturnsSuccess()
     {
         var schedule = CreateActiveScheduleWithCourt("D1");
-        var midnight = new FakeCurrentTime(new TimeOnly(0, 0));
         schedule.CreateBooking(new ViaId(1), CourtId.CreateCourtId("D1").value,
-            CreateValidSlot(schedule, 15, 0, 17, 0), midnight);
+            CreateValidSlot(schedule, 15, 0, 17, 0), TestDefaults.Now, TestDefaults.Midnight);
 
         var result = schedule.CreateBooking(new ViaId(2), CourtId.CreateCourtId("D1").value,
-            CreateValidSlot(schedule, 18, 0, 20, 0), midnight);
+            CreateValidSlot(schedule, 18, 0, 20, 0), TestDefaults.Now, TestDefaults.Midnight);
 
         Assert.False(result.IsFailure);
     }
@@ -279,19 +273,19 @@ public class CreateBookingScheduleTests
         var schedule = new ScheduleAggregate();
         var courtId = CourtId.CreateCourtId(courtName);
         Assert.False(courtId.IsFailure);
-        schedule.AddCourt(courtId.value, false, false);
-        schedule.ActivateSchedule(new FakeActiveScheduleOnDate(false));
+        schedule.AddCourt(courtId.value, false, false, TestDefaults.Now);
+        schedule.ActivateSchedule(TestDefaults.NoConflict, TestDefaults.Now, TestDefaults.Midnight);
         return schedule;
     }
 
     private static ScheduleAggregate CreateDeletedScheduleWithCourt(string courtName)
     {
         var schedule = new ScheduleAggregate();
-        schedule.UpdateSchedule(DateOnly.FromDateTime(DateTime.Now).AddDays(1), FakeCurrentDate.RealNow());
+        schedule.UpdateSchedule(DateOnly.FromDateTime(DateTime.Now).AddDays(1), TestDefaults.Now);
         var courtId = CourtId.CreateCourtId(courtName);
         Assert.False(courtId.IsFailure);
-        schedule.AddCourt(courtId.value, false, false);
-        var removeResult = schedule.RemoveSchedule();
+        schedule.AddCourt(courtId.value, false, false, TestDefaults.Now);
+        var removeResult = schedule.RemoveSchedule(TestDefaults.Now);
         Assert.False(removeResult.IsFailure);
         return schedule;
     }
@@ -303,12 +297,12 @@ public class CreateBookingScheduleTests
         {
             var courtId = CourtId.CreateCourtId(name);
             Assert.False(courtId.IsFailure);
-            schedule.AddCourt(courtId.value, false, false);
+            schedule.AddCourt(courtId.value, false, false, TestDefaults.Now);
         }
-        schedule.ActivateSchedule(new FakeActiveScheduleOnDate(false));
+        schedule.ActivateSchedule(TestDefaults.NoConflict, TestDefaults.Now, TestDefaults.Midnight);
         return schedule;
     }
-    
+
     private static BookingSlot CreateValidSlot(
         ScheduleAggregate schedule,
         int startHour, int startMinute,

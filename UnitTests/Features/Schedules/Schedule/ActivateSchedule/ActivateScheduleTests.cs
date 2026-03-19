@@ -4,7 +4,6 @@ using DCA_Padel_Club.Core.Domain.Aggregates.Schedule;
 using UnitTests.Helpers;
 public class ActivateScheduleTests
 {
-    private static readonly FakeActiveScheduleOnDate NoConflict = new FakeActiveScheduleOnDate(false);
 
     private Schedule CreateSchedule()
     {
@@ -26,7 +25,7 @@ public class ActivateScheduleTests
         var schedule = CreateSchedule();
         schedule.Courts.Clear();
 
-        var result= schedule.ActivateSchedule(NoConflict);
+        var result= schedule.ActivateSchedule(TestDefaults.NoConflict, TestDefaults.Now, TestDefaults.Midnight);
 
         Assert.True(result.IsFailure);
         Assert.Contains(result.errorMessages,
@@ -38,11 +37,11 @@ public class ActivateScheduleTests
     {
         var schedule = CreateSchedule();
         schedule.UpdateSchedule(
-            DateOnly.FromDateTime(DateTime.Now.AddDays(-1)), FakeCurrentDate.RealNow());
-        schedule.UpdateSchedule(TimeOnly.FromDateTime(DateTime.Now),
-            TimeOnly.FromDateTime(DateTime.Now));
+            DateOnly.FromDateTime(DateTime.Now.AddDays(-1)), TestDefaults.Now);
+        schedule.UpdateSchedule(new TimeOnly(10, 0), new TimeOnly(12, 0));
 
-        var result = schedule.ActivateSchedule(NoConflict);
+        var pastTime = new FakeCurrentTime(new TimeOnly(14, 0));
+        var result = schedule.ActivateSchedule(TestDefaults.NoConflict, TestDefaults.Now, pastTime);
 
         Assert.True(result.IsFailure);
         Assert.Contains(result.errorMessages, e => e.ErrorCode == "Schedule.InvalidStartTime");
@@ -55,7 +54,7 @@ public class ActivateScheduleTests
         schedule.Courts.Add(CreatePadelCourt());
         schedule.IsDraft = false;
 
-        var result = schedule.ActivateSchedule(NoConflict);
+        var result = schedule.ActivateSchedule(TestDefaults.NoConflict, TestDefaults.Now, TestDefaults.Midnight);
 
         Assert.True(result.IsFailure);
         Assert.Contains(result.errorMessages, e => e.ErrorCode == "Schedule.IsActive");
@@ -67,11 +66,11 @@ public class ActivateScheduleTests
         var schedule = CreateSchedule();
         schedule.Courts.Add(CreatePadelCourt());
 
-        schedule.UpdateSchedule(DateOnly.FromDateTime(DateTime.Now.AddDays(1)), FakeCurrentDate.RealNow());
+        schedule.UpdateSchedule(DateOnly.FromDateTime(DateTime.Now.AddDays(1)), TestDefaults.Now);
         schedule.UpdateSchedule(TimeOnly.FromDateTime(DateTime.Now.AddHours(1)),
             TimeOnly.FromDateTime(DateTime.Now.AddHours(4)));
 
-        var result = schedule.ActivateSchedule(NoConflict);
+        var result = schedule.ActivateSchedule(TestDefaults.NoConflict, TestDefaults.Now, TestDefaults.Midnight);
 
         Assert.False(result.IsFailure);
         Assert.False(schedule.IsDraft);
@@ -81,10 +80,10 @@ public class ActivateScheduleTests
     public void ActivateSchedule_WhenScheduleIsDeleted_ReturnsFailure()
     {
         var schedule = CreateSchedule();
-        schedule.UpdateSchedule(DateOnly.FromDateTime(DateTime.Now.AddDays(1)), FakeCurrentDate.RealNow());
-        schedule.RemoveSchedule();
+        schedule.UpdateSchedule(DateOnly.FromDateTime(DateTime.Now.AddDays(1)), TestDefaults.Now);
+        schedule.RemoveSchedule(TestDefaults.Now);
 
-        var result = schedule.ActivateSchedule(NoConflict);
+        var result = schedule.ActivateSchedule(TestDefaults.NoConflict, TestDefaults.Now, TestDefaults.Midnight);
 
         Assert.True(result.IsFailure);
         Assert.Contains(result.errorMessages, e => e.ErrorCode == "Schedule.Deleted");
@@ -95,9 +94,9 @@ public class ActivateScheduleTests
     {
         var schedule = CreateSchedule();
         schedule.Courts.Add(CreatePadelCourt());
-        schedule.UpdateSchedule(DateOnly.FromDateTime(DateTime.Now.AddDays(1)), FakeCurrentDate.RealNow());
+        schedule.UpdateSchedule(DateOnly.FromDateTime(DateTime.Now.AddDays(1)), TestDefaults.Now);
 
-        var result = schedule.ActivateSchedule(new FakeActiveScheduleOnDate(true));
+        var result = schedule.ActivateSchedule(new FakeActiveScheduleOnDate(true), TestDefaults.Now, TestDefaults.Midnight);
 
         Assert.True(result.IsFailure);
         Assert.Contains(result.errorMessages, e => e.ErrorCode == "Schedule.DateConflict");
