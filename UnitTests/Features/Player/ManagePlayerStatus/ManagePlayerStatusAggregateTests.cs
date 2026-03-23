@@ -9,11 +9,16 @@ public class ManagePlayerStatusAggregateTests
     private DCA_Padel_Club.Core.Domain.Aggregates.Players.Player CreateTestPlayer()
     {
         var id = new ViaId(2);
-        var email = Email.Create("status@via.dk"); 
-        var passwordResult = Password.Create("ValidPassword123!");
-        var password = passwordResult.value; 
+        const string email = "293086@via.dk";  
+        const string password = "ValidPassword123!";
+        const string profilePictureUri = "https://example.com/profile.jpg";
         
-        return DCA_Padel_Club.Core.Domain.Aggregates.Players.Player.Register(id, "Jane", "Doe", email, password);
+        var result = DCA_Padel_Club.Core.Domain.Aggregates.Players.Player.Register(id, "Jane", "Doe", email, password, profilePictureUri);
+        if (result.IsFailure)
+        {
+            throw new InvalidOperationException($"Failed to create test player: {string.Join(", ", result.errorMessages.Select(e => e.ErrorMessage))}");
+        }
+        return result.value;
     }
 
     [Fact]

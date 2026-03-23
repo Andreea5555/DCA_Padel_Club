@@ -6,7 +6,8 @@ public class Result<T>
 {
     public T value { get; }
     public IReadOnlyList<OperationError> errorMessages { get; }
-    public bool IsFailure { get; } 
+    public bool IsFailure { get; }
+    public bool IsSuccess => !IsFailure;
 
     private Result(T value, bool IsFailure, IReadOnlyList<OperationError> errorMessages)
     {

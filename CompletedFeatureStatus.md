@@ -8,13 +8,40 @@
 ## 2. UC1 - Register Player
 ### Domain Implementation
 * [x] Value - ViaId
-* [x] Value - Email
-* [x] Value - Password
-* [x] Aggregate - Player properties & constructor
+* [x] Value - Email (with validators: @via.dk domain, 3-4 letters OR 6 digits, lowercase normalization)
+* [x] Value - Password (with validators: non-empty check)
+* [x] Value - Name (NEW: 2-25 letters only, Title Case formatting)
+* [x] Value - ProfilePicture (NEW: valid URI format validation)
+* [x] Aggregate - Player properties & constructor (updated to use value objects)
+* [x] Player.Register() - returns Result<Player> with aggregated validation
 
 ### Unit Tests (TDD)
-* [x] S1 - Successful registration
-* [x] F1 - Failure: Empty password returns Result.Failure
+**Email Validator Tests**
+* [x] S1 - 3-4 character letters valid (abc@via.dk, abcd@via.dk)
+* [x] S2 - 6 digit numbers valid (123456@via.dk)
+* [x] S3 - Normalizes to lowercase
+* [x] F1 - Wrong domain rejection (@gmail.com, @via.com)
+* [x] F2 - Bad format rejection (missing @, invalid prefix length/content)
+* [x] F3 - Empty email rejection
+
+**Name Validator Tests**
+* [x] S1 - Valid names 2-25 letters
+* [x] S2 - Title Case formatting (jOHN → John)
+* [x] F5/F6 - Invalid first/last names (numbers, symbols, too short, too long)
+
+**ProfilePicture Validator Tests**
+* [x] S1 - Valid URIs (https/http with proper format)
+* [x] F4 - Invalid/empty URI rejection
+
+**Player Registration Aggregate Tests**
+* [x] S1 - Successful registration with all valid data
+* [x] S2 - Email normalization in aggregate
+* [x] S3 - Name formatting in aggregate
+* [x] F1-F7 - All failure scenarios with proper error messages
+* [x] Multiple validation errors collected together
+
+**Player Status Management Tests (9 tests - updated for new signature)**
+* [x] All existing tests passing with new Player.Register() signature
 
 ## 3. UC2 - Manage Player Status & Profile
 ### Domain Implementation
