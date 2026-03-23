@@ -342,7 +342,7 @@ public class CreateBookingScheduleTests
     private static IList<BookingAggregate> GetBookings(ScheduleAggregate schedule)
     {
         var field = typeof(ScheduleAggregate)
-            .GetField("bookings", BindingFlags.Instance | BindingFlags.NonPublic);
+            .GetField("Bookings", BindingFlags.Instance | BindingFlags.NonPublic);
         Assert.NotNull(field);
         return (IList<BookingAggregate>)field!.GetValue(schedule)!;
     }
