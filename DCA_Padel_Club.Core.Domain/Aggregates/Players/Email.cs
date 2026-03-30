@@ -4,7 +4,7 @@ using DCA_Padel_Club.Core.Tools.OperationResult;
 
 namespace DCA_Padel_Club.Core.Domain.Aggregates.Players;
 
-public class Email : ValueObject
+public class  Email : ValueObject
 {
     private const string Domain = "@via.dk";
     private const int MinPrefixLength = 3;

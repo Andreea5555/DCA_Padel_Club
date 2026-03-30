@@ -31,9 +31,9 @@ public class ActivateScheduleTests
     public void ActivateSchedule_While_Schedule_DateTime_Has_Passed()
     {
         var schedule = CreateSchedule();
-        schedule.UpdateSchedule(
+        schedule.UpdateScheduledDate(
             DateOnly.FromDateTime(DateTime.Now.AddDays(-1)), TestDefaults.Now);
-        schedule.UpdateSchedule(new TimeOnly(10, 0), new TimeOnly(12, 0));
+        schedule.UpdateScheduledTimes(new TimeOnly(10, 0), new TimeOnly(12, 0));
 
         var pastTime = new FakeCurrentTime(new TimeOnly(14, 0));
         var result = schedule.ActivateSchedule(TestDefaults.NoConflict, TestDefaults.Now, pastTime);
@@ -61,8 +61,8 @@ public class ActivateScheduleTests
         var schedule = CreateSchedule();
         schedule.Courts.Add(CreatePadelCourt());
 
-        schedule.UpdateSchedule(DateOnly.FromDateTime(DateTime.Now.AddDays(1)), TestDefaults.Now);
-        schedule.UpdateSchedule(TimeOnly.FromDateTime(DateTime.Now.AddHours(1)),
+        schedule.UpdateScheduledDate(DateOnly.FromDateTime(DateTime.Now.AddDays(1)), TestDefaults.Now);
+        schedule.UpdateScheduledTimes(TimeOnly.FromDateTime(DateTime.Now.AddHours(1)),
             TimeOnly.FromDateTime(DateTime.Now.AddHours(4)));
 
         var result = schedule.ActivateSchedule(TestDefaults.NoConflict, TestDefaults.Now, TestDefaults.Midnight);
@@ -75,8 +75,8 @@ public class ActivateScheduleTests
     public void ActivateSchedule_WhenScheduleIsDeleted_ReturnsFailure()
     {
         var schedule = CreateSchedule();
-        schedule.UpdateSchedule(DateOnly.FromDateTime(DateTime.Now.AddDays(1)), TestDefaults.Now);
-        schedule.RemoveSchedule(TestDefaults.Now);
+        schedule.UpdateScheduledDate(DateOnly.FromDateTime(DateTime.Now.AddDays(1)), TestDefaults.Now);
+        schedule.DeleteSchedule(TestDefaults.Now);
 
         var result = schedule.ActivateSchedule(TestDefaults.NoConflict, TestDefaults.Now, TestDefaults.Midnight);
 
@@ -89,7 +89,7 @@ public class ActivateScheduleTests
     {
         var schedule = CreateSchedule();
         schedule.Courts.Add(CreatePadelCourt());
-        schedule.UpdateSchedule(DateOnly.FromDateTime(DateTime.Now.AddDays(1)), TestDefaults.Now);
+        schedule.UpdateScheduledDate(DateOnly.FromDateTime(DateTime.Now.AddDays(1)), TestDefaults.Now);
 
         var result = schedule.ActivateSchedule(new FakeActiveScheduleOnDate(true), TestDefaults.Now, TestDefaults.Midnight);
 

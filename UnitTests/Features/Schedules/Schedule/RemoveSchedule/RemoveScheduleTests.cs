@@ -10,9 +10,9 @@ public class RemoveScheduleTests
     public void RemoveSchedule_WhenDateIsInFuture_ReturnsSuccess_AndMarksDeleted()
     {
         var schedule = ScheduleAggregate.Create();
-        schedule.UpdateSchedule(DateOnly.FromDateTime(DateTime.Now).AddDays(1), TestDefaults.Now);
+        schedule.UpdateScheduledDate(DateOnly.FromDateTime(DateTime.Now).AddDays(1), TestDefaults.Now);
 
-        var result = schedule.RemoveSchedule(TestDefaults.Now);
+        var result = schedule.DeleteSchedule(TestDefaults.Now);
 
         Assert.False(result.IsFailure);
         Assert.True(schedule.IsDeleted);
@@ -24,7 +24,7 @@ public class RemoveScheduleTests
         var schedule = ScheduleAggregate.Create();
         var courtsBefore = schedule.Courts.Count;
 
-        var result = schedule.RemoveSchedule(TestDefaults.Now);
+        var result = schedule.DeleteSchedule(TestDefaults.Now);
 
         Assert.True(result.IsFailure);
         Assert.False(schedule.IsDeleted);
@@ -41,7 +41,7 @@ public class RemoveScheduleTests
 
         var courtsBefore = schedule.Courts.Count;
 
-        var result = schedule.RemoveSchedule(TestDefaults.Now);
+        var result = schedule.DeleteSchedule(TestDefaults.Now);
 
         Assert.True(result.IsFailure);
         Assert.False(schedule.IsDeleted);
@@ -52,11 +52,11 @@ public class RemoveScheduleTests
     public void RemoveSchedule_WhenAlreadyDeleted_ReturnsFailure_AndDoesNotMutateSchedule()
     {
         var schedule = ScheduleAggregate.Create();
-        schedule.UpdateSchedule(DateOnly.FromDateTime(DateTime.Now).AddDays(1), TestDefaults.Now);
-        schedule.RemoveSchedule(TestDefaults.Now);
+        schedule.UpdateScheduledDate(DateOnly.FromDateTime(DateTime.Now).AddDays(1), TestDefaults.Now);
+        schedule.DeleteSchedule(TestDefaults.Now);
         Assert.True(schedule.IsDeleted);
 
-        var result = schedule.RemoveSchedule(TestDefaults.Now);
+        var result = schedule.DeleteSchedule(TestDefaults.Now);
 
         Assert.True(result.IsFailure);
         Assert.Contains(result.errorMessages, e => e.ErrorCode == "Schedule.Null");

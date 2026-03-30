@@ -13,7 +13,6 @@ public class Schedule : AggregateRoot<ScheduleId>
     internal TimeOnly EndTime { get; private set; }
     internal Boolean IsDraft;
     internal IList<PadelCourt> Courts { get; private set; }
-    internal IList<TimePeriod> AvailabilityPeriods;
     internal bool IsDeleted;
     internal IList<Booking> Bookings;
 
@@ -24,7 +23,6 @@ public class Schedule : AggregateRoot<ScheduleId>
         EndTime = TimeOnly.Parse("22:00:00");
         IsDraft = true;
         Courts = new List<PadelCourt>();
-        AvailabilityPeriods = new List<TimePeriod>();
         IsDeleted = false;
         Bookings = new List<Booking>();
     }
@@ -35,7 +33,7 @@ public class Schedule : AggregateRoot<ScheduleId>
     }
 
     //needed to check in the database and implement USe Case ID2, F1
-    public Result<Schedule> UpdateSchedule( TimeOnly startTime, TimeOnly endTime)
+    public Result<None> UpdateScheduledTimes( TimeOnly startTime, TimeOnly endTime)
     { 
         StartTime = startTime;
         EndTime = endTime;
@@ -61,14 +59,14 @@ public class Schedule : AggregateRoot<ScheduleId>
         }
         if (errors.Count > 0)
         {
-            return Result<Schedule>.Failure(errors);
+            return Result<None>.Failure(errors);
         }
         
-        return Result<Schedule>.Success(this);
+        return Result<None>.Success(new None());
     }
 
     //needed to check in the database and implement USe Case ID2, F1
-    public Result<Schedule> UpdateSchedule(DateOnly date, ICurrentDate currentDate)
+    public Result<Schedule> UpdateScheduledDate(DateOnly date, ICurrentDate currentDate)
     {
         Date = date;
         var errors = new List<OperationError>();
@@ -88,7 +86,7 @@ public class Schedule : AggregateRoot<ScheduleId>
     }
     
     //Not finished, implementation for UseCase ID3: F6 is needed since it's related to the database as well
-    public Result<None> AddCourt(CourtId courtId, bool isVIPEnabled, bool isOccupied, ICurrentDate currentDate)
+    public Result<None> AddCourt(CourtId courtId, ICurrentDate currentDate)
     {
         var errors = new List<OperationError>();
 
@@ -112,10 +110,6 @@ public class Schedule : AggregateRoot<ScheduleId>
             errors.Add(OperationError.Create("Schedule.CourtAlreadyExist","The court already exists inside the schedule"));
         }
 
-        if (Courts.Count == 0)
-        {
-            isOccupied = false;
-        }
 
         if (errors.Count > 0)
         {
@@ -127,7 +121,7 @@ public class Schedule : AggregateRoot<ScheduleId>
     }
 
     
-    public Result<None> RemoveCourt(CourtId courtId, bool isVIPEnabled, bool isOccupied)
+    public Result<None> RemoveCourt(CourtId courtId)
     {
        var errors = new List<OperationError>();
        // TODO here the bookings are needed to complete
@@ -141,23 +135,7 @@ public class Schedule : AggregateRoot<ScheduleId>
        }
        Courts.Remove(new PadelCourt(courtId));
        
-            return Result<None>.Success(None.Value);
-    }
-    
-
-    public IList<PadelCourt> GetAvailableCourts()
-    {
-        IList<PadelCourt> courts= new List<PadelCourt>();
-        foreach (PadelCourt court in Courts)
-        {
-            if (!court.isOccupied)
-            {
-                courts.Add(court);
-            }
-        }
-
-        return courts;
-
+       return Result<None>.Success(None.Value);
     }
 
     public Result<None> ActivateSchedule(IActiveScheduleOnDate activeScheduleOnDate, ICurrentDate currentDate, ICurrentTime currentTime)
@@ -198,13 +176,9 @@ public class Schedule : AggregateRoot<ScheduleId>
         return Result<None>.Success(None.Value);
     }
 
-    public void ArchiveSchedule()
-    {
-        IsDraft = true;
-    }
 
     //still needs work
-    public Result<None> RemoveSchedule(ICurrentDate currentDate)
+    public Result<None> DeleteSchedule(ICurrentDate currentDate)
     {
         var errors = new List<OperationError>();
 
@@ -234,7 +208,7 @@ public class Schedule : AggregateRoot<ScheduleId>
         return Result<None>.Success(None.Value);
     }
     
-    public Result<Booking> CreateBooking(ViaId bookerId, CourtId courtId, BookingSlot slot, ICurrentDate currentDate, ICurrentTime currentTime)
+    public Result<None> CreateBooking(ViaId bookerId, CourtId courtId, BookingSlot slot, ICurrentDate currentDate, ICurrentTime currentTime)
     {
         var errors = new List<OperationError>();
 
@@ -251,7 +225,7 @@ public class Schedule : AggregateRoot<ScheduleId>
         if (!Courts.Any(c => c.GetID() == courtId.GetValue()))
             errors.Add(OperationError.Create("Schedule.CourtNotFound", "The requested court does not exist in this schedule."));
 
-        errors.AddRange(slot.ValidateFitsWithin(Date, StartTime, EndTime));
+        errors.AddRange(slot.ValidateFitsWithin(StartTime, EndTime));
 
         if (Bookings.Any(b => b.IsOnCourtAndOverlaps(courtId, slot)))
             errors.Add(OperationError.Create("Schedule.BookingOverlap",
@@ -277,7 +251,7 @@ public class Schedule : AggregateRoot<ScheduleId>
             slot);
 
         Bookings.Add(booking);
-        return Result<Booking>.Success(booking);
+        return Result<None>.Success(new None());
     }
 
     private bool LeavesHoleOnCourt(CourtId courtId, BookingSlot slot)

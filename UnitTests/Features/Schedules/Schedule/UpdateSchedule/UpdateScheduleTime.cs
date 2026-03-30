@@ -13,7 +13,7 @@ public class UpdateScheduleTime
         var startTime = TimeOnly.Parse("18:00");
         var endTime = TimeOnly.Parse("16:00");
         
-        var result = schedule.UpdateSchedule(startTime, endTime);
+        var result = schedule.UpdateScheduledTimes(startTime, endTime);
         
         Assert.True(result.IsFailure);
         Assert.Contains(result.errorMessages,
@@ -28,7 +28,7 @@ public class UpdateScheduleTime
         var start = TimeOnly.Parse("14:00");
         var end = TimeOnly.Parse("14:30"); 
         
-        var result = schedule.UpdateSchedule(start, end);
+        var result = schedule.UpdateScheduledTimes(start, end);
 
         Assert.True(result.IsFailure);
         Assert.Contains(result.errorMessages, e => e.ErrorCode== "Schedule.InvalidDuration");
@@ -43,7 +43,7 @@ public class UpdateScheduleTime
         var start = TimeOnly.Parse("15:00");
         var end = TimeOnly.Parse("16:30");
 
-        var result = schedule.UpdateSchedule(start, end);
+        var result = schedule.UpdateScheduledTimes(start, end);
 
         Assert.True(result.IsFailure);
         Assert.Contains(result.errorMessages, e => e.ErrorCode == "Schedule.IsNotDraft");
@@ -57,7 +57,7 @@ public class UpdateScheduleTime
         var start = TimeOnly.Parse("14:10"); 
         var end = TimeOnly.Parse("15:45");   
 
-        var result = schedule.UpdateSchedule(start, end);
+        var result = schedule.UpdateScheduledTimes(start, end);
         
         Assert.True(result.IsFailure);
         Assert.Contains(result.errorMessages, e => e.ErrorCode == "Schedule.InvalidMinute");
@@ -71,7 +71,7 @@ public class UpdateScheduleTime
         var start = TimeOnly.Parse("15:45");
         var end = TimeOnly.Parse("15:30");
         
-        var result = schedule.UpdateSchedule(start, end);
+        var result = schedule.UpdateScheduledTimes(start, end);
         
         Assert.True(result.IsFailure);
         Assert.Equal(3, result.errorMessages.Count);
@@ -89,7 +89,7 @@ public class UpdateScheduleTime
         var start = TimeOnly.Parse("14:00"); 
         var end = TimeOnly.Parse("15:30"); 
         
-        var result = schedule.UpdateSchedule(start, end);
+        var result = schedule.UpdateScheduledTimes(start, end);
         
         Assert.False(result.IsFailure);
         Assert.Equal(start, schedule.StartTime);

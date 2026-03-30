@@ -14,7 +14,7 @@ public class UpdateScheduleDate
         schedule.IsDraft = false;
         var newDate = DateOnly.FromDateTime(DateTime.Now.AddDays(1));
 
-        var result = schedule.UpdateSchedule(newDate, FakeCurrentDate.RealNow());
+        var result = schedule.UpdateScheduledDate(newDate, FakeCurrentDate.RealNow());
 
         Assert.True(result.IsFailure);
         Assert.Contains(result.errorMessages, e => e.ErrorCode == "Schedule.IsNotDraft");
@@ -26,7 +26,7 @@ public class UpdateScheduleDate
         var schedule = CreateSchedule();
         var futureDate = DateOnly.FromDateTime(DateTime.Now.AddDays(3));
 
-        var result = schedule.UpdateSchedule(futureDate, FakeCurrentDate.RealNow());
+        var result = schedule.UpdateScheduledDate(futureDate, FakeCurrentDate.RealNow());
 
         Assert.False(result.IsFailure);
         Assert.Equal(futureDate, schedule.Date);
@@ -39,7 +39,7 @@ public class UpdateScheduleDate
         var fakeNow = new FakeCurrentDate(new DateOnly(2026, 3, 17));
         var pastDate = new DateOnly(2026, 3, 10);
 
-        var result = schedule.UpdateSchedule(pastDate, fakeNow);
+        var result = schedule.UpdateScheduledDate(pastDate, fakeNow);
 
         Assert.True(result.IsFailure);
         Assert.Contains(result.errorMessages, e => e.ErrorCode == "Schedule.InvalidDate");
@@ -53,7 +53,7 @@ public class UpdateScheduleDate
         var fakeNow = new FakeCurrentDate(new DateOnly(2026, 3, 17));
         var pastDate = new DateOnly(2026, 3, 10);
 
-        var result = schedule.UpdateSchedule(pastDate, fakeNow);
+        var result = schedule.UpdateScheduledDate(pastDate, fakeNow);
 
         Assert.True(result.IsFailure);
         Assert.Equal(2, result.errorMessages.Count);

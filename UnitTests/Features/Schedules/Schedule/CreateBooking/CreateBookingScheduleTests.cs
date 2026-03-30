@@ -60,7 +60,7 @@ public class CreateBookingScheduleTests
         var schedule = ScheduleAggregate.Create();
         var courtId = CourtId.CreateCourtId("D1");
         Assert.False(courtId.IsFailure);
-        schedule.AddCourt(courtId.value, false, false, TestDefaults.Now);
+        schedule.AddCourt(courtId.value,  TestDefaults.Now);
 
         var bookerId = new ViaId(1);
         var slot = CreateValidSlot(schedule, 15, 0, 17, 0);
@@ -273,7 +273,7 @@ public class CreateBookingScheduleTests
         var schedule = ScheduleAggregate.Create();
         var courtId = CourtId.CreateCourtId(courtName);
         Assert.False(courtId.IsFailure);
-        schedule.AddCourt(courtId.value, false, false, TestDefaults.Now);
+        schedule.AddCourt(courtId.value,  TestDefaults.Now);
         schedule.ActivateSchedule(TestDefaults.NoConflict, TestDefaults.Now, TestDefaults.Midnight);
         return schedule;
     }
@@ -281,11 +281,11 @@ public class CreateBookingScheduleTests
     private static ScheduleAggregate CreateDeletedScheduleWithCourt(string courtName)
     {
         var schedule = ScheduleAggregate.Create();
-        schedule.UpdateSchedule(DateOnly.FromDateTime(DateTime.Now).AddDays(1), TestDefaults.Now);
+        schedule.UpdateScheduledDate(DateOnly.FromDateTime(DateTime.Now).AddDays(1), TestDefaults.Now);
         var courtId = CourtId.CreateCourtId(courtName);
         Assert.False(courtId.IsFailure);
-        schedule.AddCourt(courtId.value, false, false, TestDefaults.Now);
-        var removeResult = schedule.RemoveSchedule(TestDefaults.Now);
+        schedule.AddCourt(courtId.value,  TestDefaults.Now);
+        var removeResult = schedule.DeleteSchedule(TestDefaults.Now);
         Assert.False(removeResult.IsFailure);
         return schedule;
     }
@@ -297,7 +297,7 @@ public class CreateBookingScheduleTests
         {
             var courtId = CourtId.CreateCourtId(name);
             Assert.False(courtId.IsFailure);
-            schedule.AddCourt(courtId.value, false, false, TestDefaults.Now);
+            schedule.AddCourt(courtId.value,  TestDefaults.Now);
         }
         schedule.ActivateSchedule(TestDefaults.NoConflict, TestDefaults.Now, TestDefaults.Midnight);
         return schedule;

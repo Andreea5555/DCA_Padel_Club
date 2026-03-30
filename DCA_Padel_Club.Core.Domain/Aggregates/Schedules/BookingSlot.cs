@@ -16,7 +16,7 @@ public class BookingSlot : ValueObject
         EndTime = endTime;
     }
 
-    private static List<OperationError> Validate(DateOnly date, TimeOnly startTime, TimeOnly endTime)
+    private static List<OperationError> Validate(TimeOnly startTime, TimeOnly endTime)
     {
         var errors = new List<OperationError>();
 

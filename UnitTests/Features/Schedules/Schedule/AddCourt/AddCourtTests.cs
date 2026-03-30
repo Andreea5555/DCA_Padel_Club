@@ -19,7 +19,7 @@ public class AddCourtTests
     {
         var schedule = CreateSchedule();
 
-        var result = schedule.AddCourt(CreateCourtId().value, false, false, TestDefaults.Now);
+        var result = schedule.AddCourt(CreateCourtId().value, TestDefaults.Now);
 
         Assert.False(result.IsFailure);
         Assert.Single(schedule.Courts);
@@ -31,7 +31,7 @@ public class AddCourtTests
         var schedule = CreateSchedule();
         Assert.Empty(schedule.Courts);
 
-        var result = schedule.AddCourt(CreateCourtId().value, false, false, TestDefaults.Now);
+        var result = schedule.AddCourt(CreateCourtId().value, TestDefaults.Now);
 
         Assert.False(result.IsFailure);
         Assert.Single(schedule.Courts);
@@ -41,9 +41,9 @@ public class AddCourtTests
     public void AddCourt_WhenOneCourtAlreadyPresent_AddsSecondCourtSuccessfully()
     {
         var schedule = CreateSchedule();
-        schedule.AddCourt(CourtId.CreateCourtId("S1").value, false, false, TestDefaults.Now);
+        schedule.AddCourt(CourtId.CreateCourtId("S1").value, TestDefaults.Now);
 
-        var result = schedule.AddCourt(CourtId.CreateCourtId("S2").value, false, false, TestDefaults.Now);
+        var result = schedule.AddCourt(CourtId.CreateCourtId("S2").value, TestDefaults.Now);
 
         Assert.False(result.IsFailure);
         Assert.Equal(2, schedule.Courts.Count);
@@ -53,9 +53,9 @@ public class AddCourtTests
     public void AddCourt_WhenScheduleIsInPast_ReturnsFailure()
     {
         var schedule = Schedule.Create();
-        schedule.UpdateSchedule(DateOnly.FromDateTime(DateTime.Now).AddDays(-1), TestDefaults.Now);
+        schedule.UpdateScheduledDate(DateOnly.FromDateTime(DateTime.Now).AddDays(-1), TestDefaults.Now);
 
-        var result = schedule.AddCourt(CreateCourtId().value, false, false, TestDefaults.Now);
+        var result = schedule.AddCourt(CreateCourtId().value, TestDefaults.Now);
 
         Assert.True(result.IsFailure);
         Assert.Contains(result.errorMessages, e => e.ErrorCode == "Schedule.InvalidDate");
@@ -65,10 +65,10 @@ public class AddCourtTests
     public void AddCourt_WhenScheduleIsDeleted_ReturnsFailure()
     {
         var schedule = CreateSchedule();
-        schedule.UpdateSchedule(DateOnly.FromDateTime(DateTime.Now).AddDays(1), TestDefaults.Now);
-        schedule.RemoveSchedule(TestDefaults.Now);
+        schedule.UpdateScheduledDate(DateOnly.FromDateTime(DateTime.Now).AddDays(1), TestDefaults.Now);
+        schedule.DeleteSchedule(TestDefaults.Now);
 
-        var result = schedule.AddCourt(CreateCourtId().value, false, false, TestDefaults.Now);
+        var result = schedule.AddCourt(CreateCourtId().value, TestDefaults.Now);
 
         Assert.True(result.IsFailure);
         Assert.Contains(result.errorMessages, e => e.ErrorCode == "Schedule.Deleted");
@@ -78,9 +78,9 @@ public class AddCourtTests
     public void AddCourt_WhenSameCourtAddedTwice_ReturnsFailure()
     {
         var schedule = CreateSchedule();
-        schedule.AddCourt(CreateCourtId().value, false, false, TestDefaults.Now);
+        schedule.AddCourt(CreateCourtId().value, TestDefaults.Now);
 
-        var result = schedule.AddCourt(CreateCourtId().value, false, false, TestDefaults.Now);
+        var result = schedule.AddCourt(CreateCourtId().value, TestDefaults.Now);
 
         Assert.True(result.IsFailure);
         Assert.Contains(result.errorMessages, e => e.ErrorCode == "Schedule.CourtAlreadyExist");
