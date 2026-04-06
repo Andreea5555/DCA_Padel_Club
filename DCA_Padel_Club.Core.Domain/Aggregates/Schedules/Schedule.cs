@@ -156,11 +156,11 @@ public class Schedule : AggregateRoot<ScheduleId>
         return Result<None>.Success(None.Value);
     }
 
-    public Result<None> RemoveCourt(CourtId courtId)
+    public Result<None> RemoveCourt(CourtId courtId, ICurrentDate currentDate)
     {
         var errors = new List<OperationError>();
         // TODO here the bookings are needed to complete
-        if (Date == DateOnly.FromDateTime(DateTime.Now))
+        if (Date == currentDate.Now)
         {
             errors.Add(
                 OperationError.Create(
@@ -173,7 +173,11 @@ public class Schedule : AggregateRoot<ScheduleId>
         {
             return Result<None>.Failure(errors);
         }
-        Courts.Remove(new PadelCourt(courtId));
+        var courtToRemove = Courts.FirstOrDefault(c => c.GetID() == courtId.GetValue());
+        if (courtToRemove is not null)
+        {
+            Courts.Remove(courtToRemove);
+        }
 
         return Result<None>.Success(None.Value);
     }
