@@ -36,8 +36,6 @@ public class Schedule : AggregateRoot<ScheduleId>
     //needed to check in the database and implement USe Case ID2, F1
     public Result<None> UpdateScheduledTimes(TimeOnly startTime, TimeOnly endTime)
     {
-        StartTime = startTime;
-        EndTime = endTime;
         var errors = new List<OperationError>();
 
         if (startTime >= endTime)
@@ -85,13 +83,14 @@ public class Schedule : AggregateRoot<ScheduleId>
             return Result<None>.Failure(errors);
         }
 
+        StartTime = startTime;
+        EndTime = endTime;
         return Result<None>.Success(new None());
     }
 
     //needed to check in the database and implement USe Case ID2, F1
     public Result<Schedule> UpdateScheduledDate(DateOnly date, ICurrentDate currentDate)
     {
-        Date = date;
         var errors = new List<OperationError>();
         if (!IsDraft)
         {
@@ -112,6 +111,7 @@ public class Schedule : AggregateRoot<ScheduleId>
         {
             return Result<Schedule>.Failure(errors);
         }
+        Date = date;
         return Result<Schedule>.Success(this);
     }
 
@@ -206,7 +206,7 @@ public class Schedule : AggregateRoot<ScheduleId>
             );
         }
 
-        if (Date < currentDate.Now && StartTime < currentTime.Now)
+        if (Date < currentDate.Now || (Date == currentDate.Now && StartTime < currentTime.Now))
         {
             errors.Add(
                 OperationError.Create(

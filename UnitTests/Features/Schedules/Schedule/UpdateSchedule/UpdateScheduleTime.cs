@@ -11,6 +11,8 @@ public class UpdateScheduleTime
     public void UpdateScheduleTime_StartTime_Bigger_Than_EndTime()
     {
         var schedule = CreateSchedule();
+        var originalStart = schedule.StartTime;
+        var originalEnd = schedule.EndTime;
         var startTime = TimeOnly.Parse("18:00");
         var endTime = TimeOnly.Parse("16:00");
 
@@ -18,6 +20,8 @@ public class UpdateScheduleTime
 
         Assert.True(result.IsFailure);
         Assert.Contains(result.errorMessages, e => e.ErrorCode == "Schedule.StartTimeTooBig");
+        Assert.Equal(originalStart, schedule.StartTime);
+        Assert.Equal(originalEnd, schedule.EndTime);
     }
 
     [Fact]
@@ -52,6 +56,8 @@ public class UpdateScheduleTime
     {
         var schedule = CreateSchedule();
         schedule.IsDraft = false;
+        var originalStart = schedule.StartTime;
+        var originalEnd = schedule.EndTime;
 
         var start = TimeOnly.Parse("15:00");
         var end = TimeOnly.Parse("16:30");
@@ -60,6 +66,8 @@ public class UpdateScheduleTime
 
         Assert.True(result.IsFailure);
         Assert.Contains(result.errorMessages, e => e.ErrorCode == "Schedule.IsNotDraft");
+        Assert.Equal(originalStart, schedule.StartTime);
+        Assert.Equal(originalEnd, schedule.EndTime);
     }
 
     [Fact]
