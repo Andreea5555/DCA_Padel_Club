@@ -40,7 +40,7 @@ public class Schedule : AggregateRoot<ScheduleId>
         EndTime = endTime;
         var errors = new List<OperationError>();
 
-        if (startTime > endTime)
+        if (startTime >= endTime)
         {
             errors.Add(
                 OperationError.Create(
@@ -49,8 +49,7 @@ public class Schedule : AggregateRoot<ScheduleId>
                 )
             );
         }
-
-        if ((endTime - startTime).TotalMinutes < 60)
+        else if ((endTime - startTime).TotalMinutes < 60)
         {
             errors.Add(
                 OperationError.Create(
