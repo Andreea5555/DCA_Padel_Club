@@ -5,6 +5,7 @@ using DCA_Padel_Club.Core.Domain.Aggregates.Schedule;
 using DCA_Padel_Club.Core.Domain.Aggregates.Schedules;
 using DCA_Padel_Club.Core.Domain.Common.Contracts;
 using DCA_Padel_Club.Core.Tools.OperationResult;
+using UnitTests.Fakes;
 using UnitTests.Helpers;
 using Xunit;
 
