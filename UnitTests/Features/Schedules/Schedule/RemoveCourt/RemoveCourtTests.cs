@@ -14,7 +14,7 @@ public class RemoveCourtTests
         Assert.False(courtId.IsFailure);
         schedule.AddCourt(courtId.value, TestDefaults.Now);
 
-        var result = schedule.RemoveCourt(courtId.value, TestDefaults.Now);
+        var result = schedule.RemoveCourt(courtId.value);
 
         Assert.True(result.IsFailure);
         Assert.Contains(result.errorMessages, e => e.ErrorCode == "Schedule.DateIsNow");
@@ -33,7 +33,7 @@ public class RemoveCourtTests
         Assert.False(courtId.IsFailure);
         schedule.AddCourt(courtId.value, TestDefaults.Now);
 
-        var result = schedule.RemoveCourt(courtId.value, TestDefaults.Now);
+        var result = schedule.RemoveCourt(courtId.value);
 
         Assert.False(result.IsFailure);
         Assert.Empty(schedule.Courts);

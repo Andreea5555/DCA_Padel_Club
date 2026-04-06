@@ -9,7 +9,7 @@ public class BookingSlot : ValueObject
     internal TimeOnly StartTime { get; }
     internal TimeOnly EndTime { get; }
 
-    private BookingSlot(DateOnly date, TimeOnly startTime, TimeOnly endTime)
+    public BookingSlot(DateOnly date, TimeOnly startTime, TimeOnly endTime)
     {
         Date = date;
         StartTime = startTime;

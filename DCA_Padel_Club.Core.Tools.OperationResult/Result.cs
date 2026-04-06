@@ -26,4 +26,5 @@ public class Result<T>
         //default! means it takes the default value, while also accepting null as value 
         return new Result<T>(default!, true,errors);
     }
+    
 }
