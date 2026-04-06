@@ -15,7 +15,9 @@ public class CreateBookingAggregateTests
         var booker = new ViaId(1);
         var slot = BookingTestHelper.CreateValidTimeSlot();
 
-        var ex = Assert.Throws<ArgumentNullException>(() => new BookingAggregate(id, courtId, booker, null!, BookingStatus.Pending, slot));
+        var ex = Assert.Throws<ArgumentNullException>(
+            () => new BookingAggregate(id, courtId, booker, null!, slot)
+        );
 
         Assert.Equal("playerIds", ex.ParamName);
     }
@@ -36,7 +38,7 @@ public class CreateBookingAggregateTests
     {
         var booker = new ViaId(1);
         var other = new ViaId(2);
-        var booking = BookingTestHelper.CreateBooking(booker, [other], BookingStatus.Pending);
+        var booking = BookingTestHelper.CreateBooking(booker, [other]);
 
         var players = BookingTestHelper.GetPlayerIds(booking);
 
@@ -48,7 +50,7 @@ public class CreateBookingAggregateTests
     public void Ctor_DoesNotDuplicateBookerIfAlreadyPresent()
     {
         var booker = new ViaId(1);
-        var booking = BookingTestHelper.CreateBooking(booker, [booker], BookingStatus.Pending);
+        var booking = BookingTestHelper.CreateBooking(booker, [booker]);
 
         var players = BookingTestHelper.GetPlayerIds(booking);
 
@@ -63,7 +65,7 @@ public class CreateBookingAggregateTests
         var p3 = new ViaId(3);
         var input = new List<ViaId> { p2 };
 
-        var booking = BookingTestHelper.CreateBooking(booker, input, BookingStatus.Pending);
+        var booking = BookingTestHelper.CreateBooking(booker, input);
         input.Add(p3);
         input.Remove(p2);
 

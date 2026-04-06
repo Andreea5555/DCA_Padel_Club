@@ -53,9 +53,8 @@ public class AddCourtTests
     public void AddCourt_WhenScheduleIsInPast_ReturnsFailure()
     {
         var schedule = Schedule.Create();
-        schedule.UpdateScheduledDate(DateOnly.FromDateTime(DateTime.Now).AddDays(-1), TestDefaults.Now);
-
-        var result = schedule.AddCourt(CreateCourtId().value, TestDefaults.Now);
+        var fakeNow = new FakeCurrentDate(DateOnly.FromDateTime(DateTime.Now).AddDays(1));
+        var result = schedule.AddCourt(CreateCourtId().value, fakeNow);
 
         Assert.True(result.IsFailure);
         Assert.Contains(result.errorMessages, e => e.ErrorCode == "Schedule.InvalidDate");

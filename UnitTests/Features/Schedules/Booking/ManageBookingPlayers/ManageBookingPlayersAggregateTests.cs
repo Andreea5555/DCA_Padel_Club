@@ -11,7 +11,7 @@ public class ManageBookingPlayersAggregateTests
     {
         var booker = new ViaId(1);
         var p2 = new ViaId(2);
-        var booking = BookingTestHelper.CreateBooking(booker, [p2], BookingStatus.Pending);
+        var booking = BookingTestHelper.CreateBooking(booker, [p2]);
 
         var result = booking.AddPlayer(p2);
 
@@ -26,7 +26,7 @@ public class ManageBookingPlayersAggregateTests
     {
         var booker = new ViaId(1);
         var p2 = new ViaId(2);
-        var booking = BookingTestHelper.CreateBooking(booker, [], BookingStatus.Pending);
+        var booking = BookingTestHelper.CreateBooking(booker, []);
 
         var result = booking.AddPlayer(p2);
 
@@ -40,7 +40,7 @@ public class ManageBookingPlayersAggregateTests
     public void RemovePlayer_WhenRemovingBooker_ReturnsFailure()
     {
         var booker = new ViaId(1);
-        var booking = BookingTestHelper.CreateBooking(booker, [], BookingStatus.Pending);
+        var booking = BookingTestHelper.CreateBooking(booker, []);
 
         var result = booking.RemovePlayer(booker);
 
@@ -53,7 +53,7 @@ public class ManageBookingPlayersAggregateTests
     {
         var booker = new ViaId(1);
         var p2 = new ViaId(2);
-        var booking = BookingTestHelper.CreateBooking(booker, [p2], BookingStatus.Pending);
+        var booking = BookingTestHelper.CreateBooking(booker, [p2]);
 
         var result = booking.RemovePlayer(p2);
 
@@ -69,7 +69,7 @@ public class ManageBookingPlayersAggregateTests
         var booker = new ViaId(1);
         var p2 = new ViaId(2);
         var missing = new ViaId(99);
-        var booking = BookingTestHelper.CreateBooking(booker, [p2], BookingStatus.Pending);
+        var booking = BookingTestHelper.CreateBooking(booker, [p2]);
 
         var before = BookingTestHelper.GetPlayerIds(booking).Count;
         var result = booking.RemovePlayer(missing);

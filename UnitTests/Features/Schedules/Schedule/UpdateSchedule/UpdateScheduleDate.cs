@@ -12,12 +12,14 @@ public class UpdateScheduleDate
     {
         var schedule = CreateSchedule();
         schedule.IsDraft = false;
+        var originalDate = schedule.Date;
         var newDate = DateOnly.FromDateTime(DateTime.Now.AddDays(1));
 
         var result = schedule.UpdateScheduledDate(newDate, FakeCurrentDate.RealNow());
 
         Assert.True(result.IsFailure);
         Assert.Contains(result.errorMessages, e => e.ErrorCode == "Schedule.IsNotDraft");
+        Assert.Equal(originalDate, schedule.Date);
     }
 
     [Fact]
@@ -36,6 +38,7 @@ public class UpdateScheduleDate
     public void UpdateScheduleDate_DateInPast_ReturnsFailure()
     {
         var schedule = CreateSchedule();
+        var originalDate = schedule.Date;
         var fakeNow = new FakeCurrentDate(new DateOnly(2026, 3, 17));
         var pastDate = new DateOnly(2026, 3, 10);
 
@@ -43,6 +46,7 @@ public class UpdateScheduleDate
 
         Assert.True(result.IsFailure);
         Assert.Contains(result.errorMessages, e => e.ErrorCode == "Schedule.InvalidDate");
+        Assert.Equal(originalDate, schedule.Date);
     }
 
     [Fact]

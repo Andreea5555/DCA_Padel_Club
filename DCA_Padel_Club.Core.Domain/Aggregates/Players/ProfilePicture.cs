@@ -26,23 +26,17 @@ public class ProfilePicture : ValueObject
 
         if (string.IsNullOrWhiteSpace(uri))
         {
-            errors.Add(OperationError.Create("ProfilePicture.InvalidUri", "URL has incorrect format."));
-            return Result<ProfilePicture>.Failure(errors);
-        }
-
-        if (!Uri.TryCreate(uri, UriKind.Absolute, out var _))
-        {
-            errors.Add(OperationError.Create("ProfilePicture.InvalidUri", "URL has incorrect format."));
+            errors.Add(
+                OperationError.Create("ProfilePicture.InvalidUri", "URL has incorrect format.")
+            );
             return Result<ProfilePicture>.Failure(errors);
         }
 
         return Result<ProfilePicture>.Success(new ProfilePicture(uri));
     }
-    
+
     protected override IEnumerable<object> GetEqualityComponents()
     {
         yield return Value;
     }
 }
-
-

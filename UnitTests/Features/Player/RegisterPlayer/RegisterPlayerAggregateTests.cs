@@ -44,7 +44,7 @@ public class RegisterPlayerAggregateTests
 
         Assert.True(result.IsSuccess);
         var player = result.value;
-        
+
         Assert.Equal("John", player.FirstName.Value);
         Assert.Equal("Doe", player.LastName.Value);
         Assert.Equal("john@via.dk", player.Email.Value);
@@ -174,7 +174,7 @@ public class RegisterPlayerAggregateTests
     }
 
     [Fact]
-    public void Register_WithInvalidProfilePictureUri_ShouldFail()
+    public void Register_WithNonEmptyProfilePictureString_ShouldSucceed()
     {
         var result = DCA_Padel_Club.Core.Domain.Aggregates.Players.Player.Register(
             ValidId,
@@ -185,8 +185,8 @@ public class RegisterPlayerAggregateTests
             "not a valid url"
         );
 
-        Assert.True(result.IsFailure);
-        Assert.Contains(result.errorMessages, e => e.ErrorCode == "ProfilePicture.InvalidUri");
+        Assert.True(result.IsSuccess);
+        Assert.Equal("not a valid url", result.value.ProfilePicture.Value);
     }
 
     // F5: Invalid First Name
@@ -307,4 +307,3 @@ public class RegisterPlayerAggregateTests
         Assert.True(result.errorMessages.Count >= 4); // At least 4 errors
     }
 }
-
