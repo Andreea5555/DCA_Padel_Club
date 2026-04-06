@@ -29,17 +29,17 @@ public class CreateBookingCommand
         string scheduleId,
         int bookerId,
         string courtId,
-        DateOnly date,
-        TimeOnly startTime,
-        TimeOnly endTime)
+        string date,
+        string startTime,
+        string endTime)
     {
         return Result<CreateBookingCommand>.Success(
             new CreateBookingCommand(
                 new ScheduleId(Guid.Parse(scheduleId)),
                 new ViaId(bookerId),
                 new CourtId(courtId),
-                date,
-                startTime,
-                endTime));
+                DateOnly.Parse(date),
+                TimeOnly.Parse(startTime),
+                TimeOnly.Parse(endTime)));
     }
 }

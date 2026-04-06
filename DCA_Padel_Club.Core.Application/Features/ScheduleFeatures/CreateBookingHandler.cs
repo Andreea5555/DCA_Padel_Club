@@ -6,12 +6,12 @@ using DCA_Padel_Club.Core.Domain.Aggregates.Schedules;
 
 namespace DCA_Padel_Club.Core.Application.Features;
 
-public class CreateBookingHandler //TODO ask if i shall add ICommandHandler here or not
+public class CreateBookingHandler: ICommandHandler<CreateBookingCommand> //TODO ask if i shall add ICommandHandler here or not
 {
-    private readonly IScheduleRepository repository;
-    private readonly IUnitOfWork unitOfWork;
-    private readonly ICurrentDate currentDate;
-    private readonly ICurrentTime currentTime;
+    private readonly IScheduleRepository Repository;
+    private readonly IUnitOfWork UnitOfWork;
+    private readonly ICurrentDate CurrentDate;
+    private readonly ICurrentTime CurrentTime;
 
     public CreateBookingHandler(
         IScheduleRepository repository,
@@ -19,20 +19,20 @@ public class CreateBookingHandler //TODO ask if i shall add ICommandHandler here
         ICurrentDate currentDate,
         ICurrentTime currentTime)
     {
-        this.repository = repository;
-        this.unitOfWork = unitOfWork;
-        this.currentDate = currentDate;
-        this.currentTime = currentTime;
+        this.Repository = repository;
+        this.UnitOfWork = unitOfWork;
+        this.CurrentDate = currentDate;
+        this.CurrentTime = currentTime;
     }
 
     // TODO check with Troels what should Result have either None or Booking
-    public async Task<Result<Booking>> HandleAsync(CreateBookingCommand command)
+    public async Task<Result<None>> HandleAsync(CreateBookingCommand command)
     {
-        Schedule? schedule = await repository.GetAsync(command.ScheduleId);
+        Schedule? schedule = await Repository.GetAsync(command.ScheduleId);
 
         if (schedule is null)
         {
-            return Result<Booking>.Failure(new List<OperationError>
+            return Result<None>.Failure(new List<OperationError>
             {
                 OperationError.Create("Schedule.NotFound", "No schedule found")
             });
@@ -43,16 +43,16 @@ public class CreateBookingHandler //TODO ask if i shall add ICommandHandler here
             command.StartTime,
             command.EndTime);
 
-        Result<Booking> result = schedule.CreateBooking(
+        Result<None> result = schedule.CreateBooking(
             command.BookerId,
             command.CourtId,
             slot,
-            currentDate,
-            currentTime);
+            CurrentDate,
+            CurrentTime);
 
         if (result.IsSuccess)
         {
-            await unitOfWork.SaveChangesAsync();
+            await UnitOfWork.SaveChangesAsync();
         }
 
         return result;

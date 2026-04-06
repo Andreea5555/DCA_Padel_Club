@@ -36,13 +36,12 @@ public class CreateBookingHandlerTests
         ICurrentTime currentTime = new FakeCurrentTime(new TimeOnly(10, 0));
 
         var commandResult = CreateBookingCommand.Create(
-            schedule.Id.ToString(),
+            Guid.NewGuid().ToString(),
             123456,
             "D1",
-            new DateOnly(2026, 4, 10),
-            new TimeOnly(16, 0),
-            new TimeOnly(17, 0));
-
+            "2026,4,10",
+            "16,0",
+            "17,0");
         CreateBookingCommand command = commandResult.value;
 
         //TODO fix this after you asked TROELS
@@ -69,9 +68,9 @@ public class CreateBookingHandlerTests
             Guid.NewGuid().ToString(),
             123456,
             "D1",
-            new DateOnly(2026, 4, 10),
-            new TimeOnly(16, 0),
-            new TimeOnly(17, 0));
+            "2026,4,10",
+            "16,0",
+            "17,0");
 
         CreateBookingCommand command = commandResult.value;
 

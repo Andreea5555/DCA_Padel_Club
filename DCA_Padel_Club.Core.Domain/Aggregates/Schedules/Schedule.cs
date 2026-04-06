@@ -33,6 +33,7 @@ public class Schedule : AggregateRoot<ScheduleId>
     }
 
     //needed to check in the database and implement USe Case ID2, F1
+    //TODO is it needed to add the ICurrentTime also here?
     public Result<None> UpdateScheduledTimes(TimeOnly startTime, TimeOnly endTime)
     {
         var errors = new List<OperationError>();
@@ -79,7 +80,7 @@ public class Schedule : AggregateRoot<ScheduleId>
     }
 
     //needed to check in the database and implement USe Case ID2, F1
-    public Result<Schedule> UpdateScheduledDate(DateOnly date, ICurrentDate currentDate)
+    public Result<None> UpdateScheduledDate(DateOnly date, ICurrentDate currentDate)
     {
         var errors = new List<OperationError>();
         if (!IsDraft)
@@ -92,10 +93,10 @@ public class Schedule : AggregateRoot<ScheduleId>
         }
         if (errors.Count > 0)
         {
-            return Result<Schedule>.Failure(errors);
+            return Result<None>.Failure(errors);
         }
         Date = date;
-        return Result<Schedule>.Success(this);
+        return Result<None>.Success(None.Value);
     }
     
     //Not finished, implementation for UseCase ID3: F6 is needed since it's related to the database as well
@@ -226,7 +227,7 @@ public class Schedule : AggregateRoot<ScheduleId>
     }
     
     //TODO check with Troels what should Result have either None or Booking
-    public Result<Booking> CreateBooking(ViaId bookerId, CourtId courtId, BookingSlot slot, ICurrentDate currentDate, ICurrentTime currentTime)
+    public Result<None> CreateBooking(ViaId bookerId, CourtId courtId, BookingSlot slot, ICurrentDate currentDate, ICurrentTime currentTime)
     {
         var errors = new List<OperationError>();
 
@@ -258,7 +259,7 @@ public class Schedule : AggregateRoot<ScheduleId>
                 "The booking would leave a gap shorter than 1 hour."));
 
         if (errors.Count > 0)
-            return Result<Booking>.Failure(errors);
+            return Result<None>.Failure(errors);
 
         var booking = new Booking(
             new BookingId(Guid.NewGuid()),
@@ -268,7 +269,7 @@ public class Schedule : AggregateRoot<ScheduleId>
             slot);
 
         Bookings.Add(booking);
-        return Result<Booking>.Success(booking);
+        return Result<None>.Success(None.Value);
     }
 
     private bool LeavesHoleOnCourt(CourtId courtId, BookingSlot slot)

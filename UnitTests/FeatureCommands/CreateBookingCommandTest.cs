@@ -12,9 +12,9 @@ public class CreateBookingCommandTest
         string scheduleId = Guid.NewGuid().ToString();
         int bookerId = 123456;
         string courtId = "D1";
-        DateOnly date = new DateOnly(2026, 4, 10);
-        TimeOnly startTime = new TimeOnly(16, 0);
-        TimeOnly endTime = new TimeOnly(17, 0);
+        string date = "2021-01-01";
+        string startTime ="16:00";
+        string endTime = "17:00";
 
         
         var result = CreateBookingCommand.Create(
@@ -30,9 +30,9 @@ public class CreateBookingCommandTest
         Assert.NotNull(result.value);
         Assert.Equal(bookerId, result.value.BookerId.Value);
         Assert.Equal(courtId, result.value.CourtId.GetValue());
-        Assert.Equal(date, result.value.Date);
-        Assert.Equal(startTime, result.value.StartTime);
-        Assert.Equal(endTime, result.value.EndTime);
+        Assert.Equal(date, result.value.Date.ToString());
+        Assert.Equal(startTime, result.value.StartTime.ToString());
+        Assert.Equal(endTime, result.value.EndTime.ToString());
     }
 
     [Fact]
@@ -42,9 +42,9 @@ public class CreateBookingCommandTest
         string scheduleId = "not-a-guid";
         int bookerId = 123456;
         string courtId = "D1";
-        DateOnly date = new DateOnly(2026, 4, 10);
-        TimeOnly startTime = new TimeOnly(16, 0);
-        TimeOnly endTime = new TimeOnly(17, 0);
+        string date = "2021-01-01";
+        string startTime ="16:00";
+        string endTime = "17:00";
 
         
         Assert.Throws<FormatException>(() =>
