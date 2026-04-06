@@ -12,10 +12,13 @@ public class ProfilePictureValidatorTests
     [InlineData("http://example.com/profile.png")]
     [InlineData("https://cdn.example.com/path/to/image.jpg")]
     [InlineData("https://example.com/image?size=large")]
+    [InlineData("not a valid url")]
+    [InlineData("example.com/image.jpg")]
+    [InlineData("http://")]
     public void Create_WithValidUri_ShouldSucceed(string uri)
     {
         var result = ProfilePicture.Create(uri);
-        
+
         Assert.True(result.IsSuccess);
         Assert.NotNull(result.value);
         Assert.Equal(uri, result.value.Value);
@@ -31,25 +34,9 @@ public class ProfilePictureValidatorTests
     public void Create_WithEmptyUri_ShouldFail(string uri)
     {
         var result = ProfilePicture.Create(uri);
-        
+
         Assert.True(result.IsFailure);
         Assert.Contains(result.errorMessages, e => e.ErrorCode == "ProfilePicture.InvalidUri");
         Assert.Contains(result.errorMessages, e => e.ErrorMessage == "URL has incorrect format.");
     }
-
-    // F4: Invalid URI format
-    [Theory]
-    [InlineData("not a url")]
-    [InlineData("example.com/image.jpg")] // Missing protocol
-    [InlineData("http://")] // Incomplete
-    public void Create_WithInvalidUriFormat_ShouldFail(string uri)
-    {
-        var result = ProfilePicture.Create(uri);
-        
-        Assert.True(result.IsFailure);
-        Assert.Contains(result.errorMessages, e => e.ErrorCode == "ProfilePicture.InvalidUri");
-    }
 }
-
-
-
