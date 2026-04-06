@@ -9,7 +9,8 @@ public class ActivateScheduleTests
 
     private PadelCourt CreatePadelCourt()
     {
-        var result = CourtId.CreateCourtId("S");
+        var result = CourtId.CreateCourtId("S1");
+        Assert.False(result.IsFailure);
 
         return new PadelCourt(result.value);
     }
