@@ -1,6 +1,6 @@
 using DCA_Padel_Club.Core.Domain.Common.Contracts;
 
-namespace UnitTests.Helpers;
+namespace UnitTests.Fakes.ScheduleFakes;
 
 internal class FakeActiveScheduleOnDate(bool exists) : IActiveScheduleOnDate
 {

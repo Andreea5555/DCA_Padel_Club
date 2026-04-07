@@ -1,3 +1,4 @@
+using UnitTests.Fakes;
 using UnitTests.Helpers;
 using ScheduleAggregate = DCA_Padel_Club.Core.Domain.Aggregates.Schedules.Schedule;
 

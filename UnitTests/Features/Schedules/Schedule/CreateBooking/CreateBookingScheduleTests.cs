@@ -1,6 +1,7 @@
 using System.Reflection;
 using DCA_Padel_Club.Core.Domain.Aggregates.Players;
 using DCA_Padel_Club.Core.Domain.Aggregates.Schedules;
+using UnitTests.Fakes;
 using UnitTests.Helpers;
 using BookingAggregate = DCA_Padel_Club.Core.Domain.Aggregates.Schedules.Booking;
 using ScheduleAggregate = DCA_Padel_Club.Core.Domain.Aggregates.Schedules.Schedule;

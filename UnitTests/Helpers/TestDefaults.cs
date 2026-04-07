@@ -1,3 +1,6 @@
+using UnitTests.Fakes;
+using UnitTests.Fakes.ScheduleFakes;
+
 namespace UnitTests.Helpers;
 
 internal static class TestDefaults

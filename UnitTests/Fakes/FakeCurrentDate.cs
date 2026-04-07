@@ -1,6 +1,6 @@
 using DCA_Padel_Club.Core.Domain.Common.Contracts;
 
-namespace UnitTests.Helpers;
+namespace UnitTests.Fakes;
 
 internal class FakeCurrentDate(DateOnly now) : ICurrentDate
 {

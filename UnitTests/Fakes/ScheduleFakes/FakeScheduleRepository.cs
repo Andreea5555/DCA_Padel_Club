@@ -1,6 +1,6 @@
 using DCA_Padel_Club.Core.Domain.Aggregates.Schedules;
 
-namespace UnitTests.Helpers;
+namespace UnitTests.Fakes.ScheduleFakes;
 
 public class FakeScheduleRepository: IScheduleRepository
 {
