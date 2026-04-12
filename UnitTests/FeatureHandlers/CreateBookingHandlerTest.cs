@@ -8,6 +8,7 @@ using DCA_Padel_Club.Core.Tools.OperationResult;
 using UnitTests.Fakes;
 using UnitTests.Fakes.ScheduleFakes;
 using UnitTests.Helpers;
+using System.Reflection;
 using Xunit;
 
 namespace DCA_Padel_Club.Tests.FeatureHandlers;
@@ -37,12 +38,12 @@ public class CreateBookingHandlerTests
         ICurrentTime currentTime = new FakeCurrentTime(new TimeOnly(10, 0));
 
         var commandResult = CreateBookingCommand.Create(
-            Guid.NewGuid().ToString(),
+            schedule.Id.Id.ToString(),
             123456,
             "D1",
-            "2026,4,10",
-            "16,0",
-            "17,0");
+            "2026-04-10",
+            "16:00",
+            "17:00");
         CreateBookingCommand command = commandResult.value;
 
         //TODO fix this after you asked TROELS
@@ -54,6 +55,7 @@ public class CreateBookingHandlerTests
 
         // Assert
         Assert.True(result.IsSuccess);
+        Assert.Single(GetBookings(schedule));
     }
 
     [Fact]
@@ -69,9 +71,9 @@ public class CreateBookingHandlerTests
             Guid.NewGuid().ToString(),
             123456,
             "D1",
-            "2026,4,10",
-            "16,0",
-            "17,0");
+            "2026-04-10",
+            "16:00",
+            "17:00");
 
         CreateBookingCommand command = commandResult.value;
 
@@ -84,5 +86,12 @@ public class CreateBookingHandlerTests
 
         // Assert
         Assert.True(result.IsFailure);
+    }
+
+    private static IList<Booking> GetBookings(Schedule schedule)
+    {
+        var field = typeof(Schedule).GetField("Bookings", BindingFlags.Instance | BindingFlags.NonPublic);
+        Assert.NotNull(field);
+        return (IList<Booking>)field!.GetValue(schedule)!;
     }
 }

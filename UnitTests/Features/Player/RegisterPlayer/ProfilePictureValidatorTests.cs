@@ -17,7 +17,7 @@ public class ProfilePictureValidatorTests
     [InlineData("http://")]
     public void Create_WithValidUri_ShouldSucceed(string uri)
     {
-        var result = ProfilePicture.Create(uri);
+        var result = ProfilePicture.Create(uri!);
 
         Assert.True(result.IsSuccess);
         Assert.NotNull(result.value);
@@ -31,7 +31,7 @@ public class ProfilePictureValidatorTests
     [InlineData(null)]
     [InlineData("")]
     [InlineData(" ")]
-    public void Create_WithEmptyUri_ShouldFail(string uri)
+    public void Create_WithEmptyUri_ShouldFail(string? uri)
     {
         var result = ProfilePicture.Create(uri);
 

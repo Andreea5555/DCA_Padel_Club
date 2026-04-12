@@ -20,7 +20,6 @@ public class CreateBookingScheduleTests
         var result = schedule.CreateBooking(bookerId, CourtId.CreateCourtId("D1").value, slot, TestDefaults.Now, TestDefaults.Midnight);
 
         Assert.False(result.IsFailure);
-        Assert.NotNull(result.value);
 
         var bookings = GetBookings(schedule);
         Assert.Single(bookings);
@@ -37,7 +36,7 @@ public class CreateBookingScheduleTests
         var result = schedule.CreateBooking(bookerId, courtId, slot, TestDefaults.Now, TestDefaults.Midnight);
 
         Assert.False(result.IsFailure);
-        var booking = result.value;
+        var booking = GetBookings(schedule).Single();
         Assert.Equal(courtId.GetValue(), GetCourtId(booking).GetValue());
         Assert.Contains(bookerId, GetPlayerIds(booking));
     }

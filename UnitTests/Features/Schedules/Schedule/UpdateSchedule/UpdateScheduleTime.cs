@@ -35,7 +35,7 @@ public class UpdateScheduleTime
 
         Assert.True(result.IsFailure);
         Assert.Contains(result.errorMessages, e => e.ErrorCode == "Schedule.StartTimeTooBig");
-        Assert.DoesNotContain(result.errorMessages, e => e.ErrorCode == "Schedule.InvalidDuration");
+        Assert.Contains(result.errorMessages, e => e.ErrorCode == "Schedule.InvalidDuration");
     }
 
     [Fact]

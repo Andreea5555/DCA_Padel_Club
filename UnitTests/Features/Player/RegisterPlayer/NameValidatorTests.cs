@@ -15,7 +15,7 @@ public class NameValidatorTests
     [InlineData("SomeName")]
     public void Create_WithValidName_ShouldSucceed(string name)
     {
-        var result = Name.Create(name);
+        var result = Name.Create(name!);
         
         Assert.True(result.IsSuccess);
         Assert.NotNull(result.value);
@@ -73,7 +73,7 @@ public class NameValidatorTests
     [InlineData(null)]
     [InlineData("")]
     [InlineData(" ")]
-    public void Create_WithEmptyName_ShouldFail(string name)
+    public void Create_WithEmptyName_ShouldFail(string? name)
     {
         var result = Name.Create(name);
         
@@ -147,6 +147,4 @@ public class NameValidatorTests
         Assert.Contains(result.errorMessages, e => e.ErrorCode == "Name.InvalidCharacters");
     }
 }
-
-
 
