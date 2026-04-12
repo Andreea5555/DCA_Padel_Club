@@ -17,6 +17,10 @@ public class RemoveCourtHandlerTest
     public async Task Handle_ValidInput_ReturnsSuccess()
     {
         Schedule schedule = Schedule.Create();
+        schedule.UpdateScheduledDate(
+            new DateOnly(2026, 4, 20),
+            new FakeCurrentDate(new DateOnly(2026, 4, 1)));
+
         schedule.AddCourt(new CourtId("S2"), new FakeCurrentDate(new DateOnly(2026, 4, 1)));
 
         FakeScheduleRepository repository = new FakeScheduleRepository();

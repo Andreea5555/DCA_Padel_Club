@@ -31,7 +31,7 @@ public class ActivateScheduleHandlerTests
         IUnitOfWork unitOfWork = new FakeUnitOfWork();
 
         Result<ActivateScheduleCommand> commandResult =
-            ActivateScheduleCommand.Create(schedule.Id.ToString());
+            ActivateScheduleCommand.Create(schedule.Id.Id.ToString());
 
         ActivateScheduleCommand command = commandResult.value;
 
