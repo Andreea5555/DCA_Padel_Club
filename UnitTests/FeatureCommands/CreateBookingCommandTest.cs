@@ -30,9 +30,9 @@ public class CreateBookingCommandTest
         Assert.NotNull(result.value);
         Assert.Equal(bookerId, result.value.BookerId.Value);
         Assert.Equal(courtId, result.value.CourtId.GetValue());
-        Assert.Equal(date, result.value.Date.ToString());
-        Assert.Equal(startTime, result.value.StartTime.ToString());
-        Assert.Equal(endTime, result.value.EndTime.ToString());
+        Assert.Equal(DateOnly.Parse(date), result.value.Date);
+        Assert.Equal(TimeOnly.Parse(startTime), result.value.StartTime);
+        Assert.Equal(TimeOnly.Parse(endTime), result.value.EndTime);
     }
 
     [Fact]

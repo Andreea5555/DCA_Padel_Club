@@ -15,7 +15,7 @@ public class EmailValidatorTests
     [InlineData("ABC@via.dk")] // Should be normalized to lowercase
     public void Create_WithValidEmail_ShouldSucceed(string email)
     {
-        var result = Email.Create(email);
+        var result = Email.Create(email!);
         
         Assert.True(result.IsSuccess);
         Assert.NotNull(result.value);
@@ -38,7 +38,7 @@ public class EmailValidatorTests
     [InlineData(null)]
     [InlineData("")]
     [InlineData(" ")]
-    public void Create_WithEmptyEmail_ShouldFail(string email)
+    public void Create_WithEmptyEmail_ShouldFail(string? email)
     {
         var result = Email.Create(email);
         
@@ -109,5 +109,3 @@ public class EmailValidatorTests
         Assert.Contains(result.errorMessages, e => e.ErrorCode == "Email.InvalidPrefix");
     }
 }
-
-

@@ -114,11 +114,6 @@ public class Schedule : AggregateRoot<ScheduleId>
             errors.Add(OperationError.Create("Schedule.InvalidDate","The date chosen has already passed"));
         }
 
-        if (Date == null)
-        {
-            errors.Add(OperationError.Create("Schedule.NullDate","No daily schedule has been found with this date"));
-        }
-
         if (Courts.Any(c => c.GetID() == courtId.GetValue()))
         {
             errors.Add(OperationError.Create("Schedule.CourtAlreadyExist","The court already exists inside the schedule"));
@@ -147,7 +142,11 @@ public class Schedule : AggregateRoot<ScheduleId>
        {
             return Result<None>.Failure(errors);
        }
-       Courts.Remove(new PadelCourt(courtId));
+       var courtToRemove = Courts.FirstOrDefault(c => c.GetID() == courtId.GetValue());
+       if (courtToRemove is not null)
+       {
+           Courts.Remove(courtToRemove);
+       }
        
        return Result<None>.Success(None.Value);
     }
@@ -226,7 +225,6 @@ public class Schedule : AggregateRoot<ScheduleId>
         return Result<None>.Success(None.Value);
     }
     
-    //TODO check with Troels what should Result have either None or Booking
     public Result<None> CreateBooking(ViaId bookerId, CourtId courtId, BookingSlot slot, ICurrentDate currentDate, ICurrentTime currentTime)
     {
         var errors = new List<OperationError>();
