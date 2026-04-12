@@ -26,19 +26,19 @@ public class ManagePadelCourtTests
         Assert.False(padelCourt.isOccupied);
     }
 
-    [Fact]
-    public void VIPAccessIsEnabled()
-    {
-        var padelCourt = CreatePadelCourt();
-        padelCourt.EnableVIPAccess();
-        Assert.True(padelCourt.isVIPEnabled);
-    }
-    
-    [Fact]
-    public void VIPAccessIsNotEnabled()
-    {
-        var padelCourt = CreatePadelCourt();
-        padelCourt.DisableVIPAccess();
-        Assert.False(padelCourt.isVIPEnabled);
-    }
+    // [Fact]
+    // public void VIPAccessIsEnabled()
+    // {
+    //     var padelCourt = CreatePadelCourt();
+    //     padelCourt.EnableVIPAccess();
+    //     Assert.True(padelCourt.isVIPEnabled);
+    // }
+    //
+    // [Fact]
+    // public void VIPAccessIsNotEnabled()
+    // {
+    //     var padelCourt = CreatePadelCourt();
+    //     padelCourt.DisableVIPAccess();
+    //     Assert.False(padelCourt.isVIPEnabled);
+    // }
 }

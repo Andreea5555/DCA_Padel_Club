@@ -1,8 +1,6 @@
 using DCA_Padel_Club.Core.Application.Commands.ICommandHandler;
 using DCA_Padel_Club.Core.Application.Commands.ScheduleCommands;
-using DCA_Padel_Club.Core.Application.Features;
 using DCA_Padel_Club.Core.Application.Features.ScheduleFeatures;
-using DCA_Padel_Club.Core.Domain.Aggregates.Schedules;
 using DCA_Padel_Club.Core.Domain.Common.Contracts;
 using DCA_Padel_Club.Core.Tools.OperationResult;
 using UnitTests.Fakes;

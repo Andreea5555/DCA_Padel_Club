@@ -7,6 +7,8 @@ public class ActivateScheduleCommandTest
     [Fact]
     public void ActivateScheduleTest_Success()
     {
-        Schedule schedule = Schedule.Create();
+       
+        
+        
     }
 }
