@@ -2,9 +2,5 @@
 	<s:String x:Key="/Default/CodeInspection/ExcludedFiles/FilesAndFoldersToSkip2/=7020124F_002D9FFC_002D4AC3_002D8F3D_002DAAB8E0240759_002Ff_003ATask_002Ecs_002Fl_003A_002E_002E_003F_002E_002E_003FAppData_003FRoaming_003FJetBrains_003FRider2025_002E3_003Fresharper_002Dhost_003FDecompilerCache_003Fdecompiler_003F62804b5daec94734a8f06e2dbc317927e8e908_003Ffb_003F4bd6f2dd_003FTask_002Ecs/@EntryIndexedValue">ForceIncluded</s:String>
 	<s:String x:Key="/Default/CodeInspection/ExcludedFiles/FilesAndFoldersToSkip2/=7020124F_002D9FFC_002D4AC3_002D8F3D_002DAAB8E0240759_002Ff_003ATask_002Ecs_002Fl_003A_002E_002E_003F_002E_002E_003FAppData_003FRoaming_003FJetBrains_003FRider2025_002E3_003Fresharper_002Dhost_003FSourcesCache_003F8789586b575d44528c2aa18853f6eb96f3e8f8d3f4fa7eb9d6a56b54b49d7_003FTask_002Ecs_002Fz_003A2_002D1/@EntryIndexedValue">ForceIncluded</s:String>
 	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=b4fc3312_002D5aae_002D4238_002Db9cd_002Dc600ced48e1b/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="EmailValidatorTests" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
-  &lt;TestAncestor&gt;&#xD;
-    &lt;TestId&gt;xUnit::1283EBC0-B62A-493A-AC47-137D305FBF46::net9.0::UnitTests.Features.Player.RegisterPlayer.EmailValidatorTests&lt;/TestId&gt;&#xD;
-    &lt;TestId&gt;xUnit::1283EBC0-B62A-493A-AC47-137D305FBF46::net9.0::UnitTests.Features.Player.ManagePlayerStatus.ManagePlayerStatusAggregateTests&lt;/TestId&gt;&#xD;
-    &lt;TestId&gt;xUnit::1283EBC0-B62A-493A-AC47-137D305FBF46::net9.0::UnitTests.FeatureCommands.Player.CreatePlayerCommandTests&lt;/TestId&gt;&#xD;
-  &lt;/TestAncestor&gt;&#xD;
+  &lt;Project Location="C:\Users\Andreea\RiderProjects\DCA_Padel_Club\UnitTests" Presentation="&amp;lt;Tests&amp;gt;\&amp;lt;UnitTests&amp;gt;" /&gt;&#xD;
 &lt;/SessionState&gt;</s:String></wpf:ResourceDictionary>

@@ -6,7 +6,7 @@ using DCA_Padel_Club.Core.Tools.OperationResult;
 using UnitTests.Fakes;
 using UnitTests.Fakes.ScheduleFakes;
 
-namespace UnitTests.FeatureHandlers.Schedule;
+namespace UnitTests.FeatureHandlers.Schedules;
 
 using DCA_Padel_Club.Core.Domain.Aggregates.Schedules;
 public class CreateBookingHandlerTests

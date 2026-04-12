@@ -1,6 +1,6 @@
 using DCA_Padel_Club.Core.Application.Commands.ScheduleCommands;
 
-namespace UnitTests.FeatureCommands;
+namespace UnitTests.FeatureCommands.Schedules;
 
 public class CreateBookingCommandTest
 {
