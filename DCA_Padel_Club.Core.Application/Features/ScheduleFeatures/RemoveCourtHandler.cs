@@ -4,7 +4,7 @@ using DCA_Padel_Club.Core.Domain.Aggregates.Schedules;
 using DCA_Padel_Club.Core.Domain.Common.Contracts;
 using DCA_Padel_Club.Core.Tools.OperationResult;
 
-namespace DCA_Padel_Club.Core.Application.Features;
+namespace DCA_Padel_Club.Core.Application.Features.ScheduleFeatures;
 
 public class RemoveCourtHandler: ICommandHandler<RemoveCourtCommand>
 {

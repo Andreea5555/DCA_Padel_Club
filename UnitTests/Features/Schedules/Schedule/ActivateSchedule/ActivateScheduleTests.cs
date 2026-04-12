@@ -3,7 +3,6 @@ using UnitTests.Fakes.ScheduleFakes;
 
 namespace UnitTests.Features.Schedules.ActivateSchedule;
 
-using DCA_Padel_Club.Core.Domain.Aggregates.Schedule;
 using DCA_Padel_Club.Core.Domain.Aggregates.Schedules;
 using UnitTests.Helpers;
 

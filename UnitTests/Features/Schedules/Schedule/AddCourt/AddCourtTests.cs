@@ -4,7 +4,6 @@ using UnitTests.Helpers;
 
 namespace UnitTests.Features.Schedules.Schedule.AddCourt;
 using  DCA_Padel_Club.Core.Domain.Aggregates.Schedules;
-using DCA_Padel_Club.Core.Domain.Aggregates.Schedule;
 public class AddCourtTests
 {
     private static Schedule CreateSchedule() => Schedule.Create();

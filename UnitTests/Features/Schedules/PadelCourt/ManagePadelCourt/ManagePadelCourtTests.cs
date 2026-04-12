@@ -1,4 +1,3 @@
-using DCA_Padel_Club.Core.Domain.Aggregates.Schedule;
 using DCA_Padel_Club.Core.Domain.Aggregates.Schedules;
 
 namespace UnitTests.Features.Schedule.ManageBusyPadelCourt;

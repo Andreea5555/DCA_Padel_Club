@@ -1,5 +1,4 @@
 using DCA_Padel_Club.Core.Domain.Aggregates.Players;
-using DCA_Padel_Club.Core.Domain.Aggregates.Schedule;
 using DCA_Padel_Club.Core.Domain.Common.Bases;
 using DCA_Padel_Club.Core.Domain.Common.Contracts;
 using DCA_Padel_Club.Core.Tools.OperationResult;

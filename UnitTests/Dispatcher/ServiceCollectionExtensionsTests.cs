@@ -4,6 +4,7 @@ using DCA_Padel_Club.Core.Application.Commands.PlayerCommands;
 using DCA_Padel_Club.Core.Application.Commands.ScheduleCommands;
 using DCA_Padel_Club.Core.Application.Features.PlayerFeatures;
 using DCA_Padel_Club.Core.Application.Features;
+using DCA_Padel_Club.Core.Application.Features.ScheduleFeatures;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace UnitTests.Dispatcher;

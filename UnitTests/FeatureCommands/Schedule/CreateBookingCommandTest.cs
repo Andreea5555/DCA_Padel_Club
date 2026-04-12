@@ -1,5 +1,4 @@
 using DCA_Padel_Club.Core.Application.Commands.ScheduleCommands;
-using Xunit;
 
 namespace UnitTests.FeatureCommands;
 

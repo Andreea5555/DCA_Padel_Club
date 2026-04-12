@@ -4,7 +4,7 @@ using DCA_Padel_Club.Core.Domain.Common.Contracts;
 using DCA_Padel_Club.Core.Tools.OperationResult;
 using DCA_Padel_Club.Core.Domain.Aggregates.Schedules;
 
-namespace DCA_Padel_Club.Core.Application.Features;
+namespace DCA_Padel_Club.Core.Application.Features.ScheduleFeatures;
 
 public class CreateBookingHandler: ICommandHandler<CreateBookingCommand> //TODO ask if i shall add ICommandHandler here or not
 {
