@@ -17,7 +17,7 @@ public sealed class BookingConfiguration : IEntityTypeConfiguration<Booking>
             .HasColumnName("BookingId")
             .ValueGeneratedNever();
 
-        builder.Property<ScheduleId>("ScheduleId");
+        builder.Property<ScheduleId>("ScheduleId").IsRequired();
 
         builder.Property<CourtId>("courtNumber")
             .HasField("courtNumber")
@@ -56,6 +56,7 @@ public sealed class BookingConfiguration : IEntityTypeConfiguration<Booking>
         });
 
         builder.Navigation("bookingTimeSlot")
-            .UsePropertyAccessMode(PropertyAccessMode.Field);
+            .UsePropertyAccessMode(PropertyAccessMode.Field)
+            .IsRequired();
     }
 }
