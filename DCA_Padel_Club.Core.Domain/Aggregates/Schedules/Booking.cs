@@ -8,7 +8,7 @@ public class Booking : Entity<BookingId>
 {
     private CourtId courtNumber = null!;
     private ViaId bookerId = null!;
-    private IList<ViaId> playerIds = new List<ViaId>();
+    private IList<BookingPlayerReference> playerIds = new List<BookingPlayerReference>();
     private BookingSlot bookingTimeSlot = null!;
     
     private Booking() : base(default!)
@@ -32,16 +32,16 @@ public class Booking : Entity<BookingId>
             throw new ArgumentNullException(nameof(playerIds));
         }
 
-        this.playerIds = new List<ViaId>(playerIds);
+        this.playerIds = playerIds.Select(id => new BookingPlayerReference(id)).ToList();
         bookingTimeSlot = timeSlot;
 
-        if (!this.playerIds.Contains(bookerId))
-            this.playerIds.Add(bookerId);
+        if (!HasPlayer(bookerId))
+            this.playerIds.Add(new BookingPlayerReference(bookerId));
     }
 
     internal Result<None> AddPlayer(ViaId player)
     {
-        if (playerIds.Contains(player))
+        if (HasPlayer(player))
         {
             return Result<None>.Failure(
                 [
@@ -53,7 +53,7 @@ public class Booking : Entity<BookingId>
             );
         }
 
-        playerIds.Add(player);
+        playerIds.Add(new BookingPlayerReference(player));
         return Result<None>.Success(None.Value);
     }
 
@@ -71,7 +71,7 @@ public class Booking : Entity<BookingId>
             );
         }
 
-        if (!playerIds.Contains(player))
+        if (!HasPlayer(player))
         {
             return Result<None>.Failure(
                 [
@@ -83,8 +83,14 @@ public class Booking : Entity<BookingId>
             );
         }
 
-        playerIds.Remove(player);
+        BookingPlayerReference playerReference = playerIds.First(reference => reference.PlayerId == player);
+        playerIds.Remove(playerReference);
         return Result<None>.Success(None.Value);
+    }
+
+    private bool HasPlayer(ViaId player)
+    {
+        return playerIds.Any(reference => reference.PlayerId == player);
     }
 
     internal bool IsOnCourt(CourtId court)

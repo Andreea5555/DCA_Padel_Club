@@ -342,7 +342,7 @@ public class CreateBookingScheduleTests
     private static IList<BookingAggregate> GetBookings(ScheduleAggregate schedule)
     {
         var field = typeof(ScheduleAggregate)
-            .GetField("Bookings", BindingFlags.Instance | BindingFlags.NonPublic);
+            .GetField("_bookings", BindingFlags.Instance | BindingFlags.NonPublic);
         Assert.NotNull(field);
         return (IList<BookingAggregate>)field!.GetValue(schedule)!;
     }
@@ -358,6 +358,24 @@ public class CreateBookingScheduleTests
     {
         var field = typeof(BookingAggregate).GetField("playerIds", BindingFlags.Instance | BindingFlags.NonPublic);
         Assert.NotNull(field);
-        return (IList<ViaId>)field!.GetValue(booking)!;
+        var value = field!.GetValue(booking)!;
+
+        if (value is IList<ViaId> directPlayers)
+        {
+            return directPlayers;
+        }
+
+        return ((System.Collections.IEnumerable)value)
+            .Cast<object>()
+            .Select(item =>
+            {
+                var playerIdProperty = item.GetType().GetProperty(
+                    "PlayerId",
+                    BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public
+                );
+                Assert.NotNull(playerIdProperty);
+                return (ViaId)playerIdProperty.GetValue(item)!;
+            })
+            .ToList();
     }
 }

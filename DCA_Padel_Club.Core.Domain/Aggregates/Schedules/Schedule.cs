@@ -10,20 +10,21 @@ public class Schedule : AggregateRoot<ScheduleId>
     internal DateOnly Date { get; private set; }
     internal TimeOnly StartTime { get; private set; }
     internal TimeOnly EndTime { get; private set; }
-    internal Boolean IsDraft;
+    internal bool IsDraft { get; set; }
     internal IList<PadelCourt> Courts { get; private set; }
-    internal bool IsDeleted;
-    internal IList<Booking> Bookings;
+    internal bool IsDeleted { get; private set; }
+
+    private readonly List<Booking> _bookings = new();
+    internal IReadOnlyCollection<Booking> Bookings => _bookings;
 
     private Schedule(ScheduleId id) : base(id)
     {
-        Date= DateOnly.FromDateTime(DateTime.Now);
+        Date = DateOnly.FromDateTime(DateTime.Now);
         StartTime = TimeOnly.Parse("15:00:00");
         EndTime = TimeOnly.Parse("22:00:00");
         IsDraft = true;
         Courts = new List<PadelCourt>();
         IsDeleted = false;
-        Bookings = new List<Booking>();
     }
 
     public static Schedule Create()
@@ -265,7 +266,7 @@ public class Schedule : AggregateRoot<ScheduleId>
             new List<ViaId>(),
             slot);
 
-        Bookings.Add(booking);
+        _bookings.Add(booking);
         return Result<None>.Success(None.Value);
     }
 
