@@ -6,12 +6,16 @@ namespace DCA_Padel_Club.Core.Domain.Aggregates.Schedules;
 
 public class Booking : Entity<BookingId>
 {
-    private readonly CourtId courtNumber;
-    private ViaId bookerId;
-    private IList<ViaId> playerIds;
-    private readonly BookingSlot bookingTimeSlot;
+    private CourtId courtNumber = null!;
+    private ViaId bookerId = null!;
+    private IList<ViaId> playerIds = new List<ViaId>();
+    private BookingSlot bookingTimeSlot = null!;
+    
+    private Booking() : base(default!)
+    {
+    }
 
-    public Booking(
+    internal Booking(
         BookingId id,
         CourtId courtNumber,
         ViaId bookerId,
@@ -20,12 +24,14 @@ public class Booking : Entity<BookingId>
     )
         : base(id)
     {
-        this.bookerId = bookerId;
         this.courtNumber = courtNumber;
+        this.bookerId = bookerId;
+
         if (playerIds is null)
         {
             throw new ArgumentNullException(nameof(playerIds));
         }
+
         this.playerIds = new List<ViaId>(playerIds);
         bookingTimeSlot = timeSlot;
 
