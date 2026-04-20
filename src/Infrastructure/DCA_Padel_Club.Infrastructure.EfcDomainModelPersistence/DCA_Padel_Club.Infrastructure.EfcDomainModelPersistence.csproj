@@ -15,5 +15,9 @@
     <ItemGroup>
         <ProjectReference Include="..\..\..\DCA_Padel_Club.Core.Domain\DCA_Padel_Club.Core.Domain.csproj"/>
     </ItemGroup>
+    
+    <ItemGroup>
+      <Folder Include="Repositories\Player\" />
+    </ItemGroup>
 
 </Project>
