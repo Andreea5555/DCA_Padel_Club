@@ -36,7 +36,7 @@ public class CreateBookingScheduleTests
         var result = schedule.CreateBooking(bookerId, courtId, slot, TestDefaults.Now, TestDefaults.Midnight);
 
         Assert.False(result.IsFailure);
-        var booking = result.value;
+        var booking = GetBookings(schedule).Single();
         Assert.Equal(courtId.GetValue(), GetCourtId(booking).GetValue());
         Assert.Contains(bookerId, GetPlayerIds(booking));
     }
