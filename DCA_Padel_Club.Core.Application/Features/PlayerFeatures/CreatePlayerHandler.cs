@@ -19,7 +19,7 @@ public class CreatePlayerHandler : ICommandHandler<CreatePlayerCommand>
 
     public async Task<Result<None>> HandleAsync(CreatePlayerCommand command)
     {
-        Player? existingPlayer = await _playerRepository.GetByIdAsync(command.PlayerId);
+        Player? existingPlayer = await _playerRepository.GetAsync(command.PlayerId);
         if (existingPlayer is not null)
         {
             return Result<None>.Failure(new List<OperationError>

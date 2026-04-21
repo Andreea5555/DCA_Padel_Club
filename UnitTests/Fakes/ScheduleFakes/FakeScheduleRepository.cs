@@ -11,6 +11,11 @@ public class FakeScheduleRepository: IScheduleRepository
         return Task.CompletedTask;
     }
 
+    public Task RemoveAsync(ScheduleId id)
+    {
+        throw new NotImplementedException();
+    }
+
     public Task<Schedule?> GetAsync(ScheduleId id)
     {
         Schedule? foundSchedule= Schedules.FirstOrDefault(s => s.Id.Equals(id));

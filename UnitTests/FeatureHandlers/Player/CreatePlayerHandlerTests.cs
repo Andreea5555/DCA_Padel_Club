@@ -33,7 +33,7 @@ public class CreatePlayerHandlerTests
         Assert.True(result.IsSuccess);
         Assert.Equal(1, unitOfWork.SaveChangesCallCount);
 
-        PlayerAggregate? storedPlayer = await repository.GetByIdAsync(command.PlayerId);
+        PlayerAggregate? storedPlayer = await repository.GetAsync(command.PlayerId);
         Assert.NotNull(storedPlayer);
         Assert.Equal("John", storedPlayer!.FirstName.Value);
         Assert.Equal("Doe", storedPlayer.LastName.Value);

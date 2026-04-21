@@ -1,3 +1,4 @@
+using System.Runtime.CompilerServices;
 using DCA_Padel_Club.Core.Domain.Aggregates.Players;
 using DCA_Padel_Club.Core.Domain.Common.Bases;
 using DCA_Padel_Club.Core.Domain.Common.Contracts;
@@ -5,8 +6,10 @@ using DCA_Padel_Club.Core.Tools.OperationResult;
 
 namespace DCA_Padel_Club.Core.Domain.Aggregates.Schedules;
 
+
 public class Schedule : AggregateRoot<ScheduleId>
 {
+    
     internal DateOnly Date { get; private set; }
     internal TimeOnly StartTime { get; private set; }
     internal TimeOnly EndTime { get; private set; }
