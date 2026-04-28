@@ -66,7 +66,24 @@ internal static class BookingTestHelper
         Assert.NotNull(field);
         var value = field.GetValue(booking);
         Assert.NotNull(value);
-        var players = Assert.IsAssignableFrom<IList<ViaId>>(value);
-        return players.ToList();
+
+        if (value is IList<ViaId> directPlayers)
+        {
+            return directPlayers.ToList();
+        }
+
+        var wrappedPlayers = Assert.IsAssignableFrom<System.Collections.IEnumerable>(value);
+        return wrappedPlayers
+            .Cast<object>()
+            .Select(item =>
+            {
+                var playerIdProperty = item.GetType().GetProperty(
+                    "PlayerId",
+                    BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public
+                );
+                Assert.NotNull(playerIdProperty);
+                return Assert.IsType<ViaId>(playerIdProperty.GetValue(item));
+            })
+            .ToList();
     }
 }

@@ -37,7 +37,7 @@ public class ManagePlayerStatusHandlerTests
         Assert.True(result.IsSuccess);
         Assert.Equal(1, unitOfWork.SaveChangesCallCount);
 
-        PlayerAggregate? updatedPlayer = await repository.GetByIdAsync(new ViaId(123456));
+        PlayerAggregate? updatedPlayer = await repository.GetAsync(new ViaId(123456));
         Assert.NotNull(updatedPlayer);
         Assert.True(updatedPlayer.Blacklisted);
     }

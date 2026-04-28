@@ -23,6 +23,12 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DCA_Padel_Club.Core.Domain"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DCA_Padel_Club.Core.Application", "DCA_Padel_Club.Core.Application\DCA_Padel_Club.Core.Application.csproj", "{4BB08AD9-6E8D-413D-A68F-A2078F236E56}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Infrastructure", "Infrastructure", "{D3B970E4-8AC9-4173-905A-F7A3D458D384}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DCA_Padel_Club.Infrastructure.EfcDomainModelPersistence", "src\Infrastructure\DCA_Padel_Club.Infrastructure.EfcDomainModelPersistence\DCA_Padel_Club.Infrastructure.EfcDomainModelPersistence.csproj", "{94885FD8-9C0E-4481-934B-0AB5F377C764}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IntegrationTests", "IntegrationTests\IntegrationTests.csproj", "{0A942625-5F06-4446-9834-FEB2DDFAA855}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -35,6 +41,9 @@ Global
 		{1283EBC0-B62A-493A-AC47-137D305FBF46} = {651A393F-9157-49EF-B534-92105D51207D}
 		{C655B56C-B268-4B0A-A861-996BCE21859C} = {83524940-5FF0-4C14-98BB-C43FAC4A925C}
 		{4BB08AD9-6E8D-413D-A68F-A2078F236E56} = {83524940-5FF0-4C14-98BB-C43FAC4A925C}
+		{D3B970E4-8AC9-4173-905A-F7A3D458D384} = {66CACA6D-6CFB-4AE6-A596-EB0245C07B1E}
+		{94885FD8-9C0E-4481-934B-0AB5F377C764} = {D3B970E4-8AC9-4173-905A-F7A3D458D384}
+		{0A942625-5F06-4446-9834-FEB2DDFAA855} = {651A393F-9157-49EF-B534-92105D51207D}
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{C8D5D06A-0F8D-488C-A6B9-B7850A80DA19}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -53,5 +62,13 @@ Global
 		{4BB08AD9-6E8D-413D-A68F-A2078F236E56}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4BB08AD9-6E8D-413D-A68F-A2078F236E56}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4BB08AD9-6E8D-413D-A68F-A2078F236E56}.Release|Any CPU.Build.0 = Release|Any CPU
+		{94885FD8-9C0E-4481-934B-0AB5F377C764}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{94885FD8-9C0E-4481-934B-0AB5F377C764}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{94885FD8-9C0E-4481-934B-0AB5F377C764}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{94885FD8-9C0E-4481-934B-0AB5F377C764}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0A942625-5F06-4446-9834-FEB2DDFAA855}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0A942625-5F06-4446-9834-FEB2DDFAA855}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0A942625-5F06-4446-9834-FEB2DDFAA855}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0A942625-5F06-4446-9834-FEB2DDFAA855}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

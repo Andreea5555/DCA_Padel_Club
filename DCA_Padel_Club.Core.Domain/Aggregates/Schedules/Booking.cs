@@ -6,12 +6,16 @@ namespace DCA_Padel_Club.Core.Domain.Aggregates.Schedules;
 
 public class Booking : Entity<BookingId>
 {
-    private readonly CourtId courtNumber;
-    private ViaId bookerId;
-    private IList<ViaId> playerIds;
-    private readonly BookingSlot bookingTimeSlot;
+    private CourtId courtNumber = null!;
+    private ViaId bookerId = null!;
+    private IList<BookingPlayerReference> playerIds = new List<BookingPlayerReference>();
+    private BookingSlot bookingTimeSlot = null!;
+    
+    private Booking() : base(default!)
+    {
+    }
 
-    public Booking(
+    internal Booking(
         BookingId id,
         CourtId courtNumber,
         ViaId bookerId,
@@ -20,22 +24,24 @@ public class Booking : Entity<BookingId>
     )
         : base(id)
     {
-        this.bookerId = bookerId;
         this.courtNumber = courtNumber;
+        this.bookerId = bookerId;
+
         if (playerIds is null)
         {
             throw new ArgumentNullException(nameof(playerIds));
         }
-        this.playerIds = new List<ViaId>(playerIds);
+
+        this.playerIds = playerIds.Select(id => new BookingPlayerReference(id)).ToList();
         bookingTimeSlot = timeSlot;
 
-        if (!this.playerIds.Contains(bookerId))
-            this.playerIds.Add(bookerId);
+        if (!HasPlayer(bookerId))
+            this.playerIds.Add(new BookingPlayerReference(bookerId));
     }
 
     internal Result<None> AddPlayer(ViaId player)
     {
-        if (playerIds.Contains(player))
+        if (HasPlayer(player))
         {
             return Result<None>.Failure(
                 [
@@ -47,7 +53,7 @@ public class Booking : Entity<BookingId>
             );
         }
 
-        playerIds.Add(player);
+        playerIds.Add(new BookingPlayerReference(player));
         return Result<None>.Success(None.Value);
     }
 
@@ -65,7 +71,7 @@ public class Booking : Entity<BookingId>
             );
         }
 
-        if (!playerIds.Contains(player))
+        if (!HasPlayer(player))
         {
             return Result<None>.Failure(
                 [
@@ -77,8 +83,14 @@ public class Booking : Entity<BookingId>
             );
         }
 
-        playerIds.Remove(player);
+        BookingPlayerReference playerReference = playerIds.First(reference => reference.PlayerId == player);
+        playerIds.Remove(playerReference);
         return Result<None>.Success(None.Value);
+    }
+
+    private bool HasPlayer(ViaId player)
+    {
+        return playerIds.Any(reference => reference.PlayerId == player);
     }
 
     internal bool IsOnCourt(CourtId court)

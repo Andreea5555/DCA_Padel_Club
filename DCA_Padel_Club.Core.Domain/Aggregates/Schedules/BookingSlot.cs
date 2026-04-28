@@ -5,9 +5,13 @@ namespace DCA_Padel_Club.Core.Domain.Aggregates.Schedules;
 
 public class BookingSlot : ValueObject
 {
-    internal DateOnly Date { get; }
-    internal TimeOnly StartTime { get; }
-    internal TimeOnly EndTime { get; }
+    internal DateOnly Date { get; private set; }
+    internal TimeOnly StartTime { get; private set; }
+    internal TimeOnly EndTime { get; private set; }
+    
+    private BookingSlot()
+    {
+    }
 
     public BookingSlot(DateOnly date, TimeOnly startTime, TimeOnly endTime)
     {

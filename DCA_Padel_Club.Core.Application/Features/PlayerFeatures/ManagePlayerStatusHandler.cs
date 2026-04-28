@@ -19,7 +19,7 @@ public class ManagePlayerStatusHandler : ICommandHandler<ManagePlayerStatusComma
 
     public async Task<Result<None>> HandleAsync(ManagePlayerStatusCommand command)
     {
-        Player? player = await _playerRepository.GetByIdAsync(command.PlayerId);
+        Player? player = await _playerRepository.GetAsync(command.PlayerId);
         if (player is null)
         {
             return Result<None>.Failure(new List<OperationError>

@@ -6,14 +6,19 @@
     public class FakePlayerRepository : IPlayerRepository
     {
         private readonly Dictionary<ViaId, Player> _players = new();
-        
+
         public Task AddAsync(Player player)
         {
             _players[player.Id] = player;
             return Task.CompletedTask;
         }
 
-        public Task<Player?> GetByIdAsync(ViaId id)
+        public Task RemoveAsync(ViaId id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<Player?> GetAsync(ViaId id)
         {
             _players.TryGetValue(id, out var player);
             return Task.FromResult(player);

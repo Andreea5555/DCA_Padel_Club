@@ -8,7 +8,14 @@
 
     <ItemGroup>
       <ProjectReference Include="..\DCA_Padel_Club.Core.Tools.OperationResult\DCA_Padel_Club.Core.Tools.OperationResult.csproj" />
+      <InternalsVisibleTo Include="DCA_Padel_Club.Infrastructure.EfcDomainModelPersistence" />
         <InternalsVisibleTo Include="UnitTests" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleTo">
+            <_Parameter1>IntegrationTests</_Parameter1>
+        </AssemblyAttribute>
     </ItemGroup>
 
 </Project>
