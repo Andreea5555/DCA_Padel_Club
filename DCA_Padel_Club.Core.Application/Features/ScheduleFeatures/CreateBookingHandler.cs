@@ -25,7 +25,7 @@ public class CreateBookingHandler: ICommandHandler<CreateBookingCommand> //TODO 
         this.CurrentTime = currentTime;
     }
 
-    // TODO check with Troels what should Result have either None or Booking
+    // TODO check what should Result have either None or Booking
     public async Task<Result<None>> HandleAsync(CreateBookingCommand command)
     {
         Schedule? schedule = await Repository.GetAsync(command.ScheduleId);

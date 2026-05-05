@@ -10,7 +10,7 @@ public class Player : AggregateRoot<ViaId>
     public Email Email { get; internal set; }
     public Password Password { get; internal set; }
     public ProfilePicture ProfilePicture { get; internal set; }
-    public bool IsVip { get; internal set; }
+    // public bool IsVip { get; internal set; }
     public bool Blacklisted { get; internal set; }
     public DateTime? CooldownExpiresAt { get; internal set; }
     public DateTime? QuarantineEndDate { get; internal set; }
@@ -23,7 +23,7 @@ public class Player : AggregateRoot<ViaId>
         Email = email;
         Password = password;
         ProfilePicture = profilePicture;
-        IsVip = false;
+        // IsVip = false;
         Blacklisted = false;
     }
 
@@ -85,19 +85,19 @@ public class Player : AggregateRoot<ViaId>
         this.QuarantineEndDate = DateTime.Now.AddDays(days);
     }
     
-    public void RenewVip(int months)
-    {
-       
-        this.IsVip = true;
-    }
-    public void RevokeVip()
-    {
-        this.IsVip = false;
-    }
-    public bool IsEligibleForVipCourt()
-    {
-        return this.IsVip && !this.Blacklisted;
-    }
+    // public void RenewVip(int months)
+    // {
+    //    
+    //     this.IsVip = true;
+    // }
+    // public void RevokeVip()
+    // {
+    //     this.IsVip = false;
+    // }
+    // public bool IsEligibleForVipCourt()
+    // {
+    //     return this.IsVip && !this.Blacklisted;
+    // }
     
     public Result<bool> ChangePassword(string newPassword)
     {

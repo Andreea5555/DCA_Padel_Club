@@ -48,8 +48,8 @@ public sealed class PlayerConfiguration : IEntityTypeConfiguration<Player>
                 value => ProfilePicture.Create(value).value)
             .IsRequired();
 
-        builder.Property(player => player.IsVip)
-            .IsRequired();
+        // builder.Property(player => player.IsVip)
+        //     .IsRequired();
 
         builder.Property(player => player.Blacklisted)
             .IsRequired();

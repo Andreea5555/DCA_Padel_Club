@@ -56,10 +56,10 @@ public class ManagePlayerStatusHandler : ICommandHandler<ManagePlayerStatusComma
                     });
                 }
 
-                player.RenewVip(command.Amount.Value);
-                break;
-            case PlayerStatusAction.RevokeVip:
-                player.RevokeVip();
+            //     player.RenewVip(command.Amount.Value);
+            //     break;
+            // case PlayerStatusAction.RevokeVip:
+            //     player.RevokeVip();
                 break;
             default:
                 return Result<None>.Failure(new List<OperationError>
