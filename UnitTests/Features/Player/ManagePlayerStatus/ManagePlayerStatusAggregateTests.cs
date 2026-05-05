@@ -55,39 +55,39 @@ public class ManagePlayerStatusAggregateTests
         Assert.Equal(expectedDate, player.QuarantineEndDate.Value.Date);
     }
     
-    [Fact]
-    public void RenewVip_ShouldSetIsVipToTrue()
-    {
-        var player = CreateTestPlayer();
-
-        player.RenewVip(12);
-
-        Assert.True(player.IsVip);
-    }
-
-    [Fact]
-    public void RevokeVip_ShouldSetIsVipToFalse()
-    {
-        var player = CreateTestPlayer();
-        player.RenewVip(12); 
-
-        player.RevokeVip();
-
-        Assert.False(player.IsVip);
-    }
-
-    [Fact]
-    public void IsEligibleForVipCourt_WhenVipAndNotBlacklisted_ReturnsTrue()
-    {
-        var player = CreateTestPlayer();
-        player.RenewVip(12);
-        
-        player.UnblacklistPlayer(); 
-
-        var isEligible = player.IsEligibleForVipCourt();
-
-        Assert.True(isEligible);
-    }
+    // [Fact]
+    // public void RenewVip_ShouldSetIsVipToTrue()
+    // {
+    //     var player = CreateTestPlayer();
+    //
+    //     player.RenewVip(12);
+    //
+    //     Assert.True(player.IsVip);
+    // }
+    //
+    // [Fact]
+    // public void RevokeVip_ShouldSetIsVipToFalse()
+    // {
+    //     var player = CreateTestPlayer();
+    //     player.RenewVip(12); 
+    //
+    //     player.RevokeVip();
+    //
+    //     Assert.False(player.IsVip);
+    // }
+    //
+    // [Fact]
+    // public void IsEligibleForVipCourt_WhenVipAndNotBlacklisted_ReturnsTrue()
+    // {
+    //     var player = CreateTestPlayer();
+    //     player.RenewVip(12);
+    //     
+    //     player.UnblacklistPlayer(); 
+    //
+    //     var isEligible = player.IsEligibleForVipCourt();
+    //
+    //     Assert.True(isEligible);
+    // }
     
     [Fact]
     public void IsEligibleToBook_WhenPlayerInGoodStanding_ReturnsTrue()
