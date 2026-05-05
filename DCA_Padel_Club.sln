@@ -29,6 +29,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DCA_Padel_Club.Infrastructu
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IntegrationTests", "IntegrationTests\IntegrationTests.csproj", "{0A942625-5F06-4446-9834-FEB2DDFAA855}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DCA_Padel_Club.Core.QueryContracts", "src\DCA_Padel_Club.Core.QueryContracts\DCA_Padel_Club.Core.QueryContracts.csproj", "{BA7C1BDF-F9A7-41AF-8036-1250E00C44C4}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -44,6 +46,7 @@ Global
 		{D3B970E4-8AC9-4173-905A-F7A3D458D384} = {66CACA6D-6CFB-4AE6-A596-EB0245C07B1E}
 		{94885FD8-9C0E-4481-934B-0AB5F377C764} = {D3B970E4-8AC9-4173-905A-F7A3D458D384}
 		{0A942625-5F06-4446-9834-FEB2DDFAA855} = {651A393F-9157-49EF-B534-92105D51207D}
+		{BA7C1BDF-F9A7-41AF-8036-1250E00C44C4} = {83524940-5FF0-4C14-98BB-C43FAC4A925C}
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{C8D5D06A-0F8D-488C-A6B9-B7850A80DA19}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -70,5 +73,9 @@ Global
 		{0A942625-5F06-4446-9834-FEB2DDFAA855}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0A942625-5F06-4446-9834-FEB2DDFAA855}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0A942625-5F06-4446-9834-FEB2DDFAA855}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BA7C1BDF-F9A7-41AF-8036-1250E00C44C4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BA7C1BDF-F9A7-41AF-8036-1250E00C44C4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BA7C1BDF-F9A7-41AF-8036-1250E00C44C4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BA7C1BDF-F9A7-41AF-8036-1250E00C44C4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
