@@ -10,12 +10,12 @@ public class Player : AggregateRoot<ViaId>
     public Email Email { get; internal set; }
     public Password Password { get; internal set; }
     public ProfilePicture ProfilePicture { get; internal set; }
-    // public bool IsVip { get; internal set; }
     public bool Blacklisted { get; internal set; }
     public DateTime? CooldownExpiresAt { get; internal set; }
     public DateTime? QuarantineEndDate { get; internal set; }
 
-    private Player(ViaId id, Name firstName, Name lastName, Email email, Password password, ProfilePicture profilePicture)
+    private Player(ViaId id, Name firstName, Name lastName, Email email, Password password,
+        ProfilePicture profilePicture)
         : base(id)
     {
         FirstName = firstName;
@@ -23,11 +23,11 @@ public class Player : AggregateRoot<ViaId>
         Email = email;
         Password = password;
         ProfilePicture = profilePicture;
-        // IsVip = false;
         Blacklisted = false;
     }
 
-    public static Result<Player> Register(ViaId id, string firstName, string lastName, string email, string password, string profilePictureUri)
+    public static Result<Player> Register(ViaId id, string firstName, string lastName, string email, string password,
+        string profilePictureUri)
     {
         var errors = new List<OperationError>();
 
@@ -66,7 +66,8 @@ public class Player : AggregateRoot<ViaId>
             return Result<Player>.Failure(errors);
         }
 
-        var player = new Player(id, firstNameResult.value, lastNameResult.value, emailResult.value, passwordResult.value, profilePictureResult.value);
+        var player = new Player(id, firstNameResult.value, lastNameResult.value, emailResult.value,
+            passwordResult.value, profilePictureResult.value);
         return Result<Player>.Success(player);
     }
 
@@ -74,35 +75,23 @@ public class Player : AggregateRoot<ViaId>
     {
         this.Blacklisted = true;
     }
-    
-    public void UnblacklistPlayer() 
+
+    public void UnblacklistPlayer()
     {
         this.Blacklisted = false;
     }
-    
+
     public void QuarantinePlayer(int days)
     {
         this.QuarantineEndDate = DateTime.Now.AddDays(days);
     }
-    
-    // public void RenewVip(int months)
-    // {
-    //    
-    //     this.IsVip = true;
-    // }
-    // public void RevokeVip()
-    // {
-    //     this.IsVip = false;
-    // }
-    // public bool IsEligibleForVipCourt()
-    // {
-    //     return this.IsVip && !this.Blacklisted;
-    // }
-    
+
+    // ...existing code...
+
     public Result<bool> ChangePassword(string newPassword)
     {
         var passwordResult = Password.Create(newPassword);
-        
+
         if (passwordResult.IsFailure)
         {
             return Result<bool>.Failure(new List<OperationError>(passwordResult.errorMessages));
@@ -111,12 +100,12 @@ public class Player : AggregateRoot<ViaId>
         this.Password = passwordResult.value;
         return Result<bool>.Success(true);
     }
-    
+
     public void ChangeEmail(Email newEmail)
     {
         this.Email = newEmail;
     }
-    
+
     public bool IsEligibleToBook()
     {
         if (this.Blacklisted)
@@ -133,6 +122,7 @@ public class Player : AggregateRoot<ViaId>
         {
             return false;
         }
+
         return true;
     }
 }

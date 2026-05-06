@@ -8,8 +8,6 @@ public enum PlayerStatusAction
     Blacklist,
     Unblacklist,
     Quarantine,
-    RenewVip,
-    RevokeVip
 }
 
 public class ManagePlayerStatusCommand
@@ -54,6 +52,6 @@ public class ManagePlayerStatusCommand
 
     private static bool RequiresAmount(PlayerStatusAction action)
     {
-        return action is PlayerStatusAction.Quarantine or PlayerStatusAction.RenewVip;
+        return action is PlayerStatusAction.Quarantine;
     }
 }

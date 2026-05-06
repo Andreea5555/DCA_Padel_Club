@@ -47,20 +47,7 @@ public class ManagePlayerStatusHandler : ICommandHandler<ManagePlayerStatusComma
 
                 player.QuarantinePlayer(command.Amount.Value);
                 break;
-            case PlayerStatusAction.RenewVip:
-                if (!command.Amount.HasValue)
-                {
-                    return Result<None>.Failure(new List<OperationError>
-                    {
-                        OperationError.Create("PlayerStatus.Amount.Required", "VIP renewal requires a valid number of months.")
-                    });
-                }
-
-            //     player.RenewVip(command.Amount.Value);
-            //     break;
-            // case PlayerStatusAction.RevokeVip:
-            //     player.RevokeVip();
-                break;
+            
             default:
                 return Result<None>.Failure(new List<OperationError>
                 {

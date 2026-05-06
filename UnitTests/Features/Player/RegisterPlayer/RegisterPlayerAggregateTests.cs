@@ -50,7 +50,6 @@ public class RegisterPlayerAggregateTests
         Assert.Equal("john@via.dk", player.Email.Value);
         Assert.NotNull(player.Password);
         Assert.NotNull(player.ProfilePicture);
-        // Assert.False(player.IsVip);
         Assert.False(player.Blacklisted);
     }
 

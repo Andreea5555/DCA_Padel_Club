@@ -47,13 +47,12 @@
 ### Domain Implementation
 * [x] BlacklistPlayer() & UnblacklistPlayer() logic
 * [x] QuarantinePlayer() logic
-* [x] VIP Logic (Renew, Revoke, IsEligible)
+ 
 * [x] Profile Logic (ChangePassword, ChangeEmail)
 
 ### Unit Tests (TDD)
 * [x] S1 - Blacklisting & Quarantining state changes
-* [x] S2 - VIP status management (Renew/Revoke)
-* [x] S3 - VIP Court Eligibility evaluation
+ 
 * [x] S4 - Profile updates (Email, Password Result checks)
 * [x] S5 - IsEligibleToBook() evaluation logic (DONE!)
 
