@@ -8,6 +8,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\src\Infrastructure\DCA_Padel_Club.Infrastructure.EfcDomainModelPersistence\DCA_Padel_Club.Infrastructure.EfcDomainModelPersistence.csproj" />
+      <ProjectReference Include="..\src\Infrastructure\DCA_Padel_Club.Infrastructure.EfcQueries\DCA_Padel_Club.Infrastructure.EfcQueries.csproj" />
     </ItemGroup>
 
     <ItemGroup>
