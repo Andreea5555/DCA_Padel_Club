@@ -36,7 +36,7 @@ public class PlayerPageHandler(ViapadelClubContext context, ICurrentTime current
             })
             .ToListAsync();
 
-        string nowIso = currentTime.CurrentTime().ToString("yyyy-MM-ddTHH:mm:ss");
+        string nowIso = currentTime.Now.ToString("yyyy-MM-ddTHH:mm:ss");
 
         var allBookings = bookingsRaw
             .Select(b => new

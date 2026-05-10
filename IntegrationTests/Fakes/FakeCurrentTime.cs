@@ -13,6 +13,6 @@ public class FakeCurrentTime : ICurrentTime
         _timeOnly = TimeOnly.FromDateTime(now);
     }
 
-    public TimeOnly Now => _timeOnly;
-    public DateTime CurrentTime() => _dateTime;
+    public DateTime Now => _dateTime;
+    public TimeOnly TimeOfDay => _timeOnly;
 }

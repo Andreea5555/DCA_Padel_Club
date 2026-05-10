@@ -172,7 +172,7 @@ public class Schedule : AggregateRoot<ScheduleId>
             errors.Add(OperationError.Create("Schedule.NoCourtsAvailable", "There are no courts in the schedule, please add at least one court before activation."));
         }
 
-        if (Date < currentDate.Now || (Date == currentDate.Now && StartTime < currentTime.Now))
+        if (Date < currentDate.Now || (Date == currentDate.Now && StartTime < currentTime.TimeOfDay))
         {
             errors.Add(OperationError.Create("Schedule.InvalidStartTime","The start time chosen for the schedule has already passed"));
         }
@@ -232,7 +232,7 @@ public class Schedule : AggregateRoot<ScheduleId>
     {
         var errors = new List<OperationError>();
 
-        if (slot.Date < currentDate.Now || (slot.Date == currentDate.Now && slot.StartTime < currentTime.Now))
+        if (slot.Date < currentDate.Now || (slot.Date == currentDate.Now && slot.StartTime < currentTime.TimeOfDay))
             errors.Add(OperationError.Create("Schedule.BookingInPast",
                 "The booking slot starts before the current time."));
 

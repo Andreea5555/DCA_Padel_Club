@@ -2,6 +2,6 @@ namespace DCA_Padel_Club.Core.Domain.Common.Contracts;
 
 public interface ICurrentTime
 {
-    TimeOnly Now { get; }
-    DateTime CurrentTime();
+    DateTime Now { get; }
+    TimeOnly TimeOfDay { get; }
 }
