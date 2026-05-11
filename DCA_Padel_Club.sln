@@ -37,6 +37,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Presentation", "Presentatio
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DCA_Padel_Club.Presentation.WebAPI", "src\Presentation\DCA_Padel_Club.Presentation.WebAPI\DCA_Padel_Club.Presentation.WebAPI.csproj", "{A6C478D9-DBE0-4A44-9F32-6338B004E60F}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DCA_Padel_Club.Core.Tools.ObjectMapper", "src\Core\Tools\DCA_Padel_Club.Core.Tools.ObjectMapper\DCA_Padel_Club.Core.Tools.ObjectMapper.csproj", "{82E2F2C9-0F28-4CC5-B216-D77224068122}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -155,6 +157,18 @@ Global
 		{A6C478D9-DBE0-4A44-9F32-6338B004E60F}.Release|x64.Build.0 = Release|Any CPU
 		{A6C478D9-DBE0-4A44-9F32-6338B004E60F}.Release|x86.ActiveCfg = Release|Any CPU
 		{A6C478D9-DBE0-4A44-9F32-6338B004E60F}.Release|x86.Build.0 = Release|Any CPU
+		{82E2F2C9-0F28-4CC5-B216-D77224068122}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{82E2F2C9-0F28-4CC5-B216-D77224068122}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{82E2F2C9-0F28-4CC5-B216-D77224068122}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{82E2F2C9-0F28-4CC5-B216-D77224068122}.Debug|x64.Build.0 = Debug|Any CPU
+		{82E2F2C9-0F28-4CC5-B216-D77224068122}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{82E2F2C9-0F28-4CC5-B216-D77224068122}.Debug|x86.Build.0 = Debug|Any CPU
+		{82E2F2C9-0F28-4CC5-B216-D77224068122}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{82E2F2C9-0F28-4CC5-B216-D77224068122}.Release|Any CPU.Build.0 = Release|Any CPU
+		{82E2F2C9-0F28-4CC5-B216-D77224068122}.Release|x64.ActiveCfg = Release|Any CPU
+		{82E2F2C9-0F28-4CC5-B216-D77224068122}.Release|x64.Build.0 = Release|Any CPU
+		{82E2F2C9-0F28-4CC5-B216-D77224068122}.Release|x86.ActiveCfg = Release|Any CPU
+		{82E2F2C9-0F28-4CC5-B216-D77224068122}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -173,5 +187,6 @@ Global
 		{E9D5A347-C822-47BC-880B-C323DF451F49} = {D3B970E4-8AC9-4173-905A-F7A3D458D384}
 		{F6AA9774-FAE9-45A8-A4C3-18D1591B5B2A} = {66CACA6D-6CFB-4AE6-A596-EB0245C07B1E}
 		{A6C478D9-DBE0-4A44-9F32-6338B004E60F} = {F6AA9774-FAE9-45A8-A4C3-18D1591B5B2A}
+		{82E2F2C9-0F28-4CC5-B216-D77224068122} = {4552E196-F453-4B49-80D9-419246608012}
 	EndGlobalSection
 EndGlobal
