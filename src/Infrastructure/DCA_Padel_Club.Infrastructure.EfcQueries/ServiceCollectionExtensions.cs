@@ -15,6 +15,7 @@ public static class ServiceCollectionExtensions
         services.AddTransient<IQueryHandler<DailyScheduleBookingOverview.Query, DailyScheduleBookingOverview.Answer>, DailyScheduleBookingOverviewHandler>();
         services.AddTransient<IQueryHandler<ScheduleOverview.Query, ScheduleOverview.Answer>, ScheduleOverviewHandler>();
         services.AddTransient<IQueryHandler<ManagerScheduleOverview.Query, ManagerScheduleOverview.Answer>, ManagerScheduleOverviewHandler>();
+        services.AddTransient<IQueryHandler<BookingDetailsOverview.Query, BookingDetailsOverview.Answer>, BookingDetailsOverviewHandler>();
         return services;
     }
 }
