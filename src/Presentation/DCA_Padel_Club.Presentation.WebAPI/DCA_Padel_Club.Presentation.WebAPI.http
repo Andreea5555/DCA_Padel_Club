@@ -1,0 +1,6 @@
+@DCA_Padel_Club.Presentation.WebAPI_HostAddress = http://localhost:5192
+
+GET {{DCA_Padel_Club.Presentation.WebAPI_HostAddress}}/api/ping
+Accept: application/json
+
+###
