@@ -9,6 +9,7 @@
 
     <ItemGroup>
         <PackageReference Include="coverlet.collector" Version="6.0.2"/>
+        <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="9.0.4"/>
         <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.12.0"/>
         <PackageReference Include="xunit" Version="2.9.2"/>
         <PackageReference Include="xunit.runner.visualstudio" Version="2.8.2"/>
@@ -22,6 +23,7 @@
       <ProjectReference Include="..\DCA_Padel_Club.Core.Application\DCA_Padel_Club.Core.Application.csproj" />
       <ProjectReference Include="..\DCA_Padel_Club.Core.Domain\DCA_Padel_Club.Core.Domain.csproj" />
       <ProjectReference Include="..\DCA_Padel_Club.Core.Tools.OperationResult\DCA_Padel_Club.Core.Tools.OperationResult.csproj" />
+      <ProjectReference Include="..\src\Core\Tools\DCA_Padel_Club.Core.Tools.ObjectMapper\DCA_Padel_Club.Core.Tools.ObjectMapper.csproj" />
     </ItemGroup>
 
     <ItemGroup>
