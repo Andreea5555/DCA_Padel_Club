@@ -16,6 +16,12 @@ builder.Services.AddScoped<ICommandDispatcher, Dispatcher>();
 builder.Services.AddScoped<ICommandHandler<ActivateScheduleCommand>, ActivateScheduleHandler>();
 builder.Services.AddScoped<IScheduleRepository, ScheduleRepositoryEfc>();
 builder.Services.AddScoped<IUnitOfWork, EfcUnitOfWork>();
+builder.Services.AddScoped<ICommandHandler<AddCourtCommand>, AddCourtHandler>();
+builder.Services.AddScoped<ICommandHandler<UpdateScheduleDateCommand>, UpdateScheduleDateHandler>();
+builder.Services.AddScoped<ICommandHandler<UpdateScheduleTimeCommand>, UpdateScheduleTimeHandler>();
+builder.Services.AddScoped<ICommandHandler<RemoveCourtCommand>, RemoveCourtHandler>();
+builder.Services.AddScoped<ICommandHandler<DeleteScheduleCommand>, DeleteScheduleHandler>();
+builder.Services.AddScoped<ICommandHandler<CreateBookingCommand>, CreateBookingHandler>();
 
 var app = builder.Build();
 
