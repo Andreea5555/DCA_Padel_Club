@@ -10,4 +10,10 @@
         <PackageReference Include="Swashbuckle.AspNetCore" Version="7.2.0"/>
     </ItemGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\..\..\DCA_Padel_Club.Core.Application\DCA_Padel_Club.Core.Application.csproj" />
+      <ProjectReference Include="..\..\..\DCA_Padel_Club.Core.Tools.OperationResult\DCA_Padel_Club.Core.Tools.OperationResult.csproj" />
+      <ProjectReference Include="..\..\Infrastructure\DCA_Padel_Club.Infrastructure.EfcDomainModelPersistence\DCA_Padel_Club.Infrastructure.EfcDomainModelPersistence.csproj" />
+    </ItemGroup>
+
 </Project>
