@@ -9,13 +9,23 @@ using DCA_Padel_Club.Core.QueryContracts.Dispatching;
 using DCA_Padel_Club.Core.QueryContracts.Queries;
 using DCA_Padel_Club.Infrastructure.EfcDomainModelPersistence;
 using DCA_Padel_Club.Infrastructure.EfcDomainModelPersistence.Repositories.Schedule;
+using DCA_Padel_Club.Infrastructure.EfcQueries;
 using DCA_Padel_Club.Infrastructure.EfcQueries.Handlers.Schedule;
+using DCA_Padel_Club.Presentation.WebAPI.Services;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen(options =>
+{
+    options.CustomSchemaIds(type => type.FullName?.Replace("+", "."));
+});
+
+builder.Services.AddScoped<ICurrentDate, SystemCurrentDate>();
+builder.Services.AddScoped<ICurrentTime, SystemCurrentTime>();
+builder.Services.AddScoped<IActiveScheduleOnDate, SystemActiveScheduleOnDate>();
 
 builder.Services.AddScoped<ICommandDispatcher, Dispatcher>();
 builder.Services.AddScoped<ICommandHandler<ActivateScheduleCommand>, ActivateScheduleHandler>();
@@ -43,6 +53,18 @@ builder.Services.AddScoped<
 builder.Services.AddScoped<
     IQueryHandler<BookingDetailsOverview.Query, BookingDetailsOverview.Answer>,
     BookingDetailsOverviewHandler>();
+
+string connectionString = "Data Source=VIAPadelClub.db";
+
+builder.Services.AddDbContext<EfcDbContext>(options =>
+    options.UseSqlite(connectionString));
+
+builder.Services.AddDbContext<ViapadelClubContext>(options =>
+    options.UseSqlite(connectionString));
+
+builder.Services.AddDbContext<EfcDbContext>(options =>
+    options.UseSqlite(connectionString));
+
 
 var app = builder.Build();
 
