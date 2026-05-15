@@ -22,6 +22,7 @@ builder.Services.AddScoped<ICommandHandler<UpdateScheduleTimeCommand>, UpdateSch
 builder.Services.AddScoped<ICommandHandler<RemoveCourtCommand>, RemoveCourtHandler>();
 builder.Services.AddScoped<ICommandHandler<DeleteScheduleCommand>, DeleteScheduleHandler>();
 builder.Services.AddScoped<ICommandHandler<CreateBookingCommand>, CreateBookingHandler>();
+builder.Services.AddScoped<ICommandHandler<CreateScheduleCommand>, CreateScheduleHandler>();
 
 var app = builder.Build();
 
