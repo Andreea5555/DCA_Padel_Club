@@ -7,6 +7,7 @@
     </PropertyGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\src\Core\Tools\DCA_Padel_Club.Core.Tools.ObjectMapper\DCA_Padel_Club.Core.Tools.ObjectMapper.csproj" />
       <ProjectReference Include="..\src\Infrastructure\DCA_Padel_Club.Infrastructure.EfcDomainModelPersistence\DCA_Padel_Club.Infrastructure.EfcDomainModelPersistence.csproj" />
       <ProjectReference Include="..\src\Infrastructure\DCA_Padel_Club.Infrastructure.EfcQueries\DCA_Padel_Club.Infrastructure.EfcQueries.csproj" />
       <ProjectReference Include="..\src\Presentation\DCA_Padel_Club.Presentation.WebAPI\DCA_Padel_Club.Presentation.WebAPI.csproj" />

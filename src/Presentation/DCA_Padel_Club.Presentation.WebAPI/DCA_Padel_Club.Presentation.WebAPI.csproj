@@ -13,7 +13,9 @@
     <ItemGroup>
       <ProjectReference Include="..\..\..\DCA_Padel_Club.Core.Application\DCA_Padel_Club.Core.Application.csproj" />
       <ProjectReference Include="..\..\..\DCA_Padel_Club.Core.Tools.OperationResult\DCA_Padel_Club.Core.Tools.OperationResult.csproj" />
+      <ProjectReference Include="..\..\DCA_Padel_Club.Core.QueryContracts\DCA_Padel_Club.Core.QueryContracts.csproj" />
       <ProjectReference Include="..\..\Infrastructure\DCA_Padel_Club.Infrastructure.EfcDomainModelPersistence\DCA_Padel_Club.Infrastructure.EfcDomainModelPersistence.csproj" />
+      <ProjectReference Include="..\..\Infrastructure\DCA_Padel_Club.Infrastructure.EfcQueries\DCA_Padel_Club.Infrastructure.EfcQueries.csproj" />
     </ItemGroup>
 
 </Project>

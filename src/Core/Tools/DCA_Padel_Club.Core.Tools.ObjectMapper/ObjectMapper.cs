@@ -9,7 +9,7 @@ public abstract class ObjectMapper(IServiceProvider serviceProvider) : IMapper
     {
         Type type = typeof(IMappingConfig<,>)
             .MakeGenericType(input.GetType(), typeof(TOutput));
-        dynamic mappingConfig = serviceProvider.GetService(type)!;
+        dynamic? mappingConfig = serviceProvider.GetService(type);
 
         if (mappingConfig != null)
         {
