@@ -49,11 +49,10 @@ public class DCAWebApplicationFactory: WebApplicationFactory<Program>
 
         EfcDbContext dmContext = provider.GetRequiredService<EfcDbContext>();
         dmContext.Database.EnsureDeleted();
-        dmContext.Database.EnsureCreated();
+        dmContext.Database.Migrate();
 
         ViapadelClubContext queryContext = provider.GetRequiredService<ViapadelClubContext>();
-        queryContext.Database.EnsureDeleted();
-        queryContext.Database.EnsureCreated();
+        queryContext.Database.Migrate();
     }
 
     private static string GetConnectionString()
@@ -68,7 +67,6 @@ public class DCAWebApplicationFactory: WebApplicationFactory<Program>
         {
             using ServiceProvider provider = _services.BuildServiceProvider();
 
-            provider.GetRequiredService<EfcDbContext>().Database.EnsureDeleted();
             provider.GetRequiredService<EfcDbContext>().Database.EnsureDeleted();
         }
 
